@@ -1,0 +1,259 @@
+/* ============================================================
+   DesignHQ — Global CSS Design Token System
+   Maroon & White Glassmorphism Theme
+   ============================================================ */
+
+/* --- Google Fonts already loaded via <link> in index.html --- */
+
+/* ============================================================
+   ROOT TOKENS — Light Mode (default)
+   ============================================================ */
+:root {
+  /* Backgrounds */
+  --bg-base:         #FDF6F6;
+  --bg-surface:      rgba(255, 255, 255, 0.55);
+  --bg-surface-deep: rgba(255, 245, 245, 0.75);
+
+  /* Glass */
+  --glass-border:    rgba(128, 0, 32, 0.15);
+  --glass-shadow:    0 8px 32px rgba(128, 0, 32, 0.12);
+  --glass-blur:      blur(20px) saturate(180%);
+
+  /* Accent — Maroon family */
+  --accent-primary:  #800020;
+  --accent-deep:     #5C0016;
+  --accent-mid:      #A0002A;
+  --accent-light:    rgba(128, 0, 32, 0.08);
+  --accent-hover:    rgba(128, 0, 32, 0.14);
+
+  /* Text */
+  --text-primary:    #1A0A0E;
+  --text-secondary:  #6B3344;
+  --text-muted:      #A07080;
+  --white-glass:     rgba(255, 255, 255, 0.9);
+
+  /* Status colors */
+  --status-success:  #2D7A4F;
+  --status-warning:  #B86A00;
+  --status-danger:   #C0001A;
+  --status-info:     #1A5580;
+
+  /* Backgrounds behind glass */
+  --bg-gradient: radial-gradient(ellipse at top left, rgba(128, 0, 32, 0.06), transparent 60%),
+                 radial-gradient(ellipse at bottom right, rgba(160, 0, 42, 0.04), transparent 60%);
+
+  /* Typography */
+  --font-display:    'Cormorant Garamond', Georgia, serif;
+  --font-ui:         'DM Sans', system-ui, -apple-system, sans-serif;
+
+  /* Spacing */
+  --radius-sm:   8px;
+  --radius-md:   12px;
+  --radius-lg:   16px;
+  --radius-xl:   24px;
+  --radius-full: 9999px;
+
+  /* Transitions */
+  --transition-fast:   80ms ease;
+  --transition-base:   150ms ease;
+  --transition-slow:   300ms ease;
+  --transition-spring: 200ms cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* Sidebar */
+  --sidebar-width: 240px;
+  --sidebar-collapsed: 64px;
+  --topbar-height: 64px;
+
+  /* Z-index layers */
+  --z-base:    0;
+  --z-raised:  10;
+  --z-sidebar: 100;
+  --z-topbar:  200;
+  --z-modal:   300;
+  --z-toast:   400;
+}
+
+/* ============================================================
+   DARK MODE TOKENS
+   ============================================================ */
+[data-theme="dark"] {
+  --bg-base:         #0D0407;
+  --bg-surface:      rgba(30, 8, 14, 0.75);
+  --bg-surface-deep: rgba(20, 5, 10, 0.85);
+
+  --glass-border:    rgba(200, 80, 100, 0.2);
+  --glass-shadow:    0 8px 32px rgba(0, 0, 0, 0.4);
+
+  --accent-primary:  #C0304A;
+  --accent-deep:     #901830;
+  --accent-mid:      #E04060;
+  --accent-light:    rgba(192, 48, 74, 0.12);
+  --accent-hover:    rgba(192, 48, 74, 0.2);
+
+  --text-primary:    #FFF0F3;
+  --text-secondary:  #D4909A;
+  --text-muted:      #886070;
+  --white-glass:     rgba(255, 240, 243, 0.08);
+
+  --status-success:  #4DB87A;
+  --status-warning:  #F0A030;
+  --status-danger:   #F04060;
+  --status-info:     #4090C0;
+
+  --bg-gradient: radial-gradient(ellipse at top left, rgba(128, 0, 32, 0.2), transparent 60%),
+                 radial-gradient(ellipse at bottom right, rgba(80, 0, 20, 0.15), transparent 60%);
+}
+
+/* ============================================================
+   RESET & BASE
+   ============================================================ */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-ui);
+  font-size: 0.9375rem;
+  line-height: 1.65;
+  color: var(--text-primary);
+  background-color: var(--bg-base);
+  background-image: var(--bg-gradient);
+  background-attachment: fixed;
+  min-height: 100vh;
+  transition:
+    background-color var(--transition-slow),
+    color var(--transition-slow);
+}
+
+/* Smooth dark mode transition on all elements */
+*, *::before, *::after {
+  transition:
+    background-color var(--transition-slow),
+    border-color var(--transition-slow),
+    box-shadow var(--transition-slow);
+}
+
+/* But NOT on animations, transforms, opacity (avoid fighting with framer-motion) */
+[data-no-transition] {
+  transition: none !important;
+}
+
+a {
+  color: var(--accent-primary);
+  text-decoration: none;
+}
+a:hover { text-decoration: underline; }
+
+img, video {
+  display: block;
+  max-width: 100%;
+}
+
+/* ============================================================
+   TYPOGRAPHY SCALE
+   ============================================================ */
+.font-display { font-family: var(--font-display); }
+.font-ui      { font-family: var(--font-ui); }
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  line-height: 1.2;
+  color: var(--text-primary);
+}
+
+h1 { font-size: 2.5rem;  font-weight: 600; }
+h2 { font-size: 2rem;    font-weight: 600; }
+h3 { font-size: 1.5rem;  font-weight: 500; }
+h4 { font-size: 1.25rem; font-weight: 500; }
+h5 { font-size: 1rem;    font-weight: 500; font-family: var(--font-ui); }
+
+.text-xs   { font-size: 0.75rem;   }
+.text-sm   { font-size: 0.8125rem; font-family: var(--font-ui); }
+.text-base { font-size: 0.9375rem; }
+.text-lg   { font-size: 1.125rem;  }
+.text-xl   { font-size: 1.25rem;   }
+
+.text-primary   { color: var(--text-primary);   }
+.text-secondary { color: var(--text-secondary); }
+.text-muted     { color: var(--text-muted);     }
+.text-accent    { color: var(--accent-primary); }
+
+/* ============================================================
+   SCROLLBARS
+   ============================================================ */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: var(--glass-border);
+  border-radius: var(--radius-full);
+}
+::-webkit-scrollbar-thumb:hover { background: var(--accent-light); }
+
+/* ============================================================
+   SELECTION
+   ============================================================ */
+::selection {
+  background: var(--accent-light);
+  color: var(--accent-primary);
+}
+
+/* ============================================================
+   FOCUS RING
+   ============================================================ */
+:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* ============================================================
+   UTILITY CLASSES
+   ============================================================ */
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Status colors */
+.text-success { color: var(--status-success); }
+.text-warning { color: var(--status-warning); }
+.text-danger  { color: var(--status-danger);  }
+
+/* ============================================================
+   DOT GRID BACKGROUND (for canvas areas)
+   ============================================================ */
+.dot-grid-bg {
+  background-image: radial-gradient(circle, var(--glass-border) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* ============================================================
+   REDUCED MOTION
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
