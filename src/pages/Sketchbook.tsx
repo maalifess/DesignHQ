@@ -431,24 +431,26 @@ export default function Sketchbook() {
       </div>
 
       {/* Design Critique Modal */}
-      <GlassModal isOpen={showCritique} onClose={() => setShowCritique(false)} title=" Design Critique" size="lg">
+      <GlassModal isOpen={showCritique} onClose={() => setShowCritique(false)} title="AI Atelier Critique & Inspection" size="lg">
         {critique && (
           <div style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-            <div style={{ padding: '1rem', background: 'rgba(45,122,79,0.08)', borderRadius: 'var(--radius-md)', border: '1px solid rgba(45,122,79,0.2)' }}>
-              <h4 style={{ fontFamily: 'var(--font-display)', fontSize: '1rem', color: 'var(--status-success)', marginBottom: '0.625rem' }}>✓ What Works Well</h4>
-              <ul style={{ display: 'flex', flexDirection: 'column', gap: '0.375rem' }}>
+            <div className="ai-strengths-card">
+              <h4 style={{ fontFamily: 'var(--font-display)', fontSize: '1.125rem', color: 'var(--status-success)', marginBottom: '0.625rem', fontWeight: 600 }}>✓ Atelier Validation Notes</h4>
+              <ul style={{ display: 'flex', flexDirection: 'column', gap: '0.375rem', listStyle: 'none' }}>
                 {critique.works_well.map((p, i) => <li key={i} style={{ fontSize: '0.9rem', color: 'var(--text-primary)', lineHeight: 1.5 }}>• {p}</li>)}
               </ul>
             </div>
-            <div style={{ padding: '1rem', background: 'rgba(184,106,0,0.08)', borderRadius: 'var(--radius-md)', border: '1px solid rgba(184,106,0,0.2)' }}>
-              <h4 style={{ fontFamily: 'var(--font-display)', fontSize: '1rem', color: 'var(--status-warning)', marginBottom: '0.625rem' }}>↑ Areas for Improvement</h4>
-              <ul style={{ display: 'flex', flexDirection: 'column', gap: '0.375rem' }}>
+
+            <div className="ai-warning-card">
+              <h4 style={{ fontFamily: 'var(--font-display)', fontSize: '1.125rem', color: 'var(--status-warning)', marginBottom: '0.625rem', fontWeight: 600 }}>↑ Pattern & Seam Alteration Advisories</h4>
+              <ul style={{ display: 'flex', flexDirection: 'column', gap: '0.375rem', listStyle: 'none' }}>
                 {critique.improvements.map((p, i) => <li key={i} style={{ fontSize: '0.9rem', color: 'var(--text-primary)', lineHeight: 1.5 }}>• {p}</li>)}
               </ul>
             </div>
-            <div style={{ padding: '1rem', background: 'var(--accent-light)', borderRadius: 'var(--radius-md)', border: '1px solid var(--glass-border)' }}>
-              <h4 style={{ fontFamily: 'var(--font-display)', fontSize: '1rem', color: 'var(--accent-primary)', marginBottom: '0.5rem' }}>Professor's Note</h4>
-              <p style={{ fontSize: '0.9375rem', color: 'var(--text-primary)', lineHeight: 1.65, fontStyle: 'italic' }}>{critique.overall}</p>
+
+            <div className="ai-director-note">
+              <h4 style={{ fontFamily: 'var(--font-display)', fontSize: '1.125rem', color: 'var(--accent-secondary)', marginBottom: '0.5rem', fontWeight: 600, fontStyle: 'normal' }}>Atelier Director Note</h4>
+              <p style={{ fontSize: '1rem', color: 'var(--text-primary)', lineHeight: 1.65, fontStyle: 'italic', fontFamily: 'var(--font-display)' }}>"{critique.overall}"</p>
             </div>
           </div>
         )}

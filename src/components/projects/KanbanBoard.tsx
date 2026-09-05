@@ -11,7 +11,6 @@ import {
   useSensor,
   useSensors,
 } from '@dnd-kit/core'
-import { motion } from 'framer-motion'
 import { GripVertical, Calendar } from 'lucide-react'
 import type { Project } from '@/hooks/useProjects'
 import { daysUntil, deadlineColor } from '@/lib/export'
@@ -19,13 +18,13 @@ import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 
 const COLUMNS = [
-  { id: 'ideation',     label: 'Ideation',     color: '#A07080' },
-  { id: 'research',     label: 'Research',     color: '#6B3344' },
-  { id: 'sketching',    label: 'Sketching',    color: '#800020' },
-  { id: 'prototyping',  label: 'Prototyping',  color: '#A0002A' },
-  { id: 'refinement',   label: 'Refinement',   color: '#C05070' },
-  { id: 'final',        label: 'Final',        color: '#5C0016' },
-  { id: 'submitted',    label: 'Submitted',    color: '#2D7A4F' },
+  { id: 'ideation',     label: 'Ideation',         color: '#886070' },
+  { id: 'research',     label: 'Research',         color: '#D4909A' },
+  { id: 'sketching',    label: 'Sketching',        color: '#800020' },
+  { id: 'prototyping',  label: 'Prototyping',      color: '#A0002A' },
+  { id: 'refinement',   label: 'Refinement',       color: '#C05070' },
+  { id: 'final',        label: 'Final Collection', color: '#5C0016' },
+  { id: 'production',   label: 'Production',       color: '#4DB87A' },
 ]
 
 function KanbanCard({ project, isDragging }: { project: Project; isDragging?: boolean }) {
@@ -42,13 +41,14 @@ function KanbanCard({ project, isDragging }: { project: Project; isDragging?: bo
         ...style,
         background: isDragging ? 'var(--bg-surface-deep)' : 'var(--bg-surface)',
         backdropFilter: 'var(--glass-blur)',
-        border: `1px solid ${isDragging ? 'var(--accent-primary)' : 'var(--glass-border)'}`,
+        border: `1px solid ${isDragging ? 'var(--accent-secondary)' : 'var(--glass-border)'}`,
+        borderTopColor: 'var(--pearl-highlight)',
         borderRadius: 'var(--radius-md)',
         padding: '0.875rem',
-        marginBottom: '0.5rem',
-        boxShadow: isDragging ? '0 12px 32px rgba(128,0,32,0.25)' : 'var(--glass-shadow)',
+        marginBottom: '0.625rem',
+        boxShadow: isDragging ? '0 12px 32px rgba(128,0,32,0.35)' : 'var(--glass-shadow)',
         transform: isDragging ? 'scale(1.03)' : 'scale(1)',
-        transition: 'box-shadow var(--transition-base)',
+        transition: 'box-shadow 0.15s ease',
         cursor: 'grab',
       }}
     >
@@ -63,7 +63,7 @@ function KanbanCard({ project, isDragging }: { project: Project; isDragging?: bo
             )}
             <p
               style={{
-                fontWeight: 500,
+                fontWeight: 600,
                 fontSize: '0.875rem',
                 color: 'var(--text-primary)',
                 cursor: 'pointer',
@@ -84,7 +84,7 @@ function KanbanCard({ project, isDragging }: { project: Project; isDragging?: bo
           {days !== null && (
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
               <Calendar size={11} style={{ color: deadlineColor(days), flexShrink: 0 }} />
-              <span style={{ fontSize: '0.75rem', color: deadlineColor(days), fontWeight: 500 }}>
+              <span style={{ fontSize: '0.75rem', color: deadlineColor(days), fontWeight: 600 }}>
                 {days < 0 ? `${Math.abs(days)}d overdue` : days === 0 ? 'Today' : `${days}d`}
               </span>
             </div>
@@ -102,15 +102,16 @@ function KanbanColumn({ id, label, color, projects }: { id: string; label: strin
     <div
       ref={setNodeRef}
       style={{
-        minWidth: '220px',
-        maxWidth: '240px',
+        minWidth: '260px',
+        maxWidth: '280px',
         flexShrink: 0,
         background: isOver ? 'var(--accent-light)' : 'var(--bg-surface)',
         backdropFilter: 'var(--glass-blur)',
-        border: `1px solid ${isOver ? 'var(--accent-primary)' : 'var(--glass-border)'}`,
+        border: `1px solid ${isOver ? 'var(--accent-secondary)' : 'var(--glass-border)'}`,
+        borderTopColor: 'var(--pearl-highlight)',
         borderRadius: 'var(--radius-lg)',
         overflow: 'hidden',
-        transition: 'border-color var(--transition-base), background var(--transition-base)',
+        transition: 'border-color 0.15s ease, background 0.15s ease',
       }}
     >
       {/* Column header */}
@@ -121,11 +122,11 @@ function KanbanColumn({ id, label, color, projects }: { id: string; label: strin
         alignItems: 'center',
         gap: '0.5rem',
       }}>
-        <div style={{ width: 10, height: 10, borderRadius: '50%', background: color, flexShrink: 0 }} />
-        <span style={{ fontWeight: 600, fontSize: '0.875rem', color: 'var(--text-primary)', flex: 1 }}>{label}</span>
+        <div style={{ width: 10, height: 10, borderRadius: '50%', background: color, flexShrink: 0, boxShadow: `0 0 6px ${color}` }} />
+        <span style={{ fontWeight: 600, fontSize: '0.875rem', color: 'var(--text-primary)', flex: 1, fontFamily: 'var(--font-ui)' }}>{label}</span>
         <span style={{
           fontSize: '0.75rem',
-          color: 'white',
+          color: '#FFF0F3',
           background: color,
           padding: '1px 8px',
           borderRadius: 'var(--radius-full)',
@@ -138,7 +139,7 @@ function KanbanColumn({ id, label, color, projects }: { id: string; label: strin
       </div>
 
       {/* Cards */}
-      <div style={{ padding: '0.75rem', minHeight: '200px' }}>
+      <div style={{ padding: '0.75rem', minHeight: '220px' }}>
         {projects.map((p) => <KanbanCard key={p.id} project={p} />)}
       </div>
     </div>
@@ -168,13 +169,13 @@ export function KanbanBoard({ projects, onStatusChange }: KanbanBoardProps) {
 
   return (
     <DndContext sensors={sensors} collisionDetection={closestCorners} onDragStart={onDragStart} onDragEnd={onDragEnd}>
-      <div style={{ overflowX: 'auto', paddingBottom: '1rem' }}>
+      <div className="mobile-scroll-x" style={{ paddingBottom: '1rem' }}>
         <div style={{ display: 'flex', gap: '1rem', width: 'max-content' }}>
           {COLUMNS.map((col) => (
             <KanbanColumn
               key={col.id}
               {...col}
-              projects={projects.filter((p) => p.status === col.id)}
+              projects={projects.filter((p) => (p.status || 'ideation') === col.id)}
             />
           ))}
         </div>

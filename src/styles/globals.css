@@ -1,111 +1,101 @@
 /* ============================================================
-   DesignHQ — Global CSS Design Token System
-   Maroon & White Glassmorphism Theme
+   DesignHQ — Haute Atelier Glassmorphism System
+   Design Specs: Obsidian Noir, Haute Wine (#800020), Blush Rose (#C05070)
    ============================================================ */
 
-/* --- Google Fonts already loaded via <link> in index.html --- */
-
-/* ============================================================
-   ROOT TOKENS — Light Mode (default)
-   ============================================================ */
 :root {
-  /* Backgrounds */
-  --bg-base:         #FDF6F6;
-  --bg-surface:      rgba(255, 255, 255, 0.55);
-  --bg-surface-deep: rgba(255, 245, 245, 0.75);
-
-  /* Glass */
-  --glass-border:    rgba(128, 0, 32, 0.15);
-  --glass-shadow:    0 8px 32px rgba(128, 0, 32, 0.12);
-  --glass-blur:      blur(20px) saturate(180%);
-
-  /* Accent — Maroon family */
-  --accent-primary:  #800020;
-  --accent-deep:     #5C0016;
-  --accent-mid:      #A0002A;
-  --accent-light:    rgba(128, 0, 32, 0.08);
-  --accent-hover:    rgba(128, 0, 32, 0.14);
-
-  /* Text */
-  --text-primary:    #1A0A0E;
-  --text-secondary:  #6B3344;
-  --text-muted:      #A07080;
-  --white-glass:     rgba(255, 255, 255, 0.9);
-
-  /* Status colors */
-  --status-success:  #2D7A4F;
-  --status-warning:  #B86A00;
-  --status-danger:   #C0001A;
-  --status-info:     #1A5580;
-
-  /* Backgrounds behind glass */
-  --bg-gradient: radial-gradient(ellipse at top left, rgba(128, 0, 32, 0.06), transparent 60%),
-                 radial-gradient(ellipse at bottom right, rgba(160, 0, 42, 0.04), transparent 60%);
-
-  /* Typography */
-  --font-display:    'Cormorant Garamond', Georgia, serif;
-  --font-ui:         'DM Sans', system-ui, -apple-system, sans-serif;
-
-  /* Spacing */
-  --radius-sm:   8px;
-  --radius-md:   12px;
-  --radius-lg:   16px;
-  --radius-xl:   24px;
-  --radius-full: 9999px;
-
-  /* Transitions */
-  --transition-fast:   80ms ease;
-  --transition-base:   150ms ease;
-  --transition-slow:   300ms ease;
-  --transition-spring: 200ms cubic-bezier(0.34, 1.56, 0.64, 1);
-
-  /* Sidebar */
-  --sidebar-width: 240px;
-  --sidebar-collapsed: 64px;
-  --topbar-height: 64px;
-
-  /* Z-index layers */
-  --z-base:    0;
-  --z-raised:  10;
-  --z-sidebar: 100;
-  --z-topbar:  200;
-  --z-modal:   300;
-  --z-toast:   400;
-}
-
-/* ============================================================
-   DARK MODE TOKENS
-   ============================================================ */
-[data-theme="dark"] {
+  /* Core Foundation Canvas */
   --bg-base:         #0D0407;
   --bg-surface:      rgba(30, 8, 14, 0.75);
   --bg-surface-deep: rgba(20, 5, 10, 0.85);
+  --bg-surface-high: rgba(40, 10, 20, 0.90);
 
-  --glass-border:    rgba(200, 80, 100, 0.2);
-  --glass-shadow:    0 8px 32px rgba(0, 0, 0, 0.4);
+  /* Glass Effects */
+  --glass-border:     rgba(200, 80, 100, 0.20);
+  --pearl-highlight:  rgba(255, 255, 255, 0.12);
+  --glass-shadow:     0 8px 32px 0 rgba(0, 0, 0, 0.45);
+  --glass-shadow-lg:  0 16px 48px 0 rgba(0, 0, 0, 0.65), 0 0 16px 2px rgba(128, 0, 32, 0.20);
+  --glass-blur:       blur(20px) saturate(180%);
 
-  --accent-primary:  #C0304A;
-  --accent-deep:     #901830;
-  --accent-mid:      #E04060;
-  --accent-light:    rgba(192, 48, 74, 0.12);
-  --accent-hover:    rgba(192, 48, 74, 0.2);
+  /* Palette Architecture */
+  --accent-primary:   #800020;  /* Haute Wine */
+  --accent-deep:      #5C0016;  /* Velvet Merlot */
+  --accent-mid:       #A0002A;  /* Rich Crimson */
+  --accent-secondary: #C05070;  /* Blush Rose */
+  --accent-light:     rgba(128, 0, 32, 0.10);
+  --accent-hover:     rgba(128, 0, 32, 0.18);
 
-  --text-primary:    #FFF0F3;
-  --text-secondary:  #D4909A;
-  --text-muted:      #886070;
-  --white-glass:     rgba(255, 240, 243, 0.08);
+  /* Text Colors */
+  --text-primary:     #FFF0F3;  /* Luminous Pearl White */
+  --text-secondary:   #D4909A;  /* Rose Dust */
+  --text-muted:       #886070;  /* Deep Antique Mauve */
+  --white-glass:      rgba(255, 255, 255, 0.9);
 
-  --status-success:  #4DB87A;
-  --status-warning:  #F0A030;
-  --status-danger:   #F04060;
-  --status-info:     #4090C0;
+  /* Status Colors */
+  --status-success:   #4DB87A;  /* Atelier Emerald */
+  --status-warning:   #F0A030;  /* Amber Ochre */
+  --status-danger:    #F04060;  /* Couture Crimson */
+  --status-info:      #4090C0;  /* Tailor Slate */
 
-  --bg-gradient: radial-gradient(ellipse at top left, rgba(128, 0, 32, 0.2), transparent 60%),
-                 radial-gradient(ellipse at bottom right, rgba(80, 0, 20, 0.15), transparent 60%);
+  /* Atmospheric Gradient Mesh */
+  --bg-gradient: radial-gradient(circle at 85% 15%, rgba(128, 0, 32, 0.22) 0%, transparent 60%),
+                 radial-gradient(circle at 15% 85%, rgba(192, 80, 112, 0.15) 0%, transparent 60%),
+                 #0D0407;
+
+  /* Typography Stack */
+  --font-display:     'Playfair Display', Georgia, serif;
+  --font-ui:          'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+
+  /* Spacing & Radii */
+  --radius-sm:        0.25rem;  /* 4px */
+  --radius-md:        0.5rem;   /* 8px */
+  --radius-lg:        1rem;     /* 16px */
+  --radius-xl:        1.5rem;   /* 24px */
+  --radius-full:      9999px;
+
+  /* Layout Frame */
+  --sidebar-width:    15rem;    /* 240px */
+  --sidebar-collapsed: 4rem;    /* 64px */
+  --topbar-height:    4rem;     /* 64px */
+  --bottomnav-height: 4.25rem;  /* 68px */
+
+  /* Z-Index Hierarchy */
+  --z-base:           0;
+  --z-raised:         10;
+  --z-bottomnav:      90;
+  --z-sidebar:        100;
+  --z-topbar:         200;
+  --z-modal:          300;
+  --z-toast:          400;
+}
+
+/* Daylight Studio Alternate Theme */
+[data-theme="light"] {
+  --bg-base:          #FDF6F6;
+  --bg-surface:       rgba(255, 255, 255, 0.70);
+  --bg-surface-deep:  rgba(255, 245, 245, 0.85);
+  --bg-surface-high:  rgba(255, 255, 255, 0.95);
+
+  --glass-border:     rgba(128, 0, 32, 0.15);
+  --pearl-highlight:  rgba(255, 255, 255, 0.60);
+  --glass-shadow:     0 8px 32px 0 rgba(128, 0, 32, 0.10);
+
+  --accent-primary:   #800020;
+  --accent-deep:      #5C0016;
+  --accent-secondary: #C05070;
+  --accent-light:     rgba(128, 0, 32, 0.08);
+
+  --text-primary:     #1E080E;
+  --text-secondary:   #6B3344;
+  --text-muted:       #A07080;
+
+  --bg-gradient: radial-gradient(circle at top left, rgba(128, 0, 32, 0.06), transparent 60%),
+                 radial-gradient(circle at bottom right, rgba(192, 80, 112, 0.04), transparent 60%),
+                 #FDF6F6;
 }
 
 /* ============================================================
-   RESET & BASE
+   RESET & BASE STYLES
    ============================================================ */
 *, *::before, *::after {
   box-sizing: border-box;
@@ -123,35 +113,19 @@ html {
 body {
   font-family: var(--font-ui);
   font-size: 0.9375rem;
-  line-height: 1.65;
+  line-height: 1.6;
   color: var(--text-primary);
   background-color: var(--bg-base);
   background-image: var(--bg-gradient);
   background-attachment: fixed;
   min-height: 100vh;
-  transition:
-    background-color var(--transition-slow),
-    color var(--transition-slow);
-}
-
-/* Smooth dark mode transition on all elements */
-*, *::before, *::after {
-  transition:
-    background-color var(--transition-slow),
-    border-color var(--transition-slow),
-    box-shadow var(--transition-slow);
-}
-
-/* But NOT on animations, transforms, opacity (avoid fighting with framer-motion) */
-[data-no-transition] {
-  transition: none !important;
+  overflow-x: hidden;
 }
 
 a {
-  color: var(--accent-primary);
+  color: var(--text-primary);
   text-decoration: none;
 }
-a:hover { text-decoration: underline; }
 
 img, video {
   display: block;
@@ -159,25 +133,31 @@ img, video {
 }
 
 /* ============================================================
-   TYPOGRAPHY SCALE
+   TYPOGRAPHY UTILITIES
    ============================================================ */
 .font-display { font-family: var(--font-display); }
 .font-ui      { font-family: var(--font-ui); }
 
 h1, h2, h3, h4 {
   font-family: var(--font-display);
-  line-height: 1.2;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
   color: var(--text-primary);
 }
 
-h1 { font-size: 2.5rem;  font-weight: 600; }
-h2 { font-size: 2rem;    font-weight: 600; }
-h3 { font-size: 1.5rem;  font-weight: 500; }
+h1 { font-size: 2.5rem; font-weight: 600; }
+h2 { font-size: 2rem;   font-weight: 600; }
+h3 { font-size: 1.5rem; font-weight: 500; }
 h4 { font-size: 1.25rem; font-weight: 500; }
-h5 { font-size: 1rem;    font-weight: 500; font-family: var(--font-ui); }
+
+@media (max-width: 768px) {
+  h1 { font-size: 1.875rem; line-height: 1.2; }
+  h2 { font-size: 1.5rem;   line-height: 1.25; }
+  h3 { font-size: 1.25rem; }
+}
 
 .text-xs   { font-size: 0.75rem;   }
-.text-sm   { font-size: 0.8125rem; font-family: var(--font-ui); }
+.text-sm   { font-size: 0.8125rem; }
 .text-base { font-size: 0.9375rem; }
 .text-lg   { font-size: 1.125rem;  }
 .text-xl   { font-size: 1.25rem;   }
@@ -186,47 +166,6 @@ h5 { font-size: 1rem;    font-weight: 500; font-family: var(--font-ui); }
 .text-secondary { color: var(--text-secondary); }
 .text-muted     { color: var(--text-muted);     }
 .text-accent    { color: var(--accent-primary); }
-
-/* ============================================================
-   SCROLLBARS
-   ============================================================ */
-::-webkit-scrollbar { width: 6px; height: 6px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb {
-  background: var(--glass-border);
-  border-radius: var(--radius-full);
-}
-::-webkit-scrollbar-thumb:hover { background: var(--accent-light); }
-
-/* ============================================================
-   SELECTION
-   ============================================================ */
-::selection {
-  background: var(--accent-light);
-  color: var(--accent-primary);
-}
-
-/* ============================================================
-   FOCUS RING
-   ============================================================ */
-:focus-visible {
-  outline: 2px solid var(--accent-primary);
-  outline-offset: 2px;
-  border-radius: var(--radius-sm);
-}
-
-/* ============================================================
-   UTILITY CLASSES
-   ============================================================ */
-.sr-only {
-  position: absolute;
-  width: 1px; height: 1px;
-  padding: 0; margin: -1px;
-  overflow: hidden;
-  clip: rect(0,0,0,0);
-  white-space: nowrap;
-  border: 0;
-}
 
 .truncate {
   overflow: hidden;
@@ -238,22 +177,35 @@ h5 { font-size: 1rem;    font-weight: 500; font-family: var(--font-ui); }
 .text-success { color: var(--status-success); }
 .text-warning { color: var(--status-warning); }
 .text-danger  { color: var(--status-danger);  }
+.text-info    { color: var(--status-info);    }
 
 /* ============================================================
-   DOT GRID BACKGROUND (for canvas areas)
+   SCROLLBARS
    ============================================================ */
-.dot-grid-bg {
-  background-image: radial-gradient(circle, var(--glass-border) 1px, transparent 1px);
-  background-size: 24px 24px;
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: var(--glass-border);
+  border-radius: var(--radius-full);
+}
+::-webkit-scrollbar-thumb:hover { background: var(--accent-secondary); }
+
+/* Horizontal touch scroll helper */
+.mobile-scroll-x {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
 }
 
-/* ============================================================
-   REDUCED MOTION
-   ============================================================ */
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
+/* Focus Ring */
+:focus-visible {
+  outline: 2px solid var(--accent-secondary);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* Grid overlay background for pinboard canvas */
+.dot-grid-bg {
+  background-image: radial-gradient(circle, rgba(200, 80, 100, 0.25) 1px, transparent 1px);
+  background-size: 24px 24px;
 }

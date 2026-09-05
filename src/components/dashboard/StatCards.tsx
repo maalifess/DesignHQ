@@ -5,7 +5,7 @@ import { GlassCard } from '@/components/ui/GlassCard'
 import type { Project } from '@/hooks/useProjects'
 import type { Sketch } from '@/hooks/useSketch'
 import type { Fabric } from '@/hooks/useFabrics'
-import { isThisMonth, isThisWeek, addDays, isAfter } from 'date-fns'
+import { isThisMonth, addDays, isAfter } from 'date-fns'
 
 interface StatCardsProps {
   projects: Project[]
@@ -21,7 +21,7 @@ export function StatCards({ projects, sketches, fabrics }: StatCardsProps) {
     {
       icon: FolderKanban,
       label: 'Active Projects',
-      value: projects.filter((p) => p.status !== 'submitted').length,
+      value: projects.filter((p) => p.status !== 'completed' && p.status !== 'submitted').length,
       total: projects.length,
       trend: '+2 this month',
       color: 'var(--accent-primary)',
@@ -31,16 +31,16 @@ export function StatCards({ projects, sketches, fabrics }: StatCardsProps) {
       label: 'Due This Week',
       value: projects.filter((p) => p.deadline && isAfter(new Date(p.deadline), now) && new Date(p.deadline) <= weekFromNow).length,
       total: null,
-      trend: 'Review deadlines',
+      trend: 'Runway fitting deadlines',
       color: 'var(--status-warning)',
     },
     {
       icon: PenLine,
-      label: 'Sketches This Month',
+      label: 'Sketches Created',
       value: sketches.filter((s) => isThisMonth(new Date(s.created_at))).length,
       total: sketches.length,
-      trend: 'Keep drawing!',
-      color: '#6B2050',
+      trend: 'Active Atelier Sketches',
+      color: 'var(--accent-secondary)',
     },
     {
       icon: Layers2,
@@ -48,14 +48,14 @@ export function StatCards({ projects, sketches, fabrics }: StatCardsProps) {
       value: fabrics.length,
       total: null,
       trend: `${fabrics.filter((f) => f.availability === 'in_stock').length} in stock`,
-      color: 'var(--accent-mid)',
+      color: '#A0002A',
     },
   ]
 
   return (
     <div style={{
       display: 'grid',
-      gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+      gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
       gap: '1rem',
       marginBottom: '2rem',
     }}>
@@ -71,13 +71,13 @@ export function StatCards({ projects, sketches, fabrics }: StatCardsProps) {
               <div style={{
                 width: 40, height: 40,
                 borderRadius: 'var(--radius-md)',
-                background: `color-mix(in srgb, ${stat.color} 12%, transparent)`,
+                background: 'rgba(128, 0, 32, 0.12)',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
-                border: `1px solid color-mix(in srgb, ${stat.color} 20%, transparent)`,
+                border: '1px solid rgba(200, 80, 100, 0.20)',
               }}>
-                <stat.icon size={18} style={{ color: stat.color }} />
+                <stat.icon size={20} style={{ color: stat.color }} />
               </div>
-              <TrendingUp size={14} style={{ color: 'var(--text-muted)', marginTop: '4px' }} />
+              <TrendingUp size={15} style={{ color: 'var(--text-muted)', marginTop: '4px' }} />
             </div>
             <div style={{
               fontSize: '2rem',
@@ -86,6 +86,7 @@ export function StatCards({ projects, sketches, fabrics }: StatCardsProps) {
               color: 'var(--text-primary)',
               lineHeight: 1,
               marginBottom: '0.25rem',
+              letterSpacing: '-0.01em',
             }}>
               {stat.value}
               {stat.total !== null && (
@@ -94,7 +95,7 @@ export function StatCards({ projects, sketches, fabrics }: StatCardsProps) {
                 </span>
               )}
             </div>
-            <p style={{ fontSize: '0.875rem', fontWeight: 500, color: 'var(--text-primary)', marginBottom: '0.2rem' }}>
+            <p style={{ fontSize: '0.875rem', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '0.2rem' }}>
               {stat.label}
             </p>
             <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{stat.trend}</p>

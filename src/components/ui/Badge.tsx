@@ -16,12 +16,12 @@ export function Badge({ children, variant = 'accent', className = '' }: BadgePro
 
 // ── Color label badge ──────────────────────────────────────────────────────────
 export const PROJECT_COLORS = [
-  { label: 'Crimson',  value: '#800020' },
-  { label: 'Burgundy', value: '#5C0016' },
-  { label: 'Rose',     value: '#A0002A' },
-  { label: 'Blush',    value: '#C05070' },
-  { label: 'Mauve',    value: '#8B4060' },
-  { label: 'Plum',     value: '#6B2050' },
+  { label: 'Haute Wine', value: '#800020' },
+  { label: 'Burgundy',  value: '#5C0016' },
+  { label: 'Crimson',   value: '#A0002A' },
+  { label: 'Blush Rose',value: '#C05070' },
+  { label: 'Mauve',     value: '#8B4060' },
+  { label: 'Plum',      value: '#6B2050' },
 ]
 
 interface ColorBadgeProps {
@@ -31,7 +31,7 @@ interface ColorBadgeProps {
 }
 
 export function ColorBadge({ color, label, size = 'sm' }: ColorBadgeProps) {
-  const dim = size === 'sm' ? 10 : 14
+  const dim = size === 'sm' ? 12 : 14
   return (
     <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.375rem' }}>
       <span
@@ -40,11 +40,26 @@ export function ColorBadge({ color, label, size = 'sm' }: ColorBadgeProps) {
           height: dim,
           borderRadius: '50%',
           background: color,
-          border: '1.5px solid rgba(255,255,255,0.3)',
+          border: '1.5px solid rgba(255, 255, 255, 0.3)',
+          boxShadow: '0 0 8px rgba(128, 0, 32, 0.4)',
           flexShrink: 0,
         }}
       />
-      {label && <span style={{ fontSize: '0.8125rem', color: 'var(--text-secondary)' }}>{label}</span>}
+      {label && <span style={{ fontSize: '0.8125rem', color: 'var(--text-secondary)', fontWeight: 500 }}>{label}</span>}
+    </span>
+  )
+}
+
+// ── Textile Attribute Chip (Design.md spec) ───────────────────────────────────
+interface TextileChipProps {
+  children: React.ReactNode
+  className?: string
+}
+
+export function TextileChip({ children, className = '' }: TextileChipProps) {
+  return (
+    <span className={`textile-chip ${className}`}>
+      {children}
     </span>
   )
 }
