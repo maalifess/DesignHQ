@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={"darkMode":"class","theme":{"extend":{"colors":{"surface-variant":"#403136","on-tertiary-container":"#ff828c","on-primary":"#680018","surface-dim":"#1c1014","secondary-fixed-dim":"#ffb1c2","on-primary-fixed-variant":"#8e0f28","on-error":"#690005","background":"#1c1014","secondary-container":"#832041","outline-variant":"#584141","primary-container":"#800020","on-tertiary-fixed":"#40000d","primary-fixed-dim":"#ffb3b5","surface-container-lowest":"#160b0f","error":"#ffb4ab","primary":"#ffb3b5","outline":"#a78a8a","tertiary-fixed-dim":"#ffb3b6","surface-container":"#291c21","on-primary-fixed":"#40000b","secondary":"#ffb1c2","surface-container-highest":"#403136","on-error-container":"#ffdad6","surface":"#1c1014","tertiary":"#ffb3b6","on-secondary":"#64042b","on-secondary-container":"#ff96af","inverse-surface":"#f4dce3","surface-bright":"#44353a","on-secondary-fixed-variant":"#832041","surface-container-low":"#25181d","tertiary-container":"#771727","inverse-on-surface":"#3b2c31","on-secondary-fixed":"#3f0018","on-background":"#f4dce3","primary-fixed":"#ffdada","surface-container-high":"#34262b","on-tertiary":"#65071c","error-container":"#93000a","surface-tint":"#ffb3b5","secondary-fixed":"#ffd9e0","tertiary-fixed":"#ffdada","inverse-primary":"#af2b3e","on-surface":"#f4dce3","on-primary-container":"#ff828a","on-tertiary-fixed-variant":"#842130","on-surface-variant":"#e0bfbf"},"borderRadius":{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},"spacing":{"sidebar-width":"15rem","topbar-height":"4rem","space-xs":"0.5rem","sidebar-collapsed":"4rem","space-3xl":"4rem","gutter-mobile":"1rem","space-sm":"0.75rem","space-md":"1rem","space-2xl":"3rem","gutter-desktop":"1.5rem","space-lg":"1.5rem","space-xl":"2rem","space-2xs":"0.25rem"},"fontFamily":{"body-md":["Plus Jakarta Sans"],"headline-lg":["Playfair Display"],"label-md":["Plus Jakarta Sans"],"title-md":["Plus Jakarta Sans"],"body-lg":["Plus Jakarta Sans"],"headline-hero-mobile":["Playfair Display"],"title-sm":["Plus Jakarta Sans"],"body-sm":["Plus Jakarta Sans"],"label-sm":["Plus Jakarta Sans"],"headline-lg-mobile":["Playfair Display"],"headline-hero":["Playfair Display"],"headline-sm":["Playfair Display"],"headline-md":["Playfair Display"]},"fontSize":{"body-md":["13px",{"lineHeight":"19.5px","letterSpacing":"0.005em","fontWeight":"400"}],"headline-lg":["32px",{"lineHeight":"38px","letterSpacing":"-0.01em","fontWeight":"600"}],"label-md":["12px",{"lineHeight":"16px","letterSpacing":"0.03em","fontWeight":"600"}],"title-md":["16px",{"lineHeight":"24px","letterSpacing":"0em","fontWeight":"600"}],"body-lg":["15px",{"lineHeight":"24px","letterSpacing":"0em","fontWeight":"400"}],"headline-hero-mobile":["30px",{"lineHeight":"36px","letterSpacing":"-0.01em","fontWeight":"600"}],"title-sm":["14px",{"lineHeight":"20px","letterSpacing":"0.01em","fontWeight":"600"}],"body-sm":["12px",{"lineHeight":"16px","letterSpacing":"0.01em","fontWeight":"400"}],"label-sm":["11px",{"lineHeight":"14px","letterSpacing":"0.04em","fontWeight":"600"}],"headline-lg-mobile":["24px",{"lineHeight":"30px","letterSpacing":"-0.01em","fontWeight":"600"}],"headline-hero":["40px",{"lineHeight":"48px","letterSpacing":"-0.01em","fontWeight":"600"}],"headline-sm":["20px",{"lineHeight":"26px","letterSpacing":"0em","fontWeight":"500"}],"headline-md":["24px",{"lineHeight":"30px","letterSpacing":"0em","fontWeight":"500"}]}}}};</script></head><body class="bg-background font-body-md text-body-md text-on-surface antialiased selection:bg-primary-container selection:text-on-primary-container min-h-screen"><aside class="fixed left-0 top-0 h-full w-sidebar-width bg-surface-container-lowest/80 backdrop-blur-2xl z-50 flex flex-col justify-between shadow-[0_8px_32px_0_rgba(0,0,0,0.45)]"><div class="flex flex-col"><div class="h-topbar-height px-space-md flex items-center gap-space-xs bg-surface-container-low/40"><img alt="DesignHQ Atelier Emblem" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAgIde11sgqpeAqw-6pAC2minVEJsSWlN4Q9-uF5UZq-yQiiqMyXco2YZJ8xiLPvhNgFkHbGPqPww2ULYkvcVfSQRGoy8-HYgxvhPb4_xVDe5aLzj8BIZb6vkYSAdZOMsyeNk9aQmoLWGxXZLpbo2MSoZuQv71PN531hhXZS_veTMTFQctqYNxbHLZKWGgQYW4XT4fA6om0hoO0Pw16j5BPA7udYUoBxS8zRZDFdbIFyaUJg11SnuBhmA"/><div class="flex flex-col min-w-0"><span class="font-headline-sm text-headline-sm text-on-surface truncate tracking-tight">DesignHQ</span><span class="font-label-sm text-label-sm uppercase tracking-widest text-primary font-semibold">Atelier Studio</span></div></div><nav class="flex flex-col gap-space-2xs p-space-sm mt-space-xs" data-active-classes="bg-primary-container text-on-primary font-title-sm shadow-[0_4px_20px_rgba(128,0,32,0.45)]"><a class="flex items-center gap-space-sm px-space-sm py-space-xs rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-title-sm text-title-sm" data-path="dashboard" href="#"><span class="material-symbols-outlined text-lg">dashboard</span><span>Dashboard</span></a><a class="flex items-center gap-space-sm px-space-sm py-space-xs rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-title-sm text-title-sm" data-path="projects" href="#"><span class="material-symbols-outlined text-lg">styler</span><span>Collections</span></a><a class="flex items-center gap-space-sm px-space-sm py-space-xs rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-title-sm text-title-sm" data-path="moodboards" href="#"><span class="material-symbols-outlined text-lg">auto_awesome_motion</span><span>Mood Boards &amp; AI</span></a><a class="flex items-center gap-space-sm px-space-sm py-space-xs rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-title-sm text-title-sm" data-path="sketchbook" href="#"><span class="material-symbols-outlined text-lg">draw</span><span>Sketchbook</span></a><a aria-current="page" class="flex items-center gap-space-sm px-space-sm py-space-xs rounded-lg transition-colors bg-primary-container text-on-primary font-title-sm shadow-[0_4px_20px_rgba(128,0,32,0.45)]" data-path="fabrics" href="#"><span class="material-symbols-outlined text-lg">texture</span><span>Fabric Swatches</span></a><a class="flex items-center gap-space-sm px-space-sm py-space-xs rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-title-sm text-title-sm" data-path="notes" href="#"><span class="material-symbols-outlined text-lg">straighten</span><span>Fitting Notes</span></a><a class="flex items-center gap-space-sm px-space-sm py-space-xs rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-title-sm text-title-sm" data-path="portfolio" href="#"><span class="material-symbols-outlined text-lg">auto_stories</span><span>Portfolio</span></a></nav></div><div class="p-space-sm m-space-sm rounded-xl bg-surface-container-low/70 backdrop-blur-xl"><div class="flex items-center gap-space-xs mb-space-xs"><img alt="Profile" class="w-8 h-8 rounded-full object-cover shadow-[0_0_8px_rgba(255,179,181,0.3)]" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC5cd3rX55351NRoBrQly38xM8XXfeukTW5oYTXKtxerpfcXtJ7pDhGx1qYuN0qR3Uf_QNm4IdsOcOrbCGfeBHAW8OF_yrsv3RNoVM-606gX-107rMozRKhE9JkuW-ICpmXQZTBeJk11gKWILjNPErWh_NA5uyYB28xJ2_G08MX1-rF8oZxl_KK6fTDQeDB28-bMhz-BR04b-bcOl4epB5mZcn2sBe4XvnN3Xkiv5n2o3Mn-HhNbsJa7A"/><div class="flex flex-col min-w-0 flex-1"><span class="font-title-sm text-title-sm text-on-surface font-semibold truncate">Aria Chen</span><span class="font-label-sm text-label-sm text-outline truncate">Royal College of Art</span></div></div><div class="flex items-center justify-between pt-space-2xs"><button class="flex items-center gap-space-2xs text-on-surface-variant hover:text-on-surface font-label-sm text-label-sm transition-colors" type="button"><span class="material-symbols-outlined text-base">settings</span><span>Preferences</span></button><button class="text-on-surface-variant hover:text-error transition-colors p-space-2xs rounded" type="button"><span class="material-symbols-outlined text-base">logout</span></button></div></div></aside><div class="pl-sidebar-width min-h-screen flex flex-col"><header class="fixed top-0 left-sidebar-width right-0 h-topbar-height z-40 bg-surface-container-lowest/80 backdrop-blur-2xl px-gutter-desktop flex items-center justify-between shadow-[0_8px_32px_0_rgba(0,0,0,0.45)]"><div class="flex items-center gap-space-sm w-full max-w-lg"><div class="relative w-full"><span class="material-symbols-outlined absolute left-space-sm top-1/2 -translate-y-1/2 text-outline text-lg pointer-events-none">search</span><input class="w-full pl-9 pr-20 py-space-xs rounded-lg bg-surface-container-high/60 text-on-surface placeholder:text-outline font-body-sm text-body-sm focus:outline-none focus:bg-surface-container-highest transition-all" placeholder="Search collections, swatches, sketches..." type="text"/><kbd class="absolute right-space-sm top-1/2 -translate-y-1/2 font-label-sm text-label-sm px-space-2xs py-0.5 rounded bg-surface-container-lowest text-outline">Ctrl K</kbd></div></div><div class="flex items-center gap-space-md"><div class="flex items-center rounded-lg bg-surface-container-high/40 p-0.5"><button class="px-space-xs py-space-2xs rounded-lg bg-secondary-container text-on-secondary-container font-label-sm text-label-sm flex items-center gap-1" title="Dark Velvet Mode" type="button"><span class="material-symbols-outlined text-sm">dark_mode</span><span class="hidden sm:inline">Velvet</span></button><button class="px-space-xs py-space-2xs rounded-lg text-on-surface-variant hover:text-on-surface font-label-sm text-label-sm flex items-center gap-1" title="Atelier Light Mode" type="button"><span class="material-symbols-outlined text-sm">light_mode</span><span class="hidden sm:inline">Alabaster</span></button></div><button class="relative p-space-xs rounded-lg bg-surface-container-high/50 text-on-surface-variant hover:text-on-surface transition-colors" type="button"><span class="material-symbols-outlined text-lg">notifications</span><span class="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-error text-on-error font-label-sm text-[9px] font-bold flex items-center justify-center leading-none">3</span></button><button class="flex items-center gap-space-xs px-space-md py-space-xs rounded-lg bg-primary-container text-on-primary font-title-sm text-title-sm hover:brightness-110 active:scale-95 transition-all shadow-[0_4px_20px_rgba(128,0,32,0.45)]" type="button"><span class="material-symbols-outlined text-base">add</span><span class="font-semibold">New Collection</span></button><img alt="Profile" class="w-8 h-8 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC5cd3rX55351NRoBrQly38xM8XXfeukTW5oYTXKtxerpfcXtJ7pDhGx1qYuN0qR3Uf_QNm4IdsOcOrbCGfeBHAW8OF_yrsv3RNoVM-606gX-107rMozRKhE9JkuW-ICpmXQZTBeJk11gKWILjNPErWh_NA5uyYB28xJ2_G08MX1-rF8oZxl_KK6fTDQeDB28-bMhz-BR04b-bcOl4epB5mZcn2sBe4XvnN3Xkiv5n2o3Mn-HhNbsJa7A"/></div></header><main class="w-full pt-topbar-height px-gutter-desktop pb-space-3xl flex-1 bg-surface-dim/40"><div class="flex flex-col w-full gap-space-xl">
+<!-- Top Ambient Specular Light -->
+<div class="relative w-full">
+<div class="absolute -top-16 right-1/4 w-96 h-96 bg-primary-container/20 rounded-full blur-3xl pointer-events-none -z-10"></div>
+<div class="absolute top-20 left-10 w-80 h-80 bg-secondary-container/15 rounded-full blur-3xl pointer-events-none -z-10"></div>
+<!-- Atelier Header Canvas -->
+<div class="flex flex-col lg:flex-row lg:items-end justify-between gap-space-md pb-space-md">
+<div class="flex flex-col gap-space-2xs">
+<div class="flex items-center gap-space-xs text-primary font-label-sm text-label-sm tracking-widest uppercase">
+<span class="inline-block w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+<span>Atelier Material Repository &amp; Textile Archives</span>
+</div>
+<h1 class="font-headline-hero text-headline-hero text-on-surface tracking-tight">
+          Digital Fabric &amp; Material Swatch Library
+        </h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">
+          Catalog, inventory levels, microscopic textile specs, laboratory drape metrics, and master supplier provenance.
+        </p>
+</div>
+<!-- Action Cluster -->
+<div class="flex flex-wrap items-center gap-space-xs">
+<div class="relative">
+<button class="flex items-center gap-space-2xs px-space-md py-space-xs rounded-lg bg-surface-container-high/80 backdrop-blur-xl text-on-surface font-title-sm text-title-sm shadow-md hover:bg-surface-bright transition-all" id="seasonFilterBtn" type="button">
+<span class="material-symbols-outlined text-base text-secondary">calendar_today</span>
+<span>Season: AW26</span>
+<span class="material-symbols-outlined text-sm text-outline">expand_more</span>
+</button>
+</div>
+<div class="relative">
+<button class="flex items-center gap-space-2xs px-space-md py-space-xs rounded-lg bg-surface-container-high/80 backdrop-blur-xl text-on-surface font-title-sm text-title-sm shadow-md hover:bg-surface-bright transition-all" id="stockFilterBtn" type="button">
+<span class="material-symbols-outlined text-base text-primary">inventory_2</span>
+<span>All Stock Tiers</span>
+<span class="material-symbols-outlined text-sm text-outline">expand_more</span>
+</button>
+</div>
+<button class="flex items-center gap-space-2xs px-space-md py-space-xs rounded-lg bg-surface-container-high/60 backdrop-blur-xl text-on-surface font-title-sm text-title-sm shadow-md hover:bg-surface-container-highest transition-all" type="button">
+<span class="material-symbols-outlined text-base text-tertiary">picture_as_pdf</span>
+<span>Export Lookbook PDF</span>
+</button>
+<button class="flex items-center gap-space-xs px-space-lg py-space-xs rounded-lg bg-primary-container text-on-primary font-title-sm text-title-sm shadow-xl hover:brightness-110 active:scale-95 transition-all" type="button">
+<span class="material-symbols-outlined text-base">add_circle</span>
+<span>New Fabric Swatch</span>
+</button>
+</div>
+</div>
+<!-- Metric Ribbon (Glass Surface) -->
+<div class="p-space-md rounded-xl bg-surface-container-low/70 backdrop-blur-2xl shadow-xl flex flex-col xl:flex-row items-start xl:items-center justify-between gap-space-lg">
+<!-- Live Metrics Grid -->
+<div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-space-md w-full xl:w-auto">
+<div class="flex flex-col bg-surface-container/60 p-space-sm rounded-lg shadow-sm">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-outline">Curated Fabrics</span>
+<span class="material-symbols-outlined text-secondary text-sm">view_in_ar</span>
+</div>
+<span class="font-headline-md text-headline-md text-on-surface font-semibold mt-0.5">64</span>
+<span class="font-label-sm text-label-sm text-secondary-fixed-dim">Across 8 Houses</span>
+</div>
+<div class="flex flex-col bg-surface-container/60 p-space-sm rounded-lg shadow-sm">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-outline">In Stock</span>
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+</div>
+<span class="font-headline-md text-headline-md text-on-surface font-semibold mt-0.5">48</span>
+<span class="font-label-sm text-label-sm text-primary">1,420m available</span>
+</div>
+<div class="flex flex-col bg-surface-container/60 p-space-sm rounded-lg shadow-sm">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-outline">Low Stock Alert</span>
+<span class="w-2 h-2 rounded-full bg-error animate-ping"></span>
+</div>
+<span class="font-headline-md text-headline-md text-error font-semibold mt-0.5">08</span>
+<span class="font-label-sm text-label-sm text-error">Requires Reorder</span>
+</div>
+<div class="flex flex-col bg-surface-container/60 p-space-sm rounded-lg shadow-sm">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-outline">In Transit</span>
+<span class="material-symbols-outlined text-tertiary text-sm">local_shipping</span>
+</div>
+<span class="font-headline-md text-headline-md text-on-surface font-semibold mt-0.5">08</span>
+<span class="font-label-sm text-label-sm text-tertiary">Lyon &amp; Como Parcels</span>
+</div>
+<div class="flex flex-col bg-surface-container/60 p-space-sm rounded-lg shadow-sm">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-outline">Average Density</span>
+<span class="material-symbols-outlined text-outline text-sm">scale</span>
+</div>
+<span class="font-headline-md text-headline-md text-on-surface font-semibold mt-0.5">285</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">GSM (Medium Weight)</span>
+</div>
+</div>
+<!-- Quick Search Within Repository -->
+<div class="w-full xl:w-96 flex flex-col gap-1">
+<label class="font-label-sm text-label-sm uppercase tracking-widest text-outline">Textile Search &amp; Composition</label>
+<div class="relative w-full">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-lg pointer-events-none">filter_list</span>
+<input class="w-full pl-10 pr-4 py-2.5 rounded-lg bg-surface-container-high/80 text-on-surface placeholder:text-outline font-body-sm text-body-sm shadow-inner focus:outline-none focus:bg-surface-container-highest transition-all" id="fabricSearchInput" placeholder="Search by weave, composition (silk, wool, linen), or supplier..." type="text"/>
+</div>
+</div>
+</div>
+<!-- Category Filter Ribbon -->
+<div class="flex items-center justify-between gap-space-sm pt-space-xs overflow-x-auto pb-1">
+<div class="flex items-center gap-space-xs flex-nowrap min-w-max">
+<button class="category-pill active px-space-md py-space-xs rounded-full bg-primary-container text-on-primary font-title-sm text-title-sm shadow-md transition-all" type="button">
+          All Materials (64)
+        </button>
+<button class="category-pill px-space-md py-space-xs rounded-full bg-surface-container-high/60 text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest font-title-sm text-title-sm transition-all" type="button">
+          Silks &amp; Satins (22)
+        </button>
+<button class="category-pill px-space-md py-space-xs rounded-full bg-surface-container-high/60 text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest font-title-sm text-title-sm transition-all" type="button">
+          Wool &amp; Cashmere (16)
+        </button>
+<button class="category-pill px-space-md py-space-xs rounded-full bg-surface-container-high/60 text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest font-title-sm text-title-sm transition-all" type="button">
+          Linings &amp; Canvas (11)
+        </button>
+<button class="category-pill px-space-md py-space-xs rounded-full bg-surface-container-high/60 text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest font-title-sm text-title-sm transition-all" type="button">
+          Lace &amp; Tulle (9)
+        </button>
+<button class="category-pill px-space-md py-space-xs rounded-full bg-surface-container-high/60 text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest font-title-sm text-title-sm transition-all" type="button">
+          Hardware &amp; Trims (6)
+        </button>
+</div>
+<div class="hidden sm:flex items-center gap-space-2xs text-on-surface-variant font-label-sm text-label-sm">
+<span>Sort:</span>
+<span class="text-primary font-semibold">Priority &amp; Stock Count</span>
+</div>
+</div>
+</div>
+<!-- Main Canvas Content: 12-Column Split Matrix with Interactive Detail Drawer -->
+<div class="grid grid-cols-1 xl:grid-cols-12 gap-space-lg items-start">
+<!-- Swatch Cards Catalog (7 Columns on XL screens) -->
+<div class="xl:col-span-7 flex flex-col gap-space-md">
+<!-- Card 1: Mulberry Silk Duchess Satin (Active Focus) -->
+<article class="fabric-card cursor-pointer p-space-lg rounded-xl bg-surface-container-low/90 hover:bg-surface-container-low transition-all duration-300 shadow-xl relative group" id="card-satin" onclick="selectFabric('satin')">
+<div class="flex flex-col md:flex-row gap-space-md items-start md:items-center">
+<!-- Tactile Swatch Preview Window -->
+<div class="relative w-full md:w-36 h-36 rounded-lg overflow-hidden flex-shrink-0 bg-surface-container-lowest shadow-md">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="Macro high-fashion close up photograph of deep burgundy mulberry silk duchess satin folded with liquid-like glossy rolls and sharp light specular reflection. Luxury haute couture garment fabric, rich red-wine crimson luster, rich velvet depth." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBH55CVrc9-nnnOAQRwdCnNRdaqHDliT2SbikNayZuZYhb8vXHDgLCDKiolXii2DI75oKPm67H0SlIHQLSMnQ4i9jRRdjVa8wdwoJSg58X-j6C-pkcEenSUAuxBiRrImjnrlekzG2hJJ7AmOw1ZL5FG_OJKmC_I_LaeI83vE8nGtmjpALqXwubfQGgf5v4NjJwOHnjtT3uOCOpx1t9sTdDEuZRuCZ2pIZ-tSsI_ceovuHCNRRsZE6M3IQ"/>
+<div class="absolute top-2 left-2 flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-surface-container-lowest/80 backdrop-blur-md">
+<span class="w-2.5 h-2.5 rounded-full bg-primary-container shadow-sm"></span>
+<span class="font-label-sm text-[10px] text-on-surface uppercase tracking-wider">#800020</span>
+</div>
+<div class="absolute bottom-2 right-2 px-2 py-0.5 rounded bg-surface-container-lowest/85 font-label-sm text-[10px] text-secondary">
+              340 GSM
+            </div>
+</div>
+<!-- Swatch Intelligence & Metadata -->
+<div class="flex-1 flex flex-col justify-between w-full min-w-0">
+<div class="flex items-start justify-between gap-space-xs">
+<div>
+<div class="flex items-center gap-space-2xs mb-1">
+<span class="px-2 py-0.5 rounded-full bg-secondary-container/40 text-on-secondary-container font-label-sm text-[10px] tracking-wider uppercase font-semibold">Haute Soie</span>
+<span class="px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-label-sm text-[10px] uppercase">AW26 Run</span>
+</div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface font-semibold truncate group-hover:text-primary transition-colors">
+                  Mulberry Silk Duchess Satin
+                </h2>
+<p class="font-body-sm text-body-sm text-outline truncate mt-0.5">
+                  100% Mulberry Silk • Luminous lustrous sheen • No Stretch
+                </p>
+</div>
+<div class="text-right flex-shrink-0">
+<span class="font-headline-sm text-headline-sm text-primary font-bold">$68.00</span>
+<span class="block font-label-sm text-label-sm text-outline">per meter</span>
+</div>
+</div>
+<!-- Quantitative Attributes Grid -->
+<div class="grid grid-cols-3 gap-space-xs mt-space-sm pt-space-xs">
+<div class="flex flex-col">
+<span class="font-label-sm text-[10px] uppercase text-outline">Inventory</span>
+<div class="flex items-center gap-1.5 mt-0.5">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+<span class="font-title-sm text-title-sm text-on-surface font-bold">42.5m</span>
+<span class="font-label-sm text-[10px] text-secondary font-semibold">(In Stock)</span>
+</div>
+</div>
+<div class="flex flex-col">
+<span class="font-label-sm text-[10px] uppercase text-outline">Maison Provenance</span>
+<span class="font-title-sm text-title-sm text-on-surface truncate mt-0.5">Maison de Soie</span>
+<span class="font-label-sm text-[10px] text-outline truncate">Lyon, France</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-sm text-[10px] uppercase text-outline">Care &amp; Wash</span>
+<div class="flex items-center gap-1 text-on-surface-variant mt-0.5">
+<span class="material-symbols-outlined text-sm text-tertiary">dry_cleaning</span>
+<span class="font-body-sm text-body-sm truncate">Dry Clean Only</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</article>
+<!-- Card 2: Sartorial Melton Wool (Low Stock Warning) -->
+<article class="fabric-card cursor-pointer p-space-lg rounded-xl bg-surface-container-low/70 hover:bg-surface-container-low transition-all duration-300 shadow-xl relative group" id="card-wool" onclick="selectFabric('wool')">
+<div class="flex flex-col md:flex-row gap-space-md items-start md:items-center">
+<div class="relative w-full md:w-36 h-36 rounded-lg overflow-hidden flex-shrink-0 bg-surface-container-lowest shadow-md">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="Dense matte sartorial melton wool cloth texture in deep midnight onyx black. Fine virgin wool and cashmere fibers visible in cinematic raking directional studio light, heavyweight luxury suiting material." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBhBDkyPvh3ZV13DvHeetuWoUuZjlrOcyVrFZ8FHj1HTbeX9saWPeUSDyt16YwksmuKtzU4mdHuKOVRk2xr-laytsxh0g6cx-3m6dI9fmSe6sbcR6Wj9diEsav25Y95jEf8te3_XK3Q3KgQfl2Hu8fOAxhXpt_CCT50NG4WrzaATgHFKZSrrbov6LvUJ_KpJRrRKkSU2LL367x6ETVkCcqQDbQ4OR4X6aN-Iye1mlKLXCB22h9EM5qhdQ"/>
+<div class="absolute top-2 left-2 flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-surface-container-lowest/80 backdrop-blur-md">
+<span class="w-2.5 h-2.5 rounded-full bg-surface-container-lowest shadow-sm"></span>
+<span class="font-label-sm text-[10px] text-on-surface uppercase tracking-wider">Midnight Onyx</span>
+</div>
+<div class="absolute bottom-2 right-2 px-2 py-0.5 rounded bg-surface-container-lowest/85 font-label-sm text-[10px] text-on-surface">
+              480 GSM
+            </div>
+</div>
+<div class="flex-1 flex flex-col justify-between w-full min-w-0">
+<div class="flex items-start justify-between gap-space-xs">
+<div>
+<div class="flex items-center gap-space-2xs mb-1">
+<span class="px-2 py-0.5 rounded-full bg-error-container/60 text-on-error-container font-label-sm text-[10px] tracking-wider uppercase font-bold flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-error animate-ping"></span>
+                    Low Stock Critical
+                  </span>
+<span class="px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-label-sm text-[10px] uppercase">Outerwear</span>
+</div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface font-semibold truncate group-hover:text-primary transition-colors">
+                  Sartorial Melton Wool
+                </h2>
+<p class="font-body-sm text-body-sm text-outline truncate mt-0.5">
+                  95% Virgin Wool, 5% Cashmere • Dense brushed finish • Natural give
+                </p>
+</div>
+<div class="text-right flex-shrink-0">
+<span class="font-headline-sm text-headline-sm text-on-surface font-bold">$94.00</span>
+<span class="block font-label-sm text-label-sm text-outline">per meter</span>
+</div>
+</div>
+<div class="grid grid-cols-3 gap-space-xs mt-space-sm pt-space-xs">
+<div class="flex flex-col">
+<span class="font-label-sm text-[10px] uppercase text-outline">Inventory</span>
+<div class="flex items-center gap-1.5 mt-0.5">
+<span class="w-2 h-2 rounded-full bg-error"></span>
+<span class="font-title-sm text-title-sm text-error font-bold">14.0m</span>
+<span class="font-label-sm text-[10px] text-error font-semibold">Reserve Alert</span>
+</div>
+</div>
+<div class="flex flex-col">
+<span class="font-label-sm text-[10px] uppercase text-outline">Maison Provenance</span>
+<span class="font-title-sm text-title-sm text-on-surface truncate mt-0.5">Lanificio Colombo</span>
+<span class="font-label-sm text-[10px] text-outline truncate">Biella, Italy</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-sm text-[10px] uppercase text-outline">Care &amp; Wash</span>
+<div class="flex items-center gap-1 text-on-surface-variant mt-0.5">
+<span class="material-symbols-outlined text-sm text-tertiary">iron</span>
+<span class="font-body-sm text-body-sm truncate">Steam &amp; Dry Clean</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</article>
+<!-- Card 3: Plissé Organza Chiffon -->
+<article class="fabric-card cursor-pointer p-space-lg rounded-xl bg-surface-container-low/70 hover:bg-surface-container-low transition-all duration-300 shadow-xl relative group" id="card-organza" onclick="selectFabric('organza')">
+<div class="flex flex-col md:flex-row gap-space-md items-start md:items-center">
+<div class="relative w-full md:w-36 h-36 rounded-lg overflow-hidden flex-shrink-0 bg-surface-container-lowest shadow-md">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="Microscopic shot of ethereal plisse organza chiffon fabric with translucent micro accordion pleats in soft dusty rose blush tones, backlit by warm studio glow showing sheer textile weave." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBmN7pjGHTq3YXBhyLaf8LdjSomZa_z_vmBTPLsBFGhqdd0CfS-N29U0lax8R_73gMqt9iWk-EFvjBXxCvgRw-ZoLJ1KEgVG6e_SDfyZ2c_1UBrmOXu9Y4McuXoMHwV6XNLhrllTEwg6OCw6t8JmYPqAiYTjoA0Yv_OSHC7tWTcW16fbZcyFd8IIEz6739kFJFfpnQ21j8xlq9o8nnoK0Dj7yfp5cM98FREUcE-jGzeucOdXWRZjcySqQ"/>
+<div class="absolute top-2 left-2 flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-surface-container-lowest/80 backdrop-blur-md">
+<span class="w-2.5 h-2.5 rounded-full bg-secondary shadow-sm"></span>
+<span class="font-label-sm text-[10px] text-on-surface uppercase tracking-wider">Dusty Rose</span>
+</div>
+<div class="absolute bottom-2 right-2 px-2 py-0.5 rounded bg-surface-container-lowest/85 font-label-sm text-[10px] text-secondary">
+              110 GSM
+            </div>
+</div>
+<div class="flex-1 flex flex-col justify-between w-full min-w-0">
+<div class="flex items-start justify-between gap-space-xs">
+<div>
+<div class="flex items-center gap-space-2xs mb-1">
+<span class="px-2 py-0.5 rounded-full bg-tertiary-container/50 text-on-tertiary-container font-label-sm text-[10px] tracking-wider uppercase font-semibold">Flou Drapery</span>
+<span class="px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-label-sm text-[10px] uppercase">SS27 Ready</span>
+</div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface font-semibold truncate group-hover:text-primary transition-colors">
+                  Plissé Organza Chiffon
+                </h2>
+<p class="font-body-sm text-body-sm text-outline truncate mt-0.5">
+                  100% Silk Chiffon • Fine accordion pleat • 2-way Mechanical Stretch
+                </p>
+</div>
+<div class="text-right flex-shrink-0">
+<span class="font-headline-sm text-headline-sm text-on-surface font-bold">$52.00</span>
+<span class="block font-label-sm text-label-sm text-outline">per meter</span>
+</div>
+</div>
+<div class="grid grid-cols-3 gap-space-xs mt-space-sm pt-space-xs">
+<div class="flex flex-col">
+<span class="font-label-sm text-[10px] uppercase text-outline">Inventory</span>
+<div class="flex items-center gap-1.5 mt-0.5">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+<span class="font-title-sm text-title-sm text-on-surface font-bold">65.0m</span>
+<span class="font-label-sm text-[10px] text-secondary font-semibold">(Abundant)</span>
+</div>
+</div>
+<div class="flex flex-col">
+<span class="font-label-sm text-[10px] uppercase text-outline">Maison Provenance</span>
+<span class="font-title-sm text-title-sm text-on-surface truncate mt-0.5">Como Textiles</span>
+<span class="font-label-sm text-[10px] text-outline truncate">Lake Como, Italy</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-sm text-[10px] uppercase text-outline">Care &amp; Wash</span>
+<div class="flex items-center gap-1 text-on-surface-variant mt-0.5">
+<span class="material-symbols-outlined text-sm text-tertiary">do_not_disturb_on</span>
+<span class="font-body-sm text-body-sm truncate">Delicate Hand Steam</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</article>
+<!-- Card 4: Crushed Silk Velvet -->
+<article class="fabric-card cursor-pointer p-space-lg rounded-xl bg-surface-container-low/70 hover:bg-surface-container-low transition-all duration-300 shadow-xl relative group" id="card-velvet" onclick="selectFabric('velvet')">
+<div class="flex flex-col md:flex-row gap-space-md items-start md:items-center">
+<div class="relative w-full md:w-36 h-36 rounded-lg overflow-hidden flex-shrink-0 bg-surface-container-lowest shadow-md">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="Sensuous tactile crushed silk velvet material in sumptuous crimson wine tone. Dynamic ripples of dark merlot and glowing bright cherry highlights capturing dramatic studio light." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDud3Cr-PAAl480NSoI2dxwebMdJzu4zrfrQcuLOozxYsur_Wl5IV5ukVqdf2mdhGWN6UbOA8YlX4QtkGAryJcJxPd-zT6DTskkLGRhb7dNNG90cQ-KiMHpK7usS6t0YVyfzVxVdvFop7thjbRNT3CSKfI0MC5APKCFEJJrmQl-AA277ZivYfmsi1VBAePnuXM_dIuiFGwlohpU1KAdI93LwkYoaepOk7yqXVpcL8BFYMojSaOLjDrJDA"/>
+<div class="absolute top-2 left-2 flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-surface-container-lowest/80 backdrop-blur-md">
+<span class="w-2.5 h-2.5 rounded-full bg-tertiary-container shadow-sm"></span>
+<span class="font-label-sm text-[10px] text-on-surface uppercase tracking-wider">Crimson Wine</span>
+</div>
+<div class="absolute bottom-2 right-2 px-2 py-0.5 rounded bg-surface-container-lowest/85 font-label-sm text-[10px] text-on-surface">
+              390 GSM
+            </div>
+</div>
+<div class="flex-1 flex flex-col justify-between w-full min-w-0">
+<div class="flex items-start justify-between gap-space-xs">
+<div>
+<div class="flex items-center gap-space-2xs mb-1">
+<span class="px-2 py-0.5 rounded-full bg-secondary-container/40 text-on-secondary-container font-label-sm text-[10px] tracking-wider uppercase font-semibold">Evening Wear</span>
+<span class="px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-label-sm text-[10px] uppercase">AW26 Core</span>
+</div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface font-semibold truncate group-hover:text-primary transition-colors">
+                  Crushed Silk Velvet
+                </h2>
+<p class="font-body-sm text-body-sm text-outline truncate mt-0.5">
+                  82% Rayon, 18% Silk • Heavy pile soft hand • High directional sheen
+                </p>
+</div>
+<div class="text-right flex-shrink-0">
+<span class="font-headline-sm text-headline-sm text-on-surface font-bold">$78.00</span>
+<span class="block font-label-sm text-label-sm text-outline">per meter</span>
+</div>
+</div>
+<div class="grid grid-cols-3 gap-space-xs mt-space-sm pt-space-xs">
+<div class="flex flex-col">
+<span class="font-label-sm text-[10px] uppercase text-outline">Inventory</span>
+<div class="flex items-center gap-1.5 mt-0.5">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+<span class="font-title-sm text-title-sm text-on-surface font-bold">28.0m</span>
+<span class="font-label-sm text-[10px] text-secondary font-semibold">(In Stock)</span>
+</div>
+</div>
+<div class="flex flex-col">
+<span class="font-label-sm text-[10px] uppercase text-outline">Maison Provenance</span>
+<span class="font-title-sm text-title-sm text-on-surface truncate mt-0.5">Guigou Paris</span>
+<span class="font-label-sm text-[10px] text-outline truncate">Paris, France</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-sm text-[10px] uppercase text-outline">Care &amp; Wash</span>
+<div class="flex items-center gap-1 text-on-surface-variant mt-0.5">
+<span class="material-symbols-outlined text-sm text-tertiary">air</span>
+<span class="font-body-sm text-body-sm truncate">Velvet Needle Board Dry Clean</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</article>
+<!-- Card 5: Habotai Silk Lining (In Transit Order) -->
+<article class="fabric-card cursor-pointer p-space-lg rounded-xl bg-surface-container-low/70 hover:bg-surface-container-low transition-all duration-300 shadow-xl relative group" id="card-habotai" onclick="selectFabric('habotai')">
+<div class="flex flex-col md:flex-row gap-space-md items-start md:items-center">
+<div class="relative w-full md:w-36 h-36 rounded-lg overflow-hidden flex-shrink-0 bg-surface-container-lowest shadow-md">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="Subtle fine semi-translucent habotai silk lining cloth floating with air waves. Soft pearl warm off-white tones, lustrous sheen, airy draping fabric for bespoke garment inner structure." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAXZiYmV-fwj6s9ai7AlhIzjnIB9oMPUIPZqeFdtShwfmumHfsHYRD8nBIYaiVAQFyRwsvXeJfRRNZlu8Tmk3voi7_uXdfoH0OeubO_0AB-KfdSIBcO4wDcOJASKCtUZHgYINbIqL38aR0UlGF3SerY91soMMQbd2mNaV5kykMmqa53FL_I4IdvYozf-iGfAO5kJM8HQaLyb5Tq8H6axVITb7Y1Tbb0KhrSm526LYAEv1QrRPgeTwMfWA"/>
+<div class="absolute top-2 left-2 flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-surface-container-lowest/80 backdrop-blur-md">
+<span class="w-2.5 h-2.5 rounded-full bg-inverse-surface shadow-sm"></span>
+<span class="font-label-sm text-[10px] text-on-surface uppercase tracking-wider">Pearl Habotai</span>
+</div>
+<div class="absolute bottom-2 right-2 px-2 py-0.5 rounded bg-surface-container-lowest/85 font-label-sm text-[10px] text-on-surface">
+              65 GSM
+            </div>
+</div>
+<div class="flex-1 flex flex-col justify-between w-full min-w-0">
+<div class="flex items-start justify-between gap-space-xs">
+<div>
+<div class="flex items-center gap-space-2xs mb-1">
+<span class="px-2 py-0.5 rounded-full bg-secondary-container/30 text-on-secondary-container font-label-sm text-[10px] tracking-wider uppercase font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-xs text-secondary">local_shipping</span>
+                    Ordered (50m Transit)
+                  </span>
+<span class="px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-label-sm text-[10px] uppercase">Understructure</span>
+</div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface font-semibold truncate group-hover:text-primary transition-colors">
+                  Habotai Silk Lining
+                </h2>
+<p class="font-body-sm text-body-sm text-outline truncate mt-0.5">
+                  100% Silk • Smooth featherlight hand • Anti-static finish
+                </p>
+</div>
+<div class="text-right flex-shrink-0">
+<span class="font-headline-sm text-headline-sm text-on-surface font-bold">$24.50</span>
+<span class="block font-label-sm text-label-sm text-outline">per meter</span>
+</div>
+</div>
+<div class="grid grid-cols-3 gap-space-xs mt-space-sm pt-space-xs">
+<div class="flex flex-col">
+<span class="font-label-sm text-[10px] uppercase text-outline">Current Inventory</span>
+<div class="flex items-center gap-1.5 mt-0.5">
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+<span class="font-title-sm text-title-sm text-on-surface font-bold">5.0m</span>
+<span class="font-label-sm text-[10px] text-tertiary font-semibold">(50m En Route)</span>
+</div>
+</div>
+<div class="flex flex-col">
+<span class="font-label-sm text-[10px] uppercase text-outline">Maison Provenance</span>
+<span class="font-title-sm text-title-sm text-on-surface truncate mt-0.5">Lyon Soierie</span>
+<span class="font-label-sm text-[10px] text-outline truncate">Lyon, France</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-sm text-[10px] uppercase text-outline">Care &amp; Wash</span>
+<div class="flex items-center gap-1 text-on-surface-variant mt-0.5">
+<span class="material-symbols-outlined text-sm text-tertiary">wash</span>
+<span class="font-body-sm text-body-sm truncate">Cool Hand Wash / Steam</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</article>
+</div>
+<!-- Active Fabric Technical Inspection Drawer / Preview Console (5 Columns on XL screens) -->
+<div class="xl:col-span-5 sticky top-24">
+<aside class="p-space-lg rounded-2xl bg-surface-container/85 backdrop-blur-3xl shadow-2xl flex flex-col gap-space-lg">
+<!-- Inspector Top Bar -->
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="p-2 rounded-lg bg-primary-container text-on-primary shadow-sm flex items-center justify-center">
+<span class="material-symbols-outlined text-base">smb_share</span>
+</span>
+<div>
+<span class="font-label-sm text-[11px] uppercase tracking-wider text-outline font-semibold">Spectrometry &amp; Atelier Lab</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold" id="detail-title">Mulberry Silk Duchess Satin</h3>
+</div>
+</div>
+<span class="px-2.5 py-1 rounded-full bg-primary/20 text-primary font-label-sm text-[11px] tracking-wider uppercase font-bold">Grade 6A</span>
+</div>
+<!-- Macro Zoom Interactive Viewing Plate -->
+<div class="relative w-full h-56 rounded-xl overflow-hidden bg-surface-container-lowest shadow-inner group">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-125" data-alt="Extreme 100x macro optical fiber photography of burgundy silk duchess satin yarn interlacing with immaculate filament alignment. Subtle light reflection and shimmering luster on rich wine colored textiles." id="detail-macro-img" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDGaLeGSiTlrt5st3kgW-mzXlB75itW8P2gboTXyS7UzHJkjVeyE9inPAlchUMvBmUB3Jr18WhmXVKiGFXtKR-ktuditfz5NL6x1WighI5z8nxUsyku1iFElSlXJZEalUe8yMA9YrVLAjGslC6kgih7_KzVAUip8rYh_m02ceMZvF_55fdLmUGG0Mta7U6Bc_-SYQDaxOGXyeyY38PGNSNU_enFJUFHVt8CuBd3idT7HpVkq_iy4JBF-g"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container-lowest via-transparent to-transparent opacity-80 pointer-events-none"></div>
+<div class="absolute bottom-3 left-3 right-3 flex items-center justify-between pointer-events-none">
+<div class="flex items-center gap-2 px-2.5 py-1 rounded-lg bg-surface-container-lowest/80 backdrop-blur-md">
+<span class="material-symbols-outlined text-sm text-primary">zoom_in</span>
+<span class="font-label-sm text-[11px] text-on-surface">50x Optical Macro Lens</span>
+</div>
+<span class="font-label-sm text-[11px] text-on-surface-variant bg-surface-container-lowest/80 px-2 py-0.5 rounded">Warp: 120/cm • Weft: 88/cm</span>
+</div>
+</div>
+<!-- Technical Drapery & Lab Benchmarks -->
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-center justify-between text-outline">
+<span class="font-label-sm text-[11px] uppercase tracking-wider font-semibold">Laboratory Drapability &amp; Stress Scores</span>
+<span class="font-label-sm text-[11px] text-primary">Cusick Drape Index: 68%</span>
+</div>
+<!-- Drape & Sheen Progress Visualizations -->
+<div class="grid grid-cols-2 gap-space-sm">
+<div class="p-space-sm rounded-lg bg-surface-container-low/70 flex flex-col gap-1">
+<div class="flex justify-between items-center">
+<span class="font-label-sm text-[11px] text-on-surface-variant">Sculptural Rigidity</span>
+<span class="font-label-sm text-[11px] text-primary font-bold" id="detail-rigidity">8.5 / 10</span>
+</div>
+<div class="w-full h-1.5 rounded-full bg-surface-container-highest overflow-hidden">
+<div class="h-full bg-primary-container transition-all duration-500 rounded-full" id="detail-rigidity-bar" style="width: 85%;"></div>
+</div>
+<span class="font-label-sm text-[9px] text-outline">Ideal for ballgowns &amp; structured corsetry</span>
+</div>
+<div class="p-space-sm rounded-lg bg-surface-container-low/70 flex flex-col gap-1">
+<div class="flex justify-between items-center">
+<span class="font-label-sm text-[11px] text-on-surface-variant">Light Reflection Coeff.</span>
+<span class="font-label-sm text-[11px] text-secondary font-bold" id="detail-sheen">9.2 / 10</span>
+</div>
+<div class="w-full h-1.5 rounded-full bg-surface-container-highest overflow-hidden">
+<div class="h-full bg-secondary transition-all duration-500 rounded-full" id="detail-sheen-bar" style="width: 92%;"></div>
+</div>
+<span class="font-label-sm text-[9px] text-outline">High mirror specular luster under runway spots</span>
+</div>
+</div>
+</div>
+<!-- Laboratory Verification: Burn Test Result -->
+<div class="p-space-sm rounded-lg bg-surface-container-low/80 flex items-start gap-space-sm shadow-sm">
+<div class="p-2 rounded-md bg-secondary-container text-on-secondary-container flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-base">local_fire_department</span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-space-2xs">
+<span class="font-title-sm text-title-sm text-on-surface font-semibold">Burn Test Certification</span>
+<span class="material-symbols-outlined text-sm text-primary">verified</span>
+</div>
+<p class="font-body-sm text-body-sm text-outline mt-0.5" id="detail-burn-test">
+              Smells of burning hair/feathers; leaves soft, dark, crushable irregular ash bead. Extinguishes immediately upon removal from flame. Zero synthetic melting residues verified.
+            </p>
+</div>
+</div>
+<!-- Connected Atelier Collections & Garments -->
+<div class="flex flex-col gap-space-xs">
+<span class="font-label-sm text-[11px] uppercase tracking-wider text-outline font-semibold">Active Collection Lineage</span>
+<div class="grid grid-cols-2 gap-space-xs">
+<div class="p-space-xs rounded-lg bg-surface-container-low/60 flex items-center gap-space-xs">
+<div class="w-8 h-8 rounded-md bg-primary-container flex items-center justify-center text-on-primary">
+<span class="material-symbols-outlined text-sm">styler</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-title-sm text-title-sm text-on-surface truncate">Crimson Reverie</span>
+<span class="font-label-sm text-[10px] text-secondary">Autumn/Winter 26</span>
+</div>
+</div>
+<div class="p-space-xs rounded-lg bg-surface-container-low/60 flex items-center gap-space-xs">
+<div class="w-8 h-8 rounded-md bg-surface-container-high flex items-center justify-center text-on-surface">
+<span class="material-symbols-outlined text-sm">checkroom</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-title-sm text-title-sm text-on-surface truncate">Look 02 Siren Gown</span>
+<span class="font-label-sm text-[10px] text-outline">Pattern #CR-26-02</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Direct Supplier Transmission & Booking Console -->
+<div class="p-space-md rounded-xl bg-surface-container-low/90 flex flex-col gap-space-sm shadow-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-base">domain</span>
+<div>
+<span class="font-title-sm text-title-sm text-on-surface font-semibold block" id="detail-supplier">Maison de Soie (Lyon)</span>
+<span class="font-label-sm text-[10px] text-outline" id="detail-rep">Atelier Direct Contact: Jean-Luc Moreau • lead-time 7 days</span>
+</div>
+</div>
+<span class="px-2 py-0.5 rounded bg-surface-container-high text-primary font-label-sm text-[10px] uppercase font-bold">Tier 1 Maison</span>
+</div>
+<div class="grid grid-cols-2 gap-space-xs pt-space-2xs">
+<button class="flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-lg bg-primary-container text-on-primary font-title-sm text-title-sm shadow-md hover:brightness-110 active:scale-95 transition-all" type="button">
+<span class="material-symbols-outlined text-sm">send</span>
+<span>Order Bolt (50m)</span>
+</button>
+<button class="flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-lg bg-surface-container-high text-on-surface font-title-sm text-title-sm hover:bg-surface-bright active:scale-95 transition-all shadow-sm" type="button">
+<span class="material-symbols-outlined text-sm">mark_email_read</span>
+<span>Contact Mill Rep</span>
+</button>
+</div>
+</div>
+</aside>
+</div>
+</div>
+<!-- Bottom Visual Anchor: Physical Atelier Yardage Forecast & Mill Log -->
+<section class="p-space-lg rounded-2xl bg-surface-container-low/60 backdrop-blur-2xl shadow-xl flex flex-col gap-space-md">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-xs">
+<div class="flex items-center gap-space-xs">
+<span class="p-2 rounded-lg bg-secondary-container text-on-secondary-container">
+<span class="material-symbols-outlined text-base">fact_check</span>
+</span>
+<div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface font-semibold">Atelier Fabric Allocation &amp; Cutting Log</h2>
+<p class="font-body-sm text-body-sm text-outline">Real-time meter consumption registered across active collection patterns</p>
+</div>
+</div>
+<div class="flex items-center gap-space-2xs">
+<span class="px-3 py-1 rounded-full bg-surface-container-high text-on-surface-variant font-label-sm text-label-sm">Updated 12m ago</span>
+</div>
+</div>
+<!-- Allocation Table -->
+<div class="overflow-x-auto w-full">
+<table class="w-full text-left font-body-sm text-body-sm">
+<thead>
+<tr class="text-outline font-label-sm text-[11px] uppercase tracking-wider bg-surface-container-high/40 rounded-lg">
+<th class="py-3 px-4">Swatch Identifier</th>
+<th class="py-3 px-4">Weave &amp; Composition</th>
+<th class="py-3 px-4">Allocated Pattern</th>
+<th class="py-3 px-4">Cut Status</th>
+<th class="py-3 px-4">Remaining Shelf</th>
+<th class="py-3 px-4 text-right">Action</th>
+</tr>
+</thead>
+<tbody class="divide-y-0">
+<tr class="hover:bg-surface-container-high/20 transition-colors">
+<td class="py-3.5 px-4">
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 rounded-full bg-primary-container shadow-sm"></span>
+<span class="font-title-sm text-title-sm text-on-surface font-semibold">SW-SATIN-800</span>
+</div>
+</td>
+<td class="py-3.5 px-4 text-on-surface-variant">Mulberry Duchess Satin (340 GSM)</td>
+<td class="py-3.5 px-4">
+<span class="px-2 py-0.5 rounded bg-surface-container-high text-on-surface font-label-sm text-[11px]">CR-26-02 Siren Gown</span>
+</td>
+<td class="py-3.5 px-4">
+<span class="inline-flex items-center gap-1 text-primary font-label-sm text-[11px] font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                Marked &amp; Pinned
+              </span>
+</td>
+<td class="py-3.5 px-4 text-on-surface font-semibold">42.5 meters remaining</td>
+<td class="py-3.5 px-4 text-right">
+<button class="text-secondary hover:text-primary font-title-sm text-title-sm font-semibold" type="button">Inspect Spec</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-high/20 transition-colors bg-surface-container-high/10">
+<td class="py-3.5 px-4">
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 rounded-full bg-surface-container-lowest shadow-sm"></span>
+<span class="font-title-sm text-title-sm text-on-surface font-semibold">SW-WOOL-480</span>
+</div>
+</td>
+<td class="py-3.5 px-4 text-on-surface-variant">Sartorial Melton Wool (480 GSM)</td>
+<td class="py-3.5 px-4">
+<span class="px-2 py-0.5 rounded bg-surface-container-high text-on-surface font-label-sm text-[11px]">CR-26-08 Cocoon Coat</span>
+</td>
+<td class="py-3.5 px-4">
+<span class="inline-flex items-center gap-1 text-error font-label-sm text-[11px] font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-error"></span>
+                Pattern Exceeds Bolt (-3.5m)
+              </span>
+</td>
+<td class="py-3.5 px-4 text-error font-semibold">14.0 meters (Deficit Warning)</td>
+<td class="py-3.5 px-4 text-right">
+<button class="text-error hover:brightness-125 font-title-sm text-title-sm font-semibold" type="button">Reorder Bolt</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-high/20 transition-colors">
+<td class="py-3.5 px-4">
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 rounded-full bg-secondary shadow-sm"></span>
+<span class="font-title-sm text-title-sm text-on-surface font-semibold">SW-ORG-110</span>
+</div>
+</td>
+<td class="py-3.5 px-4 text-on-surface-variant">Plissé Organza Chiffon (110 GSM)</td>
+<td class="py-3.5 px-4">
+<span class="px-2 py-0.5 rounded bg-surface-container-high text-on-surface font-label-sm text-[11px]">CR-26-05 Flou Capelet</span>
+</td>
+<td class="py-3.5 px-4">
+<span class="inline-flex items-center gap-1 text-secondary font-label-sm text-[11px] font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+                Rough Cut Dispatched
+              </span>
+</td>
+<td class="py-3.5 px-4 text-on-surface font-semibold">65.0 meters remaining</td>
+<td class="py-3.5 px-4 text-right">
+<button class="text-secondary hover:text-primary font-title-sm text-title-sm font-semibold" type="button">Inspect Spec</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</div>
+<script>
+  // Interactive Swatch Inspection Engine
+  const fabricData = {
+    satin: {
+      title: "Mulberry Silk Duchess Satin",
+      rigidityScore: "8.5 / 10",
+      rigidityWidth: "85%",
+      sheenScore: "9.2 / 10",
+      sheenWidth: "92%",
+      burnTest: "Smells of burning hair/feathers; leaves soft, dark, crushable irregular ash bead. Extinguishes immediately upon removal from flame. Zero synthetic melting residues verified.",
+      supplier: "Maison de Soie (Lyon)",
+      rep: "Atelier Direct Contact: Jean-Luc Moreau • lead-time 7 days",
+      cardId: "card-satin"
+    },
+    wool: {
+      title: "Sartorial Melton Wool",
+      rigidityScore: "9.0 / 10",
+      rigidityWidth: "90%",
+      sheenScore: "2.1 / 10",
+      sheenWidth: "21%",
+      burnTest: "Burns slowly with gentle charring, pungent odor of burnt fleece. Ash is black, crumbly, and easily powdered. Zero bead formation confirms pure animal protein fibers.",
+      supplier: "Lanificio Colombo (Biella)",
+      rep: "Atelier Direct Contact: Matteo Rossi • lead-time 14 days",
+      cardId: "card-wool"
+    },
+    organza: {
+      title: "Plissé Organza Chiffon",
+      rigidityScore: "4.2 / 10",
+      rigidityWidth: "42%",
+      sheenScore: "7.8 / 10",
+      sheenWidth: "78%",
+      burnTest: "Pure silk micro-burn: instant dark charcoal residue with delicate powdery breakdown. Plissé pleats maintain heat memory under dry atmospheric steam tests.",
+      supplier: "Como Textiles (Lake Como)",
+      rep: "Atelier Direct Contact: Elena Bellini • lead-time 10 days",
+      cardId: "card-organza"
+    },
+    velvet: {
+      title: "Crushed Silk Velvet",
+      rigidityScore: "7.0 / 10",
+      rigidityWidth: "70%",
+      sheenScore: "9.5 / 10",
+      sheenWidth: "95%",
+      burnTest: "Dual-fiber flame reaction: silk backing leaves soft ash; rayon pile flames rapidly with faint paper-burning scent. Blended structure verified per master couture spec.",
+      supplier: "Guigou Paris (Paris)",
+      rep: "Atelier Direct Contact: Sylvie Delacroix • lead-time 5 days",
+      cardId: "card-velvet"
+    },
+    habotai: {
+      title: "Habotai Silk Lining",
+      rigidityScore: "2.5 / 10",
+      rigidityWidth: "25%",
+      sheenScore: "6.0 / 10",
+      sheenWidth: "60%",
+      burnTest: "Rapid clean extinguishment leaving microscopic fragile ash spheres. Zero melt drip, guaranteeing optimal static-free garment lining performance.",
+      supplier: "Lyon Soierie (Lyon)",
+      rep: "Atelier Direct Contact: Marc Vernier • shipment in transit via DHL Express",
+      cardId: "card-habotai"
+    }
+  };
+
+  function selectFabric(key) {
+    const data = fabricData[key];
+    if (!data) return;
+
+    // Update Drawer Contents
+    const titleEl = document.getElementById('detail-title');
+    const rigidityEl = document.getElementById('detail-rigidity');
+    const rigidityBar = document.getElementById('detail-rigidity-bar');
+    const sheenEl = document.getElementById('detail-sheen');
+    const sheenBar = document.getElementById('detail-sheen-bar');
+    const burnEl = document.getElementById('detail-burn-test');
+    const supplierEl = document.getElementById('detail-supplier');
+    const repEl = document.getElementById('detail-rep');
+
+    if (titleEl) titleEl.innerText = data.title;
+    if (rigidityEl) rigidityEl.innerText = data.rigidityScore;
+    if (rigidityBar) rigidityBar.style.width = data.rigidityWidth;
+    if (sheenEl) sheenEl.innerText = data.sheenScore;
+    if (sheenBar) sheenBar.style.width = data.sheenWidth;
+    if (burnEl) burnEl.innerText = data.burnTest;
+    if (supplierEl) supplierEl.innerText = data.supplier;
+    if (repEl) repEl.innerText = data.rep;
+
+    // Visual Accent on Cards
+    document.querySelectorAll('.fabric-card').forEach(card => {
+      card.classList.remove('bg-surface-container-low/90', 'shadow-2xl');
+      card.classList.add('bg-surface-container-low/70');
+    });
+
+    const activeCard = document.getElementById(data.cardId);
+    if (activeCard) {
+      activeCard.classList.remove('bg-surface-container-low/70');
+      activeCard.classList.add('bg-surface-container-low/90', 'shadow-2xl');
+    }
+  }
+
+  // Interactive Category Pills Filter
+  const pills = document.querySelectorAll('.category-pill');
+  pills.forEach(pill => {
+    pill.addEventListener('click', () => {
+      pills.forEach(p => {
+        p.classList.remove('bg-primary-container', 'text-on-primary');
+        p.classList.add('bg-surface-container-high/60', 'text-on-surface-variant');
+      });
+      pill.classList.remove('bg-surface-container-high/60', 'text-on-surface-variant');
+      pill.classList.add('bg-primary-container', 'text-on-primary');
+    });
+  });
+
+  // Simple Live Search Highlighting
+  const searchInput = document.getElementById('fabricSearchInput');
+  if (searchInput) {
+    searchInput.addEventListener('input', (e) => {
+      const term = e.target.value.toLowerCase();
+      document.querySelectorAll('.fabric-card').forEach(card => {
+        const text = card.innerText.toLowerCase();
+        if (text.includes(term)) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    });
+  }
+</script></main></div></body></html>

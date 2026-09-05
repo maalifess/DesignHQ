@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&amp;family=Plus+Jakarta+Sans:ital,wght@0,300..800;1,300..800&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{width:100%;min-height:100%;margin:0;padding:0;background-color:#1c1014;color:#f4dce3;-webkit-tap-highlight-color:transparent;}body{overscroll-behavior-y:none;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "surface-container-high": "#34262b", "error-container": "#93000a", "surface-dim": "#1c1014", "inverse-surface": "#f4dce3", "background": "#1c1014", "surface-container-highest": "#403136", "on-tertiary-container": "#ff828c", "on-secondary-fixed-variant": "#832041", "on-secondary": "#64042b", "on-background": "#f4dce3", "surface-variant": "#403136", "surface-tint": "#ffb3b5", "on-secondary-container": "#ff96af", "on-tertiary-fixed": "#40000d", "on-primary-fixed-variant": "#8e0f28", "surface-container": "#291c21", "inverse-on-surface": "#3b2c31", "on-tertiary": "#65071c", "on-primary-container": "#ff828a", "tertiary": "#ffb3b6", "secondary-fixed-dim": "#ffb1c2", "on-error": "#690005", "tertiary-fixed": "#ffdada", "on-secondary-fixed": "#3f0018", "outline-variant": "#584141", "primary-fixed": "#ffdada", "on-tertiary-fixed-variant": "#842130", "secondary": "#ffb1c2", "surface": "#1c1014", "on-primary": "#680018", "on-error-container": "#ffdad6", "primary": "#ffb3b5", "primary-container": "#800020", "surface-container-lowest": "#160b0f", "secondary-container": "#832041", "outline": "#a78a8a", "on-surface-variant": "e0bfbf", "error": "#ffb4ab", "primary-fixed-dim": "#ffb3b5", "inverse-primary": "#af2b3e", "secondary-fixed": "#ffd9e0", "surface-container-low": "#25181d", "tertiary-fixed-dim": "#ffb3b6", "on-surface": "#f4dce3", "on-primary-fixed": "#40000b", "tertiary-container": "#771727", "surface-bright": "#44353a" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "space-2xs": "0.25rem", "sidebar-width": "15rem", "space-2xl": "3rem", "gutter-desktop": "1.5rem", "space-lg": "1.5rem", "sidebar-collapsed": "4rem", "space-md": "1rem", "space-xs": "0.5rem", "space-sm": "0.75rem", "topbar-height": "4rem", "space-3xl": "4rem", "gutter-mobile": "1rem", "space-xl": "2rem" }, "fontFamily": { "headline-hero-mobile": ["Playfair Display"], "headline-lg-mobile": ["Playfair Display"], "headline-sm": ["Playfair Display"], "label-sm": ["Plus Jakarta Sans"], "title-sm": ["Plus Jakarta Sans"], "title-md": ["Plus Jakarta Sans"], "body-md": ["Plus Jakarta Sans"], "headline-md": ["Playfair Display"], "label-md": ["Plus Jakarta Sans"], "body-lg": ["Plus Jakarta Sans"], "headline-lg": ["Playfair Display"], "body-sm": ["Plus Jakarta Sans"], "headline-hero": ["Playfair Display"] }, "fontSize": { "headline-hero-mobile": ["30px", { "lineHeight": "36px", "letterSpacing": "-0.01em", "fontWeight": "600" }], "headline-lg-mobile": ["24px", { "lineHeight": "30px", "letterSpacing": "-0.01em", "fontWeight": "600" }], "headline-sm": ["20px", { "lineHeight": "26px", "letterSpacing": "0em", "fontWeight": "500" }], "label-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.04em", "fontWeight": "600" }], "title-sm": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" }], "title-md": ["16px", { "lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "600" }], "body-md": ["13px", { "lineHeight": "19.5px", "letterSpacing": "0.005em", "fontWeight": "400" }], "headline-md": ["24px", { "lineHeight": "30px", "letterSpacing": "0em", "fontWeight": "500" }], "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.03em", "fontWeight": "600" }], "body-lg": ["15px", { "lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "400" }], "headline-lg": ["32px", { "lineHeight": "38px", "letterSpacing": "-0.01em", "fontWeight": "600" }], "body-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.01em", "fontWeight": "400" }], "headline-hero": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.01em", "fontWeight": "600" }] } } } }</script><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head><body class="bg-surface font-body-md text-on-surface flex flex-col min-h-screen selection:bg-primary selection:text-on-primary"><header class="fixed top-0 inset-x-0 z-50 bg-surface/80 backdrop-blur-xl pt-safe shadow-[0_4px_30px_rgba(0,0,0,0.5)]"><div class="h-16 px-space-md flex items-center justify-between"><div class="flex items-center gap-space-sm"><img alt="Minimalist luxury fashion atelier logo icon for 'DesignHQ' featuring elegant golden and burgundy stylized tailoring scissors intertwined with an abstract haute couture needle and thread monogram mark, modern vector emblem, clean lines, dark background.. Design context: - Primary color: #800020
+- Font: playfairDisplay
+- Mode: dark
+- Roundness: rounded-md
+. The logo should be visually consistent with these brand tokens." class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1X0IPw721K8aKAmRkwcky5hGQ4PvXW4bzgHdgwIZMzI0dgsGFuq74rH2pHE0MT-WW8j_1JCl2SZngh8-Qs1EcYc2mAvvRnCUZ4J7MYKtJlfa-D_ffG-tQ6NRyCvu9RLZJ6MXiUiLnyQoNX_kn81jdHlEeyMoxkPHW6XGmcEX1cGDgq7JYVMa9HC8NzYdMYs-V-oUWSCqmM_TPe4lr86r9xtfmJgjPZ92rQSBLMc6Mgx5gukpbGY1HvY9FE"/><div class="flex flex-col"><div class="flex items-center gap-space-xs"><span class="font-headline-sm text-headline-sm text-on-surface tracking-tight leading-none">DesignHQ</span><span class="inline-flex items-center gap-1 px-space-xs py-0.5 rounded-full bg-primary-container/40 text-on-primary-container font-label-sm text-label-sm"><span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>FW25</span></div><span class="font-title-sm text-title-sm text-on-surface-variant line-clamp-1">Tech Pack Fitting</span></div></div><div class="flex items-center gap-space-xs"><button aria-label="Notifications" class="w-11 h-11 relative rounded-full flex items-center justify-center text-on-surface hover:bg-surface-container-high transition-colors"><span class="material-symbols-outlined text-[22px]">notifications</span><span class="absolute top-2 right-2 w-2 h-2 rounded-full bg-primary shadow-[0_0_8px_rgba(255,179,181,0.8)]"></span></button><div class="relative p-0.5 rounded-full bg-gradient-to-tr from-primary-container via-surface-bright to-secondary-container"><img alt="Profile" class="w-8 h-8 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida/AEtjO1UgrsPP5GY5gFvCJy9rXOmePLaOh7Yt57eEJ8b16cV6Exrv-N0ASnzE0Da2wad0YoJflz-SjLmwf-TVsnZMYyycKraO-MRxYjpSjdDX_b9tP_TJexdYESV_X4VshU3cdAsobQ7cEZ9d2mygZ-XDxavcZ2jgr4JF4h-hXKaooePogm4QN-enwgTNsWPjGFmDx7G2ctYbViPGAc0SpGE4cy7L_6Hm93-S-tpvzXaO6CS3S6nfIRjx833M8oM"/></div></div></div></header><main class="flex-1 flex flex-col relative w-full pt-16 pb-28 px-space-md bg-surface"><div class="flex flex-col w-full gap-space-md">
+<!-- Top Collection Header & Metadata Block -->
+<section class="rounded-xl p-space-md bg-surface-container/90 backdrop-blur-xl shadow-xl flex flex-col gap-space-sm relative overflow-hidden">
+<div class="absolute -right-12 -top-12 w-48 h-48 rounded-full bg-primary-container/20 blur-3xl pointer-events-none"></div>
+<div class="flex flex-wrap items-center justify-between gap-space-xs">
+<div class="flex items-center gap-space-2xs">
+<span class="font-label-sm text-label-sm px-space-xs py-0.5 rounded-full bg-surface-container-high text-primary tracking-wider uppercase">Haute Couture / Collection</span>
+</div>
+<div class="inline-flex items-center gap-1.5 px-space-xs py-0.5 rounded-full bg-primary-container/50 text-on-primary-container font-label-sm text-label-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+<span>Stage 6: Sampling &amp; Fitting (75%)</span>
+</div>
+</div>
+<div>
+<h1 class="font-headline-hero-mobile text-headline-hero-mobile text-on-surface tracking-tight">Crimson Reverie — AW26</h1>
+<p class="font-label-md text-label-md text-on-surface-variant flex items-center gap-space-xs mt-0.5">
+<span>CR-26-PAR</span>
+<span>•</span>
+<span>Maison Studio Paris &amp; Milan</span>
+</p>
+</div>
+<!-- Atelier Specs Pill Grid -->
+<div class="grid grid-cols-2 gap-space-xs pt-space-xs">
+<div class="p-space-xs rounded-lg bg-surface-container-low/80 flex flex-col">
+<span class="font-label-sm text-label-sm text-outline">Lead Modéliste</span>
+<span class="font-title-sm text-title-sm text-on-surface truncate">Aria Chen</span>
+</div>
+<div class="p-space-xs rounded-lg bg-surface-container-low/80 flex flex-col">
+<span class="font-label-sm text-label-sm text-outline">Delivery Date</span>
+<span class="font-title-sm text-title-sm text-on-surface truncate">Nov 18, 2026</span>
+</div>
+<div class="p-space-xs rounded-lg bg-surface-container-low/80 flex flex-col">
+<span class="font-label-sm text-label-sm text-outline">Planned Looks</span>
+<span class="font-title-sm text-title-sm text-on-surface">12 Silhouettes</span>
+</div>
+<div class="p-space-xs rounded-lg bg-surface-container-low/80 flex flex-col">
+<span class="font-label-sm text-label-sm text-outline">Current Phase</span>
+<span class="font-title-sm text-title-sm text-secondary truncate">Toile Fitting #2</span>
+</div>
+</div>
+<!-- 5-Tone Curated Dye Swatch Palette -->
+<div class="flex items-center justify-between pt-space-2xs">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Seasonal Dye Formulation</span>
+<div class="flex items-center gap-1.5">
+<span class="w-4 h-4 rounded-full bg-primary-container shadow-sm" title="Deep Crimson #800020"></span>
+<span class="w-4 h-4 rounded-full bg-secondary-container shadow-sm" title="Velvet Burgundy #832041"></span>
+<span class="w-4 h-4 rounded-full bg-secondary shadow-sm" title="Dusty Rose #FFB1C2"></span>
+<span class="w-4 h-4 rounded-full bg-tertiary-container shadow-sm" title="Imperial Plum #771727"></span>
+<span class="w-4 h-4 rounded-full bg-surface-container-lowest shadow-sm" title="Onyx Noir #160B0F"></span>
+</div>
+</div>
+<!-- Atelier Action Row -->
+<div class="flex items-center gap-space-xs pt-space-xs overflow-x-auto pb-1">
+<button class="px-space-sm py-2 rounded-lg bg-gradient-to-r from-primary-container to-secondary-container text-on-primary font-title-sm text-title-sm flex items-center gap-1.5 shadow-md active:scale-95 transition-transform shrink-0">
+<span class="material-symbols-outlined text-[18px]">add</span>
+<span>Add Look</span>
+</button>
+<button class="px-space-sm py-2 rounded-lg bg-surface-container-high text-on-surface font-title-sm text-title-sm flex items-center gap-1.5 shadow-sm active:scale-95 transition-transform shrink-0">
+<span class="material-symbols-outlined text-[18px]">picture_as_pdf</span>
+<span>Export Tech Pack</span>
+</button>
+<button aria-label="Share Collection with Atelier" class="w-9 h-9 rounded-lg bg-surface-container-high text-on-surface flex items-center justify-center shadow-sm shrink-0 active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-[18px]">share</span>
+</button>
+</div>
+</section>
+<!-- Interactive 9-Stage Touch Stepper -->
+<section class="rounded-xl p-space-sm bg-surface-container/90 backdrop-blur-xl shadow-md flex flex-col gap-space-2xs">
+<div class="flex items-center justify-between px-space-2xs">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-outline">Atelier Runway Pipeline</span>
+<span class="font-label-sm text-label-sm text-primary font-bold">Step 6 of 9</span>
+</div>
+<div class="flex items-center gap-space-xs overflow-x-auto pb-space-2xs pt-1 px-space-2xs -mx-space-2xs">
+<!-- 1. Ideation -->
+<div class="flex flex-col items-center gap-1 shrink-0">
+<div class="w-7 h-7 rounded-full bg-secondary-container text-secondary flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-[16px]">check</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Ideation</span>
+</div>
+<div class="w-4 h-0.5 bg-secondary-container shrink-0"></div>
+<!-- 2. Moodboard -->
+<div class="flex flex-col items-center gap-1 shrink-0">
+<div class="w-7 h-7 rounded-full bg-secondary-container text-secondary flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-[16px]">check</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Mood</span>
+</div>
+<div class="w-4 h-0.5 bg-secondary-container shrink-0"></div>
+<!-- 3. Sketching -->
+<div class="flex flex-col items-center gap-1 shrink-0">
+<div class="w-7 h-7 rounded-full bg-secondary-container text-secondary flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-[16px]">check</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Sketch</span>
+</div>
+<div class="w-4 h-0.5 bg-secondary-container shrink-0"></div>
+<!-- 4. Fabrication -->
+<div class="flex flex-col items-center gap-1 shrink-0">
+<div class="w-7 h-7 rounded-full bg-secondary-container text-secondary flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-[16px]">check</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Fabric</span>
+</div>
+<div class="w-4 h-0.5 bg-secondary-container shrink-0"></div>
+<!-- 5. Patternmaking -->
+<div class="flex flex-col items-center gap-1 shrink-0">
+<div class="w-7 h-7 rounded-full bg-secondary-container text-secondary flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-[16px]">check</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Pattern</span>
+</div>
+<div class="w-4 h-0.5 bg-primary-container shrink-0"></div>
+<!-- 6. Sampling (Active) -->
+<div class="flex flex-col items-center gap-1 shrink-0">
+<div class="w-7 h-7 rounded-full bg-primary text-on-primary font-title-sm text-title-sm flex items-center justify-center shadow-[0_0_12px_rgba(255,179,181,0.6)]">
+<span>6</span>
+</div>
+<span class="font-label-sm text-label-sm text-primary font-bold">Sampling</span>
+</div>
+<div class="w-4 h-0.5 bg-surface-container-high shrink-0"></div>
+<!-- 7. Fitting -->
+<div class="flex flex-col items-center gap-1 shrink-0">
+<div class="w-7 h-7 rounded-full bg-surface-container-high text-on-surface-variant flex items-center justify-center">
+<span class="font-label-sm text-label-sm">7</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Fitting</span>
+</div>
+<div class="w-4 h-0.5 bg-surface-container-high shrink-0"></div>
+<!-- 8. Production -->
+<div class="flex flex-col items-center gap-1 shrink-0">
+<div class="w-7 h-7 rounded-full bg-surface-container-high text-on-surface-variant flex items-center justify-center">
+<span class="font-label-sm text-label-sm">8</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Produce</span>
+</div>
+<div class="w-4 h-0.5 bg-surface-container-high shrink-0"></div>
+<!-- 9. Runway -->
+<div class="flex flex-col items-center gap-1 shrink-0">
+<div class="w-7 h-7 rounded-full bg-surface-container-high text-on-surface-variant flex items-center justify-center">
+<span class="material-symbols-outlined text-[16px]">celebration</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Runway</span>
+</div>
+</div>
+</section>
+<!-- Navigation View Switcher (Tabs) -->
+<section class="flex items-center gap-space-xs overflow-x-auto pb-1" id="tabSwitcher">
+<button class="px-space-sm py-1.5 rounded-full bg-primary text-on-primary font-title-sm text-title-sm shadow-md shrink-0">
+      Garments &amp; Tech Packs (6)
+    </button>
+<button class="px-space-sm py-1.5 rounded-full bg-surface-container-high text-on-surface-variant font-title-sm text-title-sm hover:text-on-surface shrink-0">
+      Assigned Fabrics (8)
+    </button>
+<button class="px-space-sm py-1.5 rounded-full bg-surface-container-high text-on-surface-variant font-title-sm text-title-sm hover:text-on-surface shrink-0">
+      Mood Collage
+    </button>
+<button class="px-space-sm py-1.5 rounded-full bg-surface-container-high text-on-surface-variant font-title-sm text-title-sm hover:text-on-surface shrink-0">
+      Fitting Schedule
+    </button>
+</section>
+<!-- Mobile Garment Cards Stream -->
+<div class="flex flex-col gap-space-sm">
+<!-- Look 01 -->
+<article class="rounded-xl overflow-hidden bg-surface-container/90 backdrop-blur-xl shadow-lg flex flex-col">
+<div class="relative w-full h-52 bg-surface-container-low">
+<img class="w-full h-full object-cover" data-alt="Editorial couture studio photo of an architectural peplum tailored jacket in structured deep crimson wool. The jacket features sharp pagoda shoulders, cinched waist, and hand-finished horn buttons. Dramatic moody rim lighting on a dark minimalist atelier backdrop." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA6Ac-MhYDdq5Guz0yPhsXovSlNT5oGM2lJdZuJf050GMjzdg9F-FQb1ZYycA7XLBkeRagHzs0EsKgCw7NqqDyKcDchMjU_XzOUrTUQn_zH7c_fwDeH6FAtUBE_QdTiZ_z5Wa7x4lZTUhBdBRDkRH1LvkspRTb2mFKpQc9dcIe55oJFiWFzjFZAQmagFfGgBwjeTCooH4AZGezT84B26CkhDIFbJVkN_omN7LAuY4VnRepMFIGdYvW2sg"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container via-transparent to-black/30"></div>
+<span class="absolute top-3 left-3 px-space-xs py-0.5 rounded-full bg-surface-container-lowest/80 backdrop-blur-md text-primary font-label-sm text-label-sm">
+          LOOK 01 • Pattern #CR-201
+        </span>
+<span class="absolute top-3 right-3 px-space-xs py-0.5 rounded-full bg-primary-container/80 backdrop-blur-md text-on-primary-container font-label-sm text-label-sm">
+          Outerwear / Tailoring
+        </span>
+<div class="absolute bottom-3 left-3 right-3 flex items-center justify-between">
+<span class="font-headline-md text-headline-md text-on-surface drop-shadow-md">Architectural Peplum Jacket</span>
+</div>
+</div>
+<div class="p-space-md flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<span class="inline-flex items-center gap-1.5 px-space-xs py-0.5 rounded-md bg-secondary-container/40 text-on-secondary-container font-label-sm text-label-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+            First Toile Approved
+          </span>
+<span class="font-label-sm text-label-sm text-outline flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">event</span>
+            Fitting: Tomorrow 10:30 AM
+          </span>
+</div>
+<div class="grid grid-cols-2 gap-space-xs py-1">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-outline">Primary Textile</span>
+<span class="font-body-md text-body-md text-on-surface truncate">Double-face Heavy Wool</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-outline">Notions &amp; Lining</span>
+<span class="font-body-md text-body-md text-on-surface truncate">Carved Horn &amp; Silk Habotai</span>
+</div>
+</div>
+<div class="flex items-center gap-space-xs pt-space-2xs">
+<button class="flex-1 py-2 rounded-lg bg-surface-container-high text-on-surface font-title-sm text-title-sm flex items-center justify-center gap-1.5 active:bg-surface-container-highest transition-colors">
+<span class="material-symbols-outlined text-[18px]">straighten</span>
+<span>View Tech Pack</span>
+</button>
+<button aria-label="Edit Look 01 Tech Pack" class="w-10 h-10 rounded-lg bg-surface-container-high text-on-surface flex items-center justify-center active:bg-surface-container-highest transition-colors shrink-0">
+<span class="material-symbols-outlined text-[18px]">edit_note</span>
+</button>
+</div>
+</div>
+</article>
+<!-- Look 02 -->
+<article class="rounded-xl overflow-hidden bg-surface-container/90 backdrop-blur-xl shadow-lg flex flex-col">
+<div class="relative w-full h-52 bg-surface-container-low">
+<img class="w-full h-full object-cover" data-alt="Editorial lookbook shot of a cascading bias-cut evening gown crafted from fluid burgundy mulberry silk satin. Liquid drapery ripples down the silhouette with asymmetric cowl back, illuminated by soft golden gallery spotlighting against dark charcoal velvet." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCwMpg8A6V2LWy3TyF48XIkuPYel6fpvfWmWUq07_P2KXpm_mLeqY2_n6g0h9kF6-Sb-khV9Zvmbs4ZbrUAIsLJ40bBsitCrANgPP1XbAqcB795Jv1sCVoe5si1QWsz0ibwwACFc4A7ExFHyPX4ty8bKX0OwsYA1g0SN_ZtMXWzzlYjvafmO1LDsBLeGZe6MkeiJ0vWtLJtPiEgO4INWLK3_n13yEnvEvrr3mVXucLocp5QcJ8pHzRoyA"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container via-transparent to-black/30"></div>
+<span class="absolute top-3 left-3 px-space-xs py-0.5 rounded-full bg-surface-container-lowest/80 backdrop-blur-md text-primary font-label-sm text-label-sm">
+          LOOK 02 • Pattern #CR-204
+        </span>
+<span class="absolute top-3 right-3 px-space-xs py-0.5 rounded-full bg-primary-container/80 backdrop-blur-md text-on-primary-container font-label-sm text-label-sm">
+          Eveningwear / Drape
+        </span>
+<div class="absolute bottom-3 left-3 right-3 flex items-center justify-between">
+<span class="font-headline-md text-headline-md text-on-surface drop-shadow-md">Cascading Bias-Cut Gown</span>
+</div>
+</div>
+<div class="p-space-md flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<span class="inline-flex items-center gap-1.5 px-space-xs py-0.5 rounded-md bg-tertiary-container/50 text-on-tertiary-container font-label-sm text-label-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary animate-pulse"></span>
+            Sample in Cutting
+          </span>
+<span class="font-label-sm text-label-sm text-outline flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">event</span>
+            Fitting: Oct 24, 02:00 PM
+          </span>
+</div>
+<div class="grid grid-cols-2 gap-space-xs py-1">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-outline">Primary Textile</span>
+<span class="font-body-md text-body-md text-on-surface truncate">Heavy Mulberry Silk (28mm)</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-outline">Notions &amp; Lining</span>
+<span class="font-body-md text-body-md text-on-surface truncate">Invisible Riri Zipper</span>
+</div>
+</div>
+<div class="flex items-center gap-space-xs pt-space-2xs">
+<button class="flex-1 py-2 rounded-lg bg-surface-container-high text-on-surface font-title-sm text-title-sm flex items-center justify-center gap-1.5 active:bg-surface-container-highest transition-colors">
+<span class="material-symbols-outlined text-[18px]">straighten</span>
+<span>View Tech Pack</span>
+</button>
+<button aria-label="Edit Look 02 Tech Pack" class="w-10 h-10 rounded-lg bg-surface-container-high text-on-surface flex items-center justify-center active:bg-surface-container-highest transition-colors shrink-0">
+<span class="material-symbols-outlined text-[18px]">edit_note</span>
+</button>
+</div>
+</div>
+</article>
+<!-- Look 03 -->
+<article class="rounded-xl overflow-hidden bg-surface-container/90 backdrop-blur-xl shadow-lg flex flex-col">
+<div class="relative w-full h-52 bg-surface-container-low">
+<img class="w-full h-full object-cover" data-alt="High-fashion studio photograph of ultra high-waisted tailored wide-leg trousers in charcoal worsted flannel with subtle crimson pinstripe. Sharp center front knife pleats, immaculate drape, and mother-of-pearl tab closure on a polished stone floor." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCDKjG9fryqBLwG0C3n4kcpZRvzZhU0meTKJDPm2zzZ_UTg_gb4tM2GUSH5ImORznRZoLWJa3QZluHcldL30y1WM1EYv0POEXHM9zyR-JbtKvAut5gvyJs-MD6egCaZdd2KlqiXBT1NP3RivBM9sucVIvpboSI7MAid3FmfrPq3eIlnn4EEUwhd2j-caUEX5PE21-H5cOnvkvk_lhHXEFHvZFxKlkdCTgkXMv5er-D1br1k5uOVah-88g"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container via-transparent to-black/30"></div>
+<span class="absolute top-3 left-3 px-space-xs py-0.5 rounded-full bg-surface-container-lowest/80 backdrop-blur-md text-primary font-label-sm text-label-sm">
+          LOOK 03 • Pattern #CR-207
+        </span>
+<span class="absolute top-3 right-3 px-space-xs py-0.5 rounded-full bg-primary-container/80 backdrop-blur-md text-on-primary-container font-label-sm text-label-sm">
+          Separates / Tailoring
+        </span>
+<div class="absolute bottom-3 left-3 right-3 flex items-center justify-between">
+<span class="font-headline-md text-headline-md text-on-surface drop-shadow-md">Tailored Wide-Leg Trousers</span>
+</div>
+</div>
+<div class="p-space-md flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<span class="inline-flex items-center gap-1.5 px-space-xs py-0.5 rounded-md bg-secondary-container/40 text-on-secondary-container font-label-sm text-label-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+            Sample Approved
+          </span>
+<span class="font-label-sm text-label-sm text-outline flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">check_circle</span>
+            Archived for Runway
+          </span>
+</div>
+<div class="grid grid-cols-2 gap-space-xs py-1">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-outline">Primary Textile</span>
+<span class="font-body-md text-body-md text-on-surface truncate">Worsted Fine Flannel (340g)</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-outline">Notions &amp; Lining</span>
+<span class="font-body-md text-body-md text-on-surface truncate">Custom MOP Buttons</span>
+</div>
+</div>
+<div class="flex items-center gap-space-xs pt-space-2xs">
+<button class="flex-1 py-2 rounded-lg bg-surface-container-high text-on-surface font-title-sm text-title-sm flex items-center justify-center gap-1.5 active:bg-surface-container-highest transition-colors">
+<span class="material-symbols-outlined text-[18px]">straighten</span>
+<span>View Tech Pack</span>
+</button>
+<button aria-label="Edit Look 03 Tech Pack" class="w-10 h-10 rounded-lg bg-surface-container-high text-on-surface flex items-center justify-center active:bg-surface-container-highest transition-colors shrink-0">
+<span class="material-symbols-outlined text-[18px]">edit_note</span>
+</button>
+</div>
+</div>
+</article>
+<!-- Look 04 -->
+<article class="rounded-xl overflow-hidden bg-surface-container/90 backdrop-blur-xl shadow-lg flex flex-col">
+<div class="relative w-full h-52 bg-surface-container-low">
+<img class="w-full h-full object-cover" data-alt="Editorial haute couture photo of a voluminous pleated velvet opera cape in deep crushed merlot wine. Ornate antiqued brass filigree collar clasp, high neck structure, dramatic flowing folds resting on a live couture runway mannequin." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCw1sRzZLbpoxuRukwr2M2GC-rq-hcd25sOTPUkeCtbqnI4iCJ65tQi21Voyk1kMXBLxq7HGbkFn8JS_b7tMHxvwIKU8x2H7je3nmoaEzZqNT26QpDEsRBKxsurqghoMs7qIW06DJH-rRZe0IO1qY7pPc2VaAvvDB0yQc0JumX3jVbKevZastY2J9LNhLHZGI5Pv7Y1UY0TzN3UQ3jNsPwE0SWUgIPkl9knmtjgh0D__sbFb-x5_2JLZA"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container via-transparent to-black/30"></div>
+<span class="absolute top-3 left-3 px-space-xs py-0.5 rounded-full bg-surface-container-lowest/80 backdrop-blur-md text-primary font-label-sm text-label-sm">
+          LOOK 04 • Pattern #CR-209
+        </span>
+<span class="absolute top-3 right-3 px-space-xs py-0.5 rounded-full bg-primary-container/80 backdrop-blur-md text-on-primary-container font-label-sm text-label-sm">
+          Statement Outerwear
+        </span>
+<div class="absolute bottom-3 left-3 right-3 flex items-center justify-between">
+<span class="font-headline-md text-headline-md text-on-surface drop-shadow-md">Pleated Velvet Opera Cape</span>
+</div>
+</div>
+<div class="p-space-md flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<span class="inline-flex items-center gap-1.5 px-space-xs py-0.5 rounded-md bg-error-container/40 text-error font-label-sm text-label-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-error"></span>
+            Fitting Adjustment Needed
+          </span>
+<span class="font-label-sm text-label-sm text-outline flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">history</span>
+            Weight imbalance noted
+          </span>
+</div>
+<div class="grid grid-cols-2 gap-space-xs py-1">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-outline">Primary Textile</span>
+<span class="font-body-md text-body-md text-on-surface truncate">Silk-Rayon Velvet (Lyon)</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-outline">Notions &amp; Lining</span>
+<span class="font-body-md text-body-md text-on-surface truncate">Antiqued Brass Clasp</span>
+</div>
+</div>
+<div class="flex items-center gap-space-xs pt-space-2xs">
+<button class="flex-1 py-2 rounded-lg bg-surface-container-high text-on-surface font-title-sm text-title-sm flex items-center justify-center gap-1.5 active:bg-surface-container-highest transition-colors">
+<span class="material-symbols-outlined text-[18px]">straighten</span>
+<span>View Tech Pack</span>
+</button>
+<button aria-label="Edit Look 04 Tech Pack" class="w-10 h-10 rounded-lg bg-surface-container-high text-on-surface flex items-center justify-center active:bg-surface-container-highest transition-colors shrink-0">
+<span class="material-symbols-outlined text-[18px]">edit_note</span>
+</button>
+</div>
+</div>
+</article>
+</div>
+<!-- Fitting Schedule & Head Tailor Dispatch -->
+<section class="rounded-xl p-space-md bg-surface-container/90 backdrop-blur-xl shadow-lg flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]">calendar_clock</span>
+<span class="font-title-md text-title-md text-on-surface">Milan Studio Fitting Call</span>
+</div>
+<span class="font-label-sm text-label-sm text-secondary px-2 py-0.5 rounded-full bg-secondary-container/40">3 Sessions Today</span>
+</div>
+<!-- Timeline List -->
+<div class="flex flex-col gap-space-xs">
+<div class="p-space-xs rounded-lg bg-surface-container-low flex items-center justify-between">
+<div class="flex items-center gap-space-xs min-w-0">
+<span class="px-space-xs py-1 rounded bg-surface-container-high font-label-sm text-label-sm text-primary font-bold shrink-0">10:30 AM</span>
+<div class="flex flex-col min-w-0">
+<span class="font-title-sm text-title-sm text-on-surface truncate">Look 01: Peplum Jacket</span>
+<span class="font-label-sm text-label-sm text-outline">Model: Elena Rossi (Fit Size 36)</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline text-[18px]">chevron_right</span>
+</div>
+<div class="p-space-xs rounded-lg bg-surface-container-low flex items-center justify-between">
+<div class="flex items-center gap-space-xs min-w-0">
+<span class="px-space-xs py-1 rounded bg-surface-container-high font-label-sm text-label-sm text-secondary font-bold shrink-0">02:00 PM</span>
+<div class="flex flex-col min-w-0">
+<span class="font-title-sm text-title-sm text-on-surface truncate">Look 02: Bias Silk Gown</span>
+<span class="font-label-sm text-label-sm text-outline">First Drape Check &amp; Hemline</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline text-[18px]">chevron_right</span>
+</div>
+</div>
+<!-- Head Tailor's Dispatch Note -->
+<div class="p-space-sm rounded-lg bg-primary-container/20 flex flex-col gap-1">
+<div class="flex items-center gap-1.5 text-primary">
+<span class="material-symbols-outlined text-[16px]">record_voice_over</span>
+<span class="font-label-sm text-label-sm uppercase tracking-wide font-bold">Head Tailor Dispatch — Lyon Courier</span>
+</div>
+<p class="font-headline-sm text-body-md text-on-surface italic leading-snug">
+        "Silk velvet lot #802 arrived from Lyon. Steam press strictly on needleboard; do not touch face directly with dry heat. Opera cape hem requires 4cm facing horsehair tape."
+      </p>
+<span class="font-label-sm text-label-sm text-outline text-right mt-1">— Maestro Giancarlo B., Premier d'Atelier</span>
+</div>
+</section>
+<!-- Sample Budget Progress Card -->
+<section class="rounded-xl p-space-md bg-surface-container/90 backdrop-blur-xl shadow-lg flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-outline">Sample Production Budget</span>
+<span class="font-label-sm text-label-sm font-bold text-primary">79.1% Utilized</span>
+</div>
+<div class="flex items-baseline justify-between">
+<div class="flex items-baseline gap-1.5">
+<span class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface">$14,250</span>
+<span class="font-body-md text-body-md text-on-surface-variant">/ $18,000 allocated</span>
+</div>
+<span class="font-label-sm text-label-sm text-secondary">$3,750 reserve</span>
+</div>
+<!-- Multi-Segmented Progress Bar -->
+<div class="w-full h-2.5 rounded-full bg-surface-container-lowest overflow-hidden flex mt-1">
+<div class="h-full bg-primary" style="width: 42%;" title="Fabrics &amp; Linings (42%)"></div>
+<div class="h-full bg-secondary" style="width: 21%;" title="CAD Pattern &amp; Modéliste (21%)"></div>
+<div class="h-full bg-tertiary" style="width: 12%;" title="Atelier Hands &amp; Fittings (12%)"></div>
+<div class="h-full bg-surface-bright" style="width: 4.1%;" title="Notions &amp; Hardware (4.1%)"></div>
+</div>
+<!-- Segment Legend -->
+<div class="grid grid-cols-2 gap-y-1 gap-x-2 pt-space-xs">
+<div class="flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+<span class="font-label-sm text-label-sm text-on-surface-variant truncate">Textiles &amp; Linings ($7.5k)</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+<span class="font-label-sm text-label-sm text-on-surface-variant truncate">CAD &amp; Modéliste ($3.8k)</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+<span class="font-label-sm text-label-sm text-on-surface-variant truncate">Fitting Studio ($2.2k)</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-surface-bright"></span>
+<span class="font-label-sm text-label-sm text-on-surface-variant truncate">Italian Notions ($750)</span>
+</div>
+</div>
+</section>
+<!-- Gemini AI Silhouette & Drapery Critique Mini-Card -->
+<section class="rounded-xl p-space-md bg-gradient-to-br from-surface-container-high/90 via-surface-container/95 to-secondary-container/20 backdrop-blur-xl shadow-xl flex flex-col gap-space-sm relative overflow-hidden">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="w-6 h-6 rounded-full bg-primary-container flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[15px]">auto_awesome</span>
+</span>
+<span class="font-title-md text-title-md text-on-surface">Atelier AI Drapery Critique</span>
+</div>
+<span class="px-space-xs py-0.5 rounded-full bg-primary-container text-on-primary-container font-label-sm text-label-sm font-bold">
+        94 / 100 Cohesion
+      </span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant">
+      High silhouette synergy between <strong class="text-on-surface">Look 01</strong> (structured shoulders) and <strong class="text-on-surface">Look 02</strong> (liquid bias drape). The collection aesthetic firmly balances rigorous architecture with gothic fluid romanticism.
+    </p>
+<!-- Extracted DNA Tags -->
+<div class="flex flex-wrap items-center gap-1.5">
+<span class="px-space-xs py-1 rounded-md bg-surface-container-highest text-primary font-label-sm text-label-sm uppercase tracking-wide">
+        #Dramatic Romance
+      </span>
+<span class="px-space-xs py-1 rounded-md bg-surface-container-highest text-secondary font-label-sm text-label-sm uppercase tracking-wide">
+        #Neo-Gothic Tailoring
+      </span>
+<span class="px-space-xs py-1 rounded-md bg-surface-container-highest text-tertiary font-label-sm text-label-sm uppercase tracking-wide">
+        #Couture Bias Flow
+      </span>
+</div>
+<button class="w-full py-2.5 rounded-lg bg-surface-container-highest/80 hover:bg-surface-container-highest text-on-surface font-title-sm text-title-sm flex items-center justify-center gap-2 shadow-sm transition-all active:scale-[0.98]">
+<span>Open Full AI Drapery Analysis</span>
+<span class="material-symbols-outlined text-[18px]">insights</span>
+</button>
+</section>
+</div>
+<script>
+  // Micro-interaction for Tab Switcher
+  document.querySelectorAll('#tabSwitcher button').forEach(btn => {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('#tabSwitcher button').forEach(b => {
+        b.className = 'px-space-sm py-1.5 rounded-full bg-surface-container-high text-on-surface-variant font-title-sm text-title-sm hover:text-on-surface shrink-0';
+      });
+      this.className = 'px-space-sm py-1.5 rounded-full bg-primary text-on-primary font-title-sm text-title-sm shadow-md shrink-0';
+    });
+  });
+</script></main><nav class="fixed bottom-0 inset-x-0 z-50 pb-safe pointer-events-none" data-active-classes="text-primary font-bold"><div class="pointer-events-auto mx-space-md mb-space-sm bg-surface-container/85 backdrop-blur-2xl rounded-xl shadow-[0_12px_40px_rgba(0,0,0,0.65),0_0_20px_rgba(128,0,32,0.25)]"><div class="flex justify-around items-center h-16 px-space-2xs"><a class="flex flex-col items-center justify-center gap-1 flex-1 h-full text-on-surface-variant hover:text-on-surface transition-colors" data-path="dashboard" href="#"><span class="material-symbols-outlined text-[20px]">view_quilt</span><span class="font-label-sm text-label-sm">Dashboard</span></a><a class="flex flex-col items-center justify-center gap-1 flex-1 h-full text-on-surface-variant hover:text-on-surface transition-colors" data-path="collections" href="#"><span class="material-symbols-outlined text-[20px]">styler</span><span class="font-label-sm text-label-sm">Collections</span></a><a class="flex flex-col items-center justify-center gap-1 flex-1 h-full text-on-surface-variant hover:text-on-surface transition-colors" data-path="sketchbook" href="#"><span class="material-symbols-outlined text-[20px]">draw</span><span class="font-label-sm text-label-sm">Sketchbook</span></a><a class="flex flex-col items-center justify-center gap-1 flex-1 h-full text-on-surface-variant hover:text-on-surface transition-colors" data-path="fabrics" href="#"><span class="material-symbols-outlined text-[20px]">texture</span><span class="font-label-sm text-label-sm">Fabrics</span></a><a aria-current="page" class="flex flex-col items-center justify-center gap-1 flex-1 h-full transition-colors text-primary font-bold" data-path="tech-pack-fitting" href="#"><span class="material-symbols-outlined text-[20px]">straighten</span><span class="font-label-sm text-label-sm truncate max-w-[62px]">Fitting</span></a></div></div></nav></body></html>

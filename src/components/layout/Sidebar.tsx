@@ -1,22 +1,17 @@
 import React from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import {
-  LayoutDashboard, FolderKanban, Image, PenLine, Layers2,
-  FileText, BookOpen, Settings, LogOut, ChevronLeft, ChevronRight,
-  Scissors, X,
-} from 'lucide-react'
 import { useAuth } from '@/hooks/useAuth'
 import { useAppStore } from '@/store/useAppStore'
 
 const navItems = [
-  { icon: LayoutDashboard, label: 'Dashboard',    to: '/' },
-  { icon: FolderKanban,   label: 'Projects',      to: '/projects' },
-  { icon: Image,          label: 'Mood Boards',   to: '/moodboards' },
-  { icon: PenLine,        label: 'Sketchbook',    to: '/sketchbook' },
-  { icon: Layers2,        label: 'Fabrics',       to: '/fabrics' },
-  { icon: FileText,       label: 'Notes',         to: '/notes' },
-  { icon: BookOpen,       label: 'Portfolio',     to: '/portfolio' },
+  { icon: 'dashboard', label: 'Dashboard', to: '/' },
+  { icon: 'styler', label: 'Collections', to: '/projects' },
+  { icon: 'auto_awesome_motion', label: 'Mood Boards & AI', to: '/moodboards' },
+  { icon: 'draw', label: 'Sketchbook', to: '/sketchbook' },
+  { icon: 'texture', label: 'Fabric Swatches', to: '/fabrics' },
+  { icon: 'straighten', label: 'Fitting Notes', to: '/notes' },
+  { icon: 'auto_stories', label: 'Portfolio', to: '/portfolio' },
 ]
 
 interface SidebarProps {
@@ -29,11 +24,13 @@ export function Sidebar({ mobileOpen = false, onCloseMobile }: SidebarProps) {
   const { sidebarCollapsed, setSidebarCollapsed } = useAppStore()
   const navigate = useNavigate()
 
-  const w = sidebarCollapsed ? 'var(--sidebar-collapsed)' : 'var(--sidebar-width)'
+  const displayName = profile?.display_name || profile?.full_name || 'Aria Chen'
+  const subtitle = profile?.university || 'Royal College of Art'
+  const initials = displayName.charAt(0).toUpperCase()
 
   return (
     <>
-      {/* Mobile Overlay Backdrop */}
+      {/* Mobile Drawer Overlay Backdrop */}
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
@@ -53,230 +50,115 @@ export function Sidebar({ mobileOpen = false, onCloseMobile }: SidebarProps) {
         )}
       </AnimatePresence>
 
-      <motion.aside
-        className={`glass-sidebar ${mobileOpen ? 'flex' : 'hidden md:flex'}`}
-        animate={{ width: mobileOpen ? 'var(--sidebar-width)' : w }}
-        transition={{ duration: 0.25, ease: 'easeInOut' }}
-        style={{
-          position: 'fixed',
-          top: 0, left: 0, bottom: 0,
-          zIndex: 'var(--z-sidebar)' as any,
-          overflow: 'hidden',
-          flexDirection: 'column',
-        }}
+      <aside
+        className={`fixed left-0 top-0 h-full w-sidebar-width bg-surface-container-lowest/90 backdrop-blur-2xl z-50 flex-col justify-between shadow-[0_8px_32px_0_rgba(0,0,0,0.45)] border-r border-outline-variant/30 ${
+          mobileOpen ? 'flex' : 'hidden md:flex'
+        }`}
       >
-        {/* ── Logo ── */}
-        <div style={{
-          padding: sidebarCollapsed && !mobileOpen ? '1.25rem 0' : '1.25rem 1.25rem',
-          borderBottom: '1px solid var(--glass-border)',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '0.75rem',
-          justifyContent: sidebarCollapsed && !mobileOpen ? 'center' : 'space-between',
-          minHeight: 'var(--topbar-height)',
-        }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-            {/* Logo mark */}
-            <div style={{
-              width: 34, height: 34,
-              background: 'linear-gradient(135deg, var(--accent-primary), var(--accent-deep))',
-              borderRadius: 'var(--radius-md)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              flexShrink: 0,
-              boxShadow: '0 4px 14px rgba(128, 0, 32, 0.4)',
-              border: '1px solid var(--pearl-highlight)',
-            }}>
-              <Scissors size={18} color="#FFF0F3" />
+        <div className="flex flex-col">
+          {/* Atelier Brand Header */}
+          <div className="h-topbar-height px-space-md flex items-center justify-between bg-surface-container-low/40 border-b border-outline-variant/20">
+            <div className="flex items-center gap-space-xs min-w-0">
+              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary-container to-secondary-container flex items-center justify-center text-on-primary font-bold shadow-md flex-shrink-0 border border-pearl-highlight">
+                <span className="material-symbols-outlined text-lg">content_cut</span>
+              </div>
+              <div className="flex flex-col min-w-0">
+                <span className="font-headline-sm text-headline-sm text-on-surface truncate tracking-tight font-semibold">
+                  DesignHQ
+                </span>
+                <span className="font-label-sm text-label-sm uppercase tracking-widest text-primary font-semibold">
+                  Atelier Studio
+                </span>
+              </div>
             </div>
-            <AnimatePresence>
-              {(!sidebarCollapsed || mobileOpen) && (
-                <motion.span
-                  initial={{ opacity: 0, width: 0 }}
-                  animate={{ opacity: 1, width: 'auto' }}
-                  exit={{ opacity: 0, width: 0 }}
-                  transition={{ duration: 0.2 }}
-                  style={{
-                    fontFamily: 'var(--font-display)',
-                    fontSize: '1.375rem',
-                    fontWeight: 700,
-                    color: 'var(--text-primary)',
-                    whiteSpace: 'nowrap',
-                    overflow: 'hidden',
-                    letterSpacing: '-0.01em',
-                  }}
-                >
-                  Design<span style={{ color: 'var(--accent-secondary)' }}>HQ</span>
-                </motion.span>
-              )}
-            </AnimatePresence>
+
+            {/* Mobile close trigger */}
+            {mobileOpen && (
+              <button
+                onClick={onCloseMobile}
+                className="text-on-surface-variant hover:text-on-surface p-1 md:hidden"
+                aria-label="Close menu"
+              >
+                <span className="material-symbols-outlined text-xl">close</span>
+              </button>
+            )}
           </div>
 
-          {/* Close button for mobile drawer */}
-          {mobileOpen && (
-            <button
-              onClick={onCloseMobile}
-              className="btn btn-ghost btn-icon md:hidden"
-              aria-label="Close menu"
-            >
-              <X size={18} />
-            </button>
-          )}
+          {/* Navigation Links */}
+          <nav className="flex flex-col gap-space-2xs p-space-sm mt-space-xs">
+            {navItems.map(({ icon, label, to }) => (
+              <NavLink
+                key={to}
+                to={to}
+                end={to === '/'}
+                onClick={onCloseMobile}
+                style={{ textDecoration: 'none' }}
+              >
+                {({ isActive }) => (
+                  <div
+                    className={`flex items-center gap-space-sm px-space-sm py-space-xs rounded-lg transition-all font-title-sm text-title-sm cursor-pointer ${
+                      isActive
+                        ? 'bg-primary-container text-on-primary font-semibold shadow-[0_4px_20px_rgba(128,0,32,0.45)]'
+                        : 'text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface'
+                    }`}
+                  >
+                    <span className={`material-symbols-outlined text-lg ${isActive ? 'text-on-primary' : 'text-primary'}`}>
+                      {icon}
+                    </span>
+                    <span className="truncate">{label}</span>
+                  </div>
+                )}
+              </NavLink>
+            ))}
+          </nav>
         </div>
 
-        {/* ── Nav links ── */}
-        <nav style={{ flex: 1, overflowY: 'auto', padding: '0.75rem 0' }}>
-          {navItems.map(({ icon: Icon, label, to }) => (
-            <NavLink
-              key={to}
-              to={to}
-              end={to === '/'}
-              onClick={onCloseMobile}
-              style={{ display: 'block', textDecoration: 'none' }}
-            >
-              {({ isActive }) => (
-                <motion.div
-                  whileHover={{ x: 2 }}
-                  transition={{ duration: 0.12 }}
-                  data-tooltip={sidebarCollapsed && !mobileOpen ? label : undefined}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '0.75rem',
-                    padding: sidebarCollapsed && !mobileOpen ? '0.75rem 0' : '0.625rem 1.25rem',
-                    justifyContent: sidebarCollapsed && !mobileOpen ? 'center' : 'flex-start',
-                    marginBottom: '0.125rem',
-                    background: isActive ? 'rgba(128, 0, 32, 0.15)' : 'transparent',
-                    borderRight: isActive ? '3px solid var(--accent-secondary)' : '3px solid transparent',
-                    color: isActive ? 'var(--text-primary)' : 'var(--text-secondary)',
-                    fontFamily: 'var(--font-ui)',
-                    fontSize: '0.875rem',
-                    fontWeight: isActive ? 600 : 400,
-                    cursor: 'pointer',
-                    transition: 'all 0.15s ease',
-                  }}
-                >
-                  <Icon size={18} style={{ color: isActive ? 'var(--accent-secondary)' : 'var(--text-muted)', flexShrink: 0 }} />
-                  <AnimatePresence>
-                    {(!sidebarCollapsed || mobileOpen) && (
-                      <motion.span
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        transition={{ duration: 0.15 }}
-                        style={{ whiteSpace: 'nowrap' }}
-                      >
-                        {label}
-                      </motion.span>
-                    )}
-                  </AnimatePresence>
-                </motion.div>
-              )}
-            </NavLink>
-          ))}
-        </nav>
-
-        {/* ── Settings & User ── */}
-        <div style={{ borderTop: '1px solid var(--glass-border)', padding: '0.75rem 0' }}>
-          <NavLink to="/settings" onClick={onCloseMobile} style={{ display: 'block', textDecoration: 'none' }}>
-            {({ isActive }) => (
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.75rem',
-                padding: sidebarCollapsed && !mobileOpen ? '0.75rem 0' : '0.625rem 1.25rem',
-                justifyContent: sidebarCollapsed && !mobileOpen ? 'center' : 'flex-start',
-                color: isActive ? 'var(--text-primary)' : 'var(--text-secondary)',
-                fontSize: '0.875rem',
-                fontWeight: isActive ? 600 : 400,
-                cursor: 'pointer',
-              }}>
-                <Settings size={18} style={{ color: isActive ? 'var(--accent-secondary)' : 'var(--text-muted)' }} />
-                {(!sidebarCollapsed || mobileOpen) && <span>Settings</span>}
+        {/* User Footer Card */}
+        <div className="p-space-sm m-space-sm rounded-xl bg-surface-container-low/70 backdrop-blur-xl border border-outline-variant/20">
+          <div className="flex items-center gap-space-xs mb-space-xs">
+            {profile?.avatar_url ? (
+              <img
+                src={profile.avatar_url}
+                alt="Profile"
+                className="w-8 h-8 rounded-full object-cover shadow-[0_0_8px_rgba(255,179,181,0.3)] border border-primary/40"
+              />
+            ) : (
+              <div className="w-8 h-8 rounded-full bg-primary-container text-on-primary flex items-center justify-center font-bold text-xs shadow-[0_0_8px_rgba(255,179,181,0.3)] border border-primary/40">
+                {initials}
               </div>
             )}
-          </NavLink>
-
-          {/* User info */}
-          {(!sidebarCollapsed || mobileOpen) && (
-            <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '0.625rem',
-              padding: '0.75rem 1.25rem',
-              marginTop: '0.25rem',
-            }}>
-              {/* Avatar */}
-              <div style={{
-                width: 32, height: 32,
-                borderRadius: '50%',
-                background: 'linear-gradient(135deg, var(--accent-primary), var(--accent-mid))',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: '#FFF0F3',
-                fontSize: '0.8125rem',
-                fontWeight: 600,
-                flexShrink: 0,
-                overflow: 'hidden',
-                border: '1px solid var(--pearl-highlight)',
-              }}>
-                {profile?.avatar_url ? (
-                  <img src={profile.avatar_url} alt="avatar" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                ) : (
-                  (profile?.display_name || profile?.full_name || 'A').charAt(0).toUpperCase()
-                )}
-              </div>
-              <div style={{ flex: 1, minWidth: 0 }}>
-                <p style={{ fontSize: '0.8125rem', fontWeight: 600, color: 'var(--text-primary)' }} className="truncate">
-                  {profile?.display_name || profile?.full_name || 'Ariba'}
-                </p>
-                <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }} className="truncate">
-                  {user?.email}
-                </p>
-              </div>
-              <button
-                onClick={() => signOut().then(() => navigate('/login'))}
-                style={{
-                  background: 'none',
-                  border: 'none',
-                  cursor: 'pointer',
-                  color: 'var(--text-muted)',
-                  padding: '4px',
-                  display: 'flex',
-                  borderRadius: 'var(--radius-sm)',
-                }}
-                data-tooltip="Sign out"
-                aria-label="Sign out"
-              >
-                <LogOut size={15} />
-              </button>
+            <div className="flex flex-col min-w-0 flex-1">
+              <span className="font-title-sm text-title-sm text-on-surface font-semibold truncate">
+                {displayName}
+              </span>
+              <span className="font-label-sm text-label-sm text-outline truncate">
+                {subtitle}
+              </span>
             </div>
-          )}
-
-          {/* Collapse toggle (desktop only) */}
-          <button
-            onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
-            className="hidden md:flex"
-            style={{
-              alignItems: 'center',
-              justifyContent: 'center',
-              width: '100%',
-              padding: '0.5rem',
-              background: 'none',
-              border: 'none',
-              cursor: 'pointer',
-              color: 'var(--text-muted)',
-              marginTop: '0.25rem',
-            }}
-            aria-label={sidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-            data-tooltip={sidebarCollapsed ? 'Expand' : 'Collapse'}
-          >
-            {sidebarCollapsed ? <ChevronRight size={16} /> : <ChevronLeft size={16} />}
-          </button>
+          </div>
+          <div className="flex items-center justify-between pt-space-2xs border-t border-outline-variant/20">
+            <button
+              onClick={() => {
+                navigate('/settings')
+                onCloseMobile?.()
+              }}
+              className="flex items-center gap-space-2xs text-on-surface-variant hover:text-on-surface font-label-sm text-label-sm transition-colors"
+              type="button"
+            >
+              <span className="material-symbols-outlined text-base">settings</span>
+              <span>Preferences</span>
+            </button>
+            <button
+              onClick={() => signOut().then(() => navigate('/login'))}
+              className="text-on-surface-variant hover:text-error transition-colors p-space-2xs rounded"
+              type="button"
+              title="Sign out"
+            >
+              <span className="material-symbols-outlined text-base">logout</span>
+            </button>
+          </div>
         </div>
-      </motion.aside>
+      </aside>
     </>
   )
 }

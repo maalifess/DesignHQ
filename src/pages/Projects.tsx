@@ -1,11 +1,8 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { motion, AnimatePresence } from 'framer-motion'
-import { Plus, Grid3X3, List, Search, Filter, Calendar, FolderOpen } from 'lucide-react'
+import { motion } from 'framer-motion'
 import { useProjects, type CreateProjectData } from '@/hooks/useProjects'
 import { GlassModal } from '@/components/ui/GlassModal'
-import { Button } from '@/components/ui/Button'
-import { Input, Select, Textarea } from '@/components/ui/Input'
 import { Badge, PROJECT_COLORS } from '@/components/ui/Badge'
 import { KanbanBoard } from '@/components/projects/KanbanBoard'
 import { daysUntil, deadlineColor, formatDate } from '@/lib/export'
@@ -13,88 +10,10 @@ import { daysUntil, deadlineColor, formatDate } from '@/lib/export'
 const CATEGORIES = [
   { value: 'assignment', label: 'Assignment' },
   { value: 'personal', label: 'Personal' },
-  { value: 'collection', label: 'Collection' },
+  { value: 'collection', label: 'Haute Collection' },
   { value: 'collaboration', label: 'Collaboration' },
-  { value: 'competition', label: 'Competition' },
+  { value: 'competition', label: 'Runway Competition' },
 ]
-
-const STATUS_BADGE: Record<string, 'accent' | 'success' | 'warning' | 'danger' | 'muted'> = {
-  ideation: 'muted',
-  research: 'accent',
-  sketching: 'accent',
-  prototyping: 'warning',
-  refinement: 'warning',
-  final: 'success',
-  submitted: 'success',
-}
-
-function NewProjectModal({ isOpen, onClose, onCreate }: { isOpen: boolean; onClose: () => void; onCreate: (data: CreateProjectData) => void }) {
-  const [form, setForm] = useState<CreateProjectData>({
-    title: '', category: 'assignment', tags: [],
-  })
-  const [tagsInput, setTagsInput] = useState('')
-  const [loading, setLoading] = useState(false)
-  const set = (field: string) => (e: any) => setForm((p) => ({ ...p, [field]: e.target.value }))
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setLoading(true)
-    await onCreate({
-      ...form,
-      tags: tagsInput ? tagsInput.split(',').map((t) => t.trim()).filter(Boolean) : [],
-    })
-    setLoading(false)
-    onClose()
-    setForm({ title: '', category: 'assignment', tags: [] })
-    setTagsInput('')
-  }
-
-  return (
-    <GlassModal isOpen={isOpen} onClose={onClose} title="New Project" size="lg">
-      <form onSubmit={handleSubmit} style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-          <div style={{ gridColumn: '1/-1' }}>
-            <Input label="Project Title" id="new-project-title" value={form.title} onChange={set('title')} placeholder="e.g. SS25 Graduation Collection" required />
-          </div>
-          <Input label="Theme / Concept" id="new-project-theme" value={form.theme || ''} onChange={set('theme')} placeholder="e.g. Fluid Femininity" />
-          <Select label="Category" id="new-project-category" value={form.category} onChange={set('category') as any} options={CATEGORIES} />
-          <Input label="Deadline" id="new-project-deadline" type="date" value={form.deadline || ''} onChange={set('deadline')} />
-          <Input label="Tags (comma-separated)" id="new-project-tags" value={tagsInput} onChange={(e) => setTagsInput(e.target.value)} placeholder="draping, sustainable, avant-garde" />
-        </div>
-
-        {/* Color label */}
-        <div>
-          <label className="input-label">Color Label</label>
-          <div style={{ display: 'flex', gap: '0.5rem', marginTop: '0.5rem' }}>
-            {PROJECT_COLORS.map((c) => (
-              <button
-                key={c.value}
-                type="button"
-                onClick={() => setForm((p) => ({ ...p, color_label: c.value }))}
-                style={{
-                  width: 28, height: 28, borderRadius: '50%',
-                  background: c.value,
-                  border: form.color_label === c.value ? '3px solid var(--text-primary)' : '2px solid rgba(255,255,255,0.3)',
-                  cursor: 'pointer',
-                  transition: 'transform var(--transition-fast)',
-                  transform: form.color_label === c.value ? 'scale(1.2)' : 'scale(1)',
-                }}
-                title={c.label}
-              />
-            ))}
-          </div>
-        </div>
-
-        <Textarea label="Description (optional)" id="new-project-desc" value={form.description || ''} onChange={set('description')} placeholder="What's this project about?" rows={3} />
-
-        <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem', paddingTop: '0.5rem' }}>
-          <Button type="button" variant="ghost" onClick={onClose}>Cancel</Button>
-          <Button type="submit" loading={loading}>Create Project</Button>
-        </div>
-      </form>
-    </GlassModal>
-  )
-}
 
 export default function Projects() {
   const { projects, loading, createProject, updateStatus } = useProjects()
@@ -104,113 +23,176 @@ export default function Projects() {
   const [search, setSearch] = useState('')
   const [filterCategory, setFilterCategory] = useState('')
 
+  const [form, setForm] = useState<CreateProjectData>({
+    title: '', category: 'collection', tags: [],
+  })
+
   const filtered = projects.filter((p) => {
     const matchSearch = !search || p.title.toLowerCase().includes(search.toLowerCase()) || (p.theme || '').toLowerCase().includes(search.toLowerCase())
     const matchCat = !filterCategory || p.category === filterCategory
     return matchSearch && matchCat
   })
 
-  const handleCreate = async (data: CreateProjectData) => {
-    const project = await createProject(data)
+  const handleCreate = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!form.title.trim()) return
+    const project = await createProject(form)
+    setShowNew(false)
+    setForm({ title: '', category: 'collection', tags: [] })
     if (project) navigate(`/projects/${project.id}`)
   }
 
   return (
-    <div style={{ maxWidth: '1400px' }}>
+    <div className="w-full max-w-[1400px] mx-auto space-y-space-lg">
       {/* Header */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '1rem' }}>
-        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '2rem', fontWeight: 600, color: 'var(--text-primary)' }}>
-          Projects
-        </h1>
-        <Button icon={<Plus size={16} />} onClick={() => setShowNew(true)} id="new-project-btn">
-          New Project
-        </Button>
-      </div>
-
-      {/* Controls */}
-      <div style={{ display: 'flex', gap: '0.75rem', marginBottom: '1.5rem', flexWrap: 'wrap', alignItems: 'center' }}>
-        {/* Search */}
-        <div style={{ position: 'relative', flex: '1', minWidth: '200px', maxWidth: '320px' }}>
-          <Search size={15} style={{ position: 'absolute', left: '0.75rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)', pointerEvents: 'none' }} />
-          <input className="input" style={{ paddingLeft: '2.25rem' }} placeholder="Search projects..." value={search} onChange={(e) => setSearch(e.target.value)} id="projects-search" />
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-space-md pb-space-xs border-b border-outline-variant/20">
+        <div>
+          <div className="flex items-center gap-space-2xs text-primary font-label-sm text-label-sm tracking-widest uppercase font-semibold">
+            <span className="material-symbols-outlined text-base">styler</span>
+            <span>Atelier Runway Registry</span>
+          </div>
+          <h1 className="font-headline-hero text-headline-hero text-on-surface font-semibold tracking-tight">
+            Haute Collections &amp; Projects
+          </h1>
         </div>
 
-        {/* Category filter */}
-        <select className="input" style={{ width: 'auto', minWidth: '140px' }} value={filterCategory} onChange={(e) => setFilterCategory(e.target.value)} id="projects-filter-category">
-          <option value="">All Categories</option>
-          {CATEGORIES.map((c) => <option key={c.value} value={c.value}>{c.label}</option>)}
-        </select>
+        <button
+          onClick={() => setShowNew(true)}
+          className="flex items-center gap-space-xs px-space-md py-space-xs rounded-lg bg-primary-container text-on-primary font-title-sm text-title-sm hover:brightness-110 active:scale-95 transition-all font-semibold shadow-lg border border-pearl-highlight cursor-pointer"
+          type="button"
+        >
+          <span className="material-symbols-outlined text-base">add_circle</span>
+          <span>New Collection</span>
+        </button>
+      </div>
 
-        {/* View toggle */}
-        <div style={{ display: 'flex', border: '1px solid var(--glass-border)', borderRadius: 'var(--radius-md)', overflow: 'hidden', marginLeft: 'auto' }}>
-          {(['grid', 'list', 'kanban'] as const).map((v) => (
-            <button key={v} onClick={() => setView(v)} style={{
-              padding: '0.5rem 0.875rem',
-              background: view === v ? 'var(--accent-primary)' : 'transparent',
-              color: view === v ? 'white' : 'var(--text-muted)',
-              border: 'none', cursor: 'pointer',
-              fontSize: '0.8125rem', fontFamily: 'var(--font-ui)',
-              transition: 'all var(--transition-base)',
-            }}>
-              {v === 'grid' ? <Grid3X3 size={15} /> : v === 'list' ? <List size={15} /> : 'Kanban'}
-            </button>
-          ))}
+      {/* Control Bar */}
+      <div className="flex flex-wrap items-center justify-between gap-space-sm bg-surface-container-low/90 backdrop-blur-xl p-space-sm rounded-xl border border-outline-variant/20">
+        <div className="flex flex-wrap items-center gap-space-sm flex-1 min-w-[240px] max-w-lg">
+          {/* Search */}
+          <div className="relative flex-1">
+            <span className="material-symbols-outlined absolute left-space-xs top-1/2 -translate-y-1/2 text-outline text-base">
+              search
+            </span>
+            <input
+              className="w-full pl-8 pr-space-sm py-1.5 rounded-lg bg-surface-container-high/60 text-on-surface placeholder:text-outline font-body-sm text-body-sm focus:outline-none focus:bg-surface-container-highest transition-all border border-outline-variant/20"
+              placeholder="Search collections by title or theme..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+          </div>
+
+          {/* Category Filter */}
+          <select
+            className="px-space-sm py-1.5 rounded-lg bg-surface-container-high/60 text-on-surface font-body-sm text-body-sm border border-outline-variant/20 focus:outline-none"
+            value={filterCategory}
+            onChange={(e) => setFilterCategory(e.target.value)}
+          >
+            <option value="">All Categories</option>
+            {CATEGORIES.map((c) => <option key={c.value} value={c.value}>{c.label}</option>)}
+          </select>
+        </div>
+
+        {/* View Switcher */}
+        <div className="flex items-center rounded-lg bg-surface-container-high/40 p-0.5 border border-outline-variant/20">
+          <button
+            onClick={() => setView('grid')}
+            className={`px-space-xs py-1 rounded-md font-label-sm text-label-sm flex items-center gap-1 cursor-pointer transition-all ${
+              view === 'grid' ? 'bg-primary-container text-on-primary font-semibold shadow-sm' : 'text-on-surface-variant hover:text-on-surface'
+            }`}
+          >
+            <span className="material-symbols-outlined text-sm">grid_view</span> Grid
+          </button>
+          <button
+            onClick={() => setView('list')}
+            className={`px-space-xs py-1 rounded-md font-label-sm text-label-sm flex items-center gap-1 cursor-pointer transition-all ${
+              view === 'list' ? 'bg-primary-container text-on-primary font-semibold shadow-sm' : 'text-on-surface-variant hover:text-on-surface'
+            }`}
+          >
+            <span className="material-symbols-outlined text-sm">view_list</span> List
+          </button>
+          <button
+            onClick={() => setView('kanban')}
+            className={`px-space-xs py-1 rounded-md font-label-sm text-label-sm flex items-center gap-1 cursor-pointer transition-all ${
+              view === 'kanban' ? 'bg-primary-container text-on-primary font-semibold shadow-sm' : 'text-on-surface-variant hover:text-on-surface'
+            }`}
+          >
+            <span className="material-symbols-outlined text-sm">view_week</span> Pipeline
+          </button>
         </div>
       </div>
 
-      {/* Loading */}
+      {/* View Output */}
       {loading ? (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: '1rem' }}>
-          {[...Array(6)].map((_, i) => <div key={i} className="skeleton" style={{ height: 220, borderRadius: 'var(--radius-lg)' }} />)}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-space-md">
+          {[...Array(6)].map((_, i) => <div key={i} className="skeleton h-56 rounded-xl" />)}
         </div>
       ) : view === 'kanban' ? (
         <KanbanBoard projects={filtered} onStatusChange={updateStatus} />
       ) : filtered.length === 0 ? (
-        <div className="glass-card" style={{ textAlign: 'center', padding: '4rem 2rem', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1.25rem' }}>
-          <FolderOpen size={56} style={{ color: 'var(--glass-border)' }} />
+        <div className="rounded-xl bg-surface-container-low/90 backdrop-blur-2xl p-space-3xl text-center flex flex-col items-center justify-center gap-space-md border border-outline-variant/20">
+          <span className="material-symbols-outlined text-6xl text-outline/50">folder_open</span>
           <div>
-            <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.5rem', color: 'var(--text-primary)', marginBottom: '0.5rem' }}>
-              {search ? 'No projects match your search' : 'Your design journey starts here'}
+            <h3 className="font-headline-sm text-headline-sm text-on-surface font-semibold mb-1">
+              No Collections Found
             </h3>
-            <p style={{ color: 'var(--text-muted)', maxWidth: 360 }}>
-              {search ? 'Try a different search term.' : 'Create your first project and bring your ideas to life.'}
+            <p className="font-body-md text-body-md text-outline max-w-sm">
+              Create your first haute couture project or adjust your search filter.
             </p>
           </div>
-          {!search && <Button icon={<Plus size={16} />} onClick={() => setShowNew(true)}>Start a Project</Button>}
+          <button
+            onClick={() => setShowNew(true)}
+            className="px-space-md py-space-xs rounded-lg bg-primary-container text-on-primary font-title-sm text-title-sm font-semibold shadow-md cursor-pointer border border-pearl-highlight"
+          >
+            Create New Collection
+          </button>
         </div>
       ) : view === 'grid' ? (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: '1rem' }}>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-space-md">
           {filtered.map((project, i) => {
             const days = project.deadline ? daysUntil(project.deadline) : null
             return (
-              <motion.div key={project.id} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }}>
-                <div className="glass-card" style={{ padding: 0, overflow: 'hidden', cursor: 'pointer', height: '100%' }}
-                  onClick={() => navigate(`/projects/${project.id}`)}>
-                  {/* Cover */}
-                  <div style={{
-                    height: 120,
-                    background: project.cover_image_url
-                      ? `url(${project.cover_image_url}) center/cover`
-                      : `linear-gradient(135deg, ${project.color_label || 'var(--accent-light)'}, var(--bg-surface-deep))`,
-                    position: 'relative',
-                  }}>
-                    <div style={{ position: 'absolute', top: '0.75rem', left: '0.75rem', display: 'flex', gap: '0.375rem' }}>
-                      <Badge variant={STATUS_BADGE[project.status] || 'muted'}>
-                        {project.status.charAt(0).toUpperCase() + project.status.slice(1)}
-                      </Badge>
-                      {project.category && <Badge variant="muted">{project.category}</Badge>}
+              <motion.div
+                key={project.id}
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.05 }}
+              >
+                <div
+                  onClick={() => navigate(`/projects/${project.id}`)}
+                  className="rounded-xl bg-surface-container-low/80 backdrop-blur-xl p-space-lg shadow-xl hover:bg-surface-container-low hover:-translate-y-1 transition-all duration-300 cursor-pointer flex flex-col justify-between h-full border border-outline-variant/20 group"
+                >
+                  <div className="space-y-space-xs">
+                    <div className="flex items-center justify-between">
+                      <span className="px-space-xs py-0.5 rounded-full bg-secondary-container/50 text-secondary font-label-sm text-label-sm uppercase font-semibold border border-secondary/20">
+                        {project.category || 'Collection'}
+                      </span>
+                      {project.color_label && (
+                        <span
+                          className="w-3.5 h-3.5 rounded-full shadow-sm border border-pearl-highlight"
+                          style={{ background: project.color_label }}
+                        />
+                      )}
                     </div>
+                    <h3 className="font-headline-sm text-headline-sm text-on-surface font-semibold group-hover:text-primary transition-colors mt-2">
+                      {project.title}
+                    </h3>
+                    {project.theme && (
+                      <p className="font-body-sm text-body-sm text-outline line-clamp-2">
+                        {project.theme}
+                      </p>
+                    )}
                   </div>
-                  <div style={{ padding: '1rem' }}>
-                    <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.125rem', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '0.25rem' }} className="truncate">{project.title}</h3>
-                    {project.theme && <p style={{ fontSize: '0.8125rem', color: 'var(--text-muted)', marginBottom: '0.625rem' }} className="truncate">{project.theme}</p>}
+
+                  <div className="pt-space-md mt-space-md border-t border-outline-variant/20 flex items-center justify-between">
+                    <span className="font-label-sm text-label-sm text-on-surface-variant font-semibold capitalize">
+                      Stage: {project.status || 'Sampling'}
+                    </span>
                     {days !== null && (
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.375rem' }}>
-                        <Calendar size={12} style={{ color: deadlineColor(days) }} />
-                        <span style={{ fontSize: '0.8125rem', color: deadlineColor(days), fontWeight: 500 }}>
-                          {days < 0 ? `${Math.abs(days)}d overdue` : days === 0 ? 'Due today' : `Due in ${days}d`}
-                        </span>
-                      </div>
+                      <span className="font-label-sm text-label-sm font-semibold flex items-center gap-1" style={{ color: deadlineColor(days) }}>
+                        <span className="material-symbols-outlined text-xs">schedule</span>
+                        {days < 0 ? `${Math.abs(days)}d overdue` : `${days}d`}
+                      </span>
                     )}
                   </div>
                 </div>
@@ -219,34 +201,119 @@ export default function Projects() {
           })}
         </div>
       ) : (
-        /* List view */
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-          {filtered.map((project) => {
-            const days = project.deadline ? daysUntil(project.deadline) : null
-            return (
-              <div key={project.id} className="glass-card" style={{ padding: '1rem 1.25rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '1rem' }}
-                onClick={() => navigate(`/projects/${project.id}`)}>
-                <div style={{ width: 48, height: 48, borderRadius: 'var(--radius-md)', background: project.color_label || 'var(--accent-light)', flexShrink: 0, border: '1px solid var(--glass-border)' }} />
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.25rem' }}>
-                    <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1rem', fontWeight: 600, color: 'var(--text-primary)' }} className="truncate">{project.title}</h3>
-                    <Badge variant={STATUS_BADGE[project.status] || 'muted'}>{project.status}</Badge>
-                  </div>
-                  {project.theme && <p style={{ fontSize: '0.8125rem', color: 'var(--text-muted)' }}>{project.theme}</p>}
+        /* List View */
+        <div className="flex flex-col gap-space-xs">
+          {filtered.map((project) => (
+            <div
+              key={project.id}
+              onClick={() => navigate(`/projects/${project.id}`)}
+              className="p-space-md rounded-xl bg-surface-container-low/80 backdrop-blur-xl hover:bg-surface-container-low transition-all cursor-pointer flex items-center justify-between gap-space-md border border-outline-variant/20"
+            >
+              <div className="flex items-center gap-space-sm min-w-0">
+                <span
+                  className="w-4 h-4 rounded-full flex-shrink-0 border border-pearl-highlight"
+                  style={{ background: project.color_label || '#800020' }}
+                />
+                <div className="flex flex-col min-w-0">
+                  <span className="font-title-sm text-title-sm text-on-surface font-semibold truncate">
+                    {project.title}
+                  </span>
+                  {project.theme && (
+                    <span className="font-body-sm text-body-sm text-outline truncate">
+                      {project.theme}
+                    </span>
+                  )}
                 </div>
-                {days !== null && (
-                  <span style={{ fontSize: '0.8125rem', color: deadlineColor(days), fontWeight: 500, flexShrink: 0 }}>
-                    {days < 0 ? `${Math.abs(days)}d overdue` : `${days}d`}
+              </div>
+
+              <div className="flex items-center gap-space-md flex-shrink-0">
+                <span className="px-space-xs py-0.5 rounded-md bg-surface-container-high text-secondary font-label-sm text-label-sm uppercase font-semibold">
+                  {project.status || 'Ideation'}
+                </span>
+                {project.deadline && (
+                  <span className="font-body-sm text-body-sm text-outline hidden sm:inline">
+                    {formatDate(project.deadline)}
                   </span>
                 )}
-                {project.deadline && <span style={{ fontSize: '0.8125rem', color: 'var(--text-muted)', flexShrink: 0 }}>{formatDate(project.deadline)}</span>}
+                <span className="material-symbols-outlined text-outline text-lg">chevron_right</span>
               </div>
-            )
-          })}
+            </div>
+          ))}
         </div>
       )}
 
-      <NewProjectModal isOpen={showNew} onClose={() => setShowNew(false)} onCreate={handleCreate} />
+      {/* New Project Modal */}
+      <GlassModal isOpen={showNew} onClose={() => setShowNew(false)} title="Create New Haute Collection" size="md">
+        <form onSubmit={handleCreate} className="p-space-lg flex flex-col gap-space-md">
+          <div className="form-group">
+            <label className="input-label">Collection Title *</label>
+            <input
+              required
+              className="input"
+              placeholder="e.g. Crimson Reverie AW26"
+              value={form.title}
+              onChange={(e) => setForm({ ...form, title: e.target.value })}
+            />
+          </div>
+
+          <div className="form-group">
+            <label className="input-label">Theme / Concept</label>
+            <input
+              className="input"
+              placeholder="e.g. Sculpted velvet &amp; bias drape"
+              value={form.theme || ''}
+              onChange={(e) => setForm({ ...form, theme: e.target.value })}
+            />
+          </div>
+
+          <div className="grid grid-cols-2 gap-space-sm">
+            <div className="form-group">
+              <label className="input-label">Category</label>
+              <select
+                className="input"
+                value={form.category}
+                onChange={(e) => setForm({ ...form, category: e.target.value as any })}
+              >
+                {CATEGORIES.map((c) => <option key={c.value} value={c.value}>{c.label}</option>)}
+              </select>
+            </div>
+            <div className="form-group">
+              <label className="input-label">Target Runway Date</label>
+              <input
+                type="date"
+                className="input"
+                value={form.deadline || ''}
+                onChange={(e) => setForm({ ...form, deadline: e.target.value })}
+              />
+            </div>
+          </div>
+
+          <div>
+            <label className="input-label">Color Label Swatch</label>
+            <div className="flex gap-space-xs mt-1">
+              {PROJECT_COLORS.map((c) => (
+                <button
+                  key={c.value}
+                  type="button"
+                  onClick={() => setForm({ ...form, color_label: c.value })}
+                  className={`w-7 h-7 rounded-full cursor-pointer transition-transform border border-pearl-highlight ${
+                    form.color_label === c.value ? 'scale-125 ring-2 ring-primary' : ''
+                  }`}
+                  style={{ background: c.value }}
+                  title={c.label}
+                />
+              ))}
+            </div>
+          </div>
+
+          <button
+            type="submit"
+            className="w-full py-space-xs rounded-lg bg-primary-container text-on-primary font-title-sm text-title-sm font-semibold shadow-lg hover:brightness-110 active:scale-95 transition-all border border-pearl-highlight mt-2"
+          >
+            Initialize Collection
+          </button>
+        </form>
+      </GlassModal>
     </div>
   )
 }

@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={"darkMode":"class","theme":{"extend":{"colors":{"surface-variant":"#403136","on-tertiary-container":"#ff828c","on-primary":"#680018","surface-dim":"#1c1014","secondary-fixed-dim":"#ffb1c2","on-primary-fixed-variant":"#8e0f28","on-error":"#690005","background":"#1c1014","secondary-container":"#832041","outline-variant":"#584141","primary-container":"#800020","on-tertiary-fixed":"#40000d","primary-fixed-dim":"#ffb3b5","surface-container-lowest":"#160b0f","error":"#ffb4ab","primary":"#ffb3b5","outline":"#a78a8a","tertiary-fixed-dim":"#ffb3b6","surface-container":"#291c21","on-primary-fixed":"#40000b","secondary":"#ffb1c2","surface-container-highest":"#403136","on-error-container":"#ffdad6","surface":"#1c1014","tertiary":"#ffb3b6","on-secondary":"#64042b","on-secondary-container":"#ff96af","inverse-surface":"#f4dce3","surface-bright":"#44353a","on-secondary-fixed-variant":"#832041","surface-container-low":"#25181d","tertiary-container":"#771727","inverse-on-surface":"#3b2c31","on-secondary-fixed":"#3f0018","on-background":"#f4dce3","primary-fixed":"#ffdada","surface-container-high":"#34262b","on-tertiary":"#65071c","error-container":"#93000a","surface-tint":"#ffb3b5","secondary-fixed":"#ffd9e0","tertiary-fixed":"#ffdada","inverse-primary":"#af2b3e","on-surface":"#f4dce3","on-primary-container":"#ff828a","on-tertiary-fixed-variant":"#842130","on-surface-variant":"#e0bfbf"},"borderRadius":{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},"spacing":{"sidebar-width":"15rem","topbar-height":"4rem","space-xs":"0.5rem","sidebar-collapsed":"4rem","space-3xl":"4rem","gutter-mobile":"1rem","space-sm":"0.75rem","space-md":"1rem","space-2xl":"3rem","gutter-desktop":"1.5rem","space-lg":"1.5rem","space-xl":"2rem","space-2xs":"0.25rem"},"fontFamily":{"body-md":["Plus Jakarta Sans"],"headline-lg":["Playfair Display"],"label-md":["Plus Jakarta Sans"],"title-md":["Plus Jakarta Sans"],"body-lg":["Plus Jakarta Sans"],"headline-hero-mobile":["Playfair Display"],"title-sm":["Plus Jakarta Sans"],"body-sm":["Plus Jakarta Sans"],"label-sm":["Plus Jakarta Sans"],"headline-lg-mobile":["Playfair Display"],"headline-hero":["Playfair Display"],"headline-sm":["Playfair Display"],"headline-md":["Playfair Display"]},"fontSize":{"body-md":["13px",{"lineHeight":"19.5px","letterSpacing":"0.005em","fontWeight":"400"}],"headline-lg":["32px",{"lineHeight":"38px","letterSpacing":"-0.01em","fontWeight":"600"}],"label-md":["12px",{"lineHeight":"16px","letterSpacing":"0.03em","fontWeight":"600"}],"title-md":["16px",{"lineHeight":"24px","letterSpacing":"0em","fontWeight":"600"}],"body-lg":["15px",{"lineHeight":"24px","letterSpacing":"0em","fontWeight":"400"}],"headline-hero-mobile":["30px",{"lineHeight":"36px","letterSpacing":"-0.01em","fontWeight":"600"}],"title-sm":["14px",{"lineHeight":"20px","letterSpacing":"0.01em","fontWeight":"600"}],"body-sm":["12px",{"lineHeight":"16px","letterSpacing":"0.01em","fontWeight":"400"}],"label-sm":["11px",{"lineHeight":"14px","letterSpacing":"0.04em","fontWeight":"600"}],"headline-lg-mobile":["24px",{"lineHeight":"30px","letterSpacing":"-0.01em","fontWeight":"600"}],"headline-hero":["40px",{"lineHeight":"48px","letterSpacing":"-0.01em","fontWeight":"600"}],"headline-sm":["20px",{"lineHeight":"26px","letterSpacing":"0em","fontWeight":"500"}],"headline-md":["24px",{"lineHeight":"30px","letterSpacing":"0em","fontWeight":"500"}]}}}};</script></head><body class="bg-background font-body-md text-body-md text-on-surface antialiased selection:bg-primary-container selection:text-on-primary-container min-h-screen"><aside class="fixed left-0 top-0 h-full w-sidebar-width bg-surface-container-lowest/80 backdrop-blur-2xl z-50 flex flex-col justify-between shadow-[0_8px_32px_0_rgba(0,0,0,0.45)]"><div class="flex flex-col"><div class="h-topbar-height px-space-md flex items-center gap-space-xs bg-surface-container-low/40"><img alt="DesignHQ Atelier Emblem" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAgIde11sgqpeAqw-6pAC2minVEJsSWlN4Q9-uF5UZq-yQiiqMyXco2YZJ8xiLPvhNgFkHbGPqPww2ULYkvcVfSQRGoy8-HYgxvhPb4_xVDe5aLzj8BIZb6vkYSAdZOMsyeNk9aQmoLWGxXZLpbo2MSoZuQv71PN531hhXZS_veTMTFQctqYNxbHLZKWGgQYW4XT4fA6om0hoO0Pw16j5BPA7udYUoBxS8zRZDFdbIFyaUJg11SnuBhmA"/><div class="flex flex-col min-w-0"><span class="font-headline-sm text-headline-sm text-on-surface truncate tracking-tight">DesignHQ</span><span class="font-label-sm text-label-sm uppercase tracking-widest text-primary font-semibold">Atelier Studio</span></div></div><nav class="flex flex-col gap-space-2xs p-space-sm mt-space-xs" data-active-classes="bg-primary-container text-on-primary font-title-sm shadow-[0_4px_20px_rgba(128,0,32,0.45)]"><a class="flex items-center gap-space-sm px-space-sm py-space-xs rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-title-sm text-title-sm" data-path="dashboard" href="#"><span class="material-symbols-outlined text-lg">dashboard</span><span>Dashboard</span></a><a class="flex items-center gap-space-sm px-space-sm py-space-xs rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-title-sm text-title-sm" data-path="projects" href="#"><span class="material-symbols-outlined text-lg">styler</span><span>Collections</span></a><a class="flex items-center gap-space-sm px-space-sm py-space-xs rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-title-sm text-title-sm" data-path="moodboards" href="#"><span class="material-symbols-outlined text-lg">auto_awesome_motion</span><span>Mood Boards &amp; AI</span></a><a aria-current="page" class="flex items-center gap-space-sm px-space-sm py-space-xs rounded-lg transition-colors bg-primary-container text-on-primary font-title-sm shadow-[0_4px_20px_rgba(128,0,32,0.45)]" data-path="sketchbook" href="#"><span class="material-symbols-outlined text-lg">draw</span><span>Sketchbook</span></a><a class="flex items-center gap-space-sm px-space-sm py-space-xs rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-title-sm text-title-sm" data-path="fabrics" href="#"><span class="material-symbols-outlined text-lg">texture</span><span>Fabric Swatches</span></a><a class="flex items-center gap-space-sm px-space-sm py-space-xs rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-title-sm text-title-sm" data-path="notes" href="#"><span class="material-symbols-outlined text-lg">straighten</span><span>Fitting Notes</span></a><a class="flex items-center gap-space-sm px-space-sm py-space-xs rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-title-sm text-title-sm" data-path="portfolio" href="#"><span class="material-symbols-outlined text-lg">auto_stories</span><span>Portfolio</span></a></nav></div><div class="p-space-sm m-space-sm rounded-xl bg-surface-container-low/70 backdrop-blur-xl"><div class="flex items-center gap-space-xs mb-space-xs"><img alt="Profile" class="w-8 h-8 rounded-full object-cover shadow-[0_0_8px_rgba(255,179,181,0.3)]" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC5cd3rX55351NRoBrQly38xM8XXfeukTW5oYTXKtxerpfcXtJ7pDhGx1qYuN0qR3Uf_QNm4IdsOcOrbCGfeBHAW8OF_yrsv3RNoVM-606gX-107rMozRKhE9JkuW-ICpmXQZTBeJk11gKWILjNPErWh_NA5uyYB28xJ2_G08MX1-rF8oZxl_KK6fTDQeDB28-bMhz-BR04b-bcOl4epB5mZcn2sBe4XvnN3Xkiv5n2o3Mn-HhNbsJa7A"/><div class="flex flex-col min-w-0 flex-1"><span class="font-title-sm text-title-sm text-on-surface font-semibold truncate">Aria Chen</span><span class="font-label-sm text-label-sm text-outline truncate">Royal College of Art</span></div></div><div class="flex items-center justify-between pt-space-2xs"><button class="flex items-center gap-space-2xs text-on-surface-variant hover:text-on-surface font-label-sm text-label-sm transition-colors" type="button"><span class="material-symbols-outlined text-base">settings</span><span>Preferences</span></button><button class="text-on-surface-variant hover:text-error transition-colors p-space-2xs rounded" type="button"><span class="material-symbols-outlined text-base">logout</span></button></div></div></aside><div class="pl-sidebar-width min-h-screen flex flex-col"><header class="fixed top-0 left-sidebar-width right-0 h-topbar-height z-40 bg-surface-container-lowest/80 backdrop-blur-2xl px-gutter-desktop flex items-center justify-between shadow-[0_8px_32px_0_rgba(0,0,0,0.45)]"><div class="flex items-center gap-space-sm w-full max-w-lg"><div class="relative w-full"><span class="material-symbols-outlined absolute left-space-sm top-1/2 -translate-y-1/2 text-outline text-lg pointer-events-none">search</span><input class="w-full pl-9 pr-20 py-space-xs rounded-lg bg-surface-container-high/60 text-on-surface placeholder:text-outline font-body-sm text-body-sm focus:outline-none focus:bg-surface-container-highest transition-all" placeholder="Search collections, swatches, sketches..." type="text"/><kbd class="absolute right-space-sm top-1/2 -translate-y-1/2 font-label-sm text-label-sm px-space-2xs py-0.5 rounded bg-surface-container-lowest text-outline">Ctrl K</kbd></div></div><div class="flex items-center gap-space-md"><div class="flex items-center rounded-lg bg-surface-container-high/40 p-0.5"><button class="px-space-xs py-space-2xs rounded-lg bg-secondary-container text-on-secondary-container font-label-sm text-label-sm flex items-center gap-1" title="Dark Velvet Mode" type="button"><span class="material-symbols-outlined text-sm">dark_mode</span><span class="hidden sm:inline">Velvet</span></button><button class="px-space-xs py-space-2xs rounded-lg text-on-surface-variant hover:text-on-surface font-label-sm text-label-sm flex items-center gap-1" title="Atelier Light Mode" type="button"><span class="material-symbols-outlined text-sm">light_mode</span><span class="hidden sm:inline">Alabaster</span></button></div><button class="relative p-space-xs rounded-lg bg-surface-container-high/50 text-on-surface-variant hover:text-on-surface transition-colors" type="button"><span class="material-symbols-outlined text-lg">notifications</span><span class="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-error text-on-error font-label-sm text-[9px] font-bold flex items-center justify-center leading-none">3</span></button><button class="flex items-center gap-space-xs px-space-md py-space-xs rounded-lg bg-primary-container text-on-primary font-title-sm text-title-sm hover:brightness-110 active:scale-95 transition-all shadow-[0_4px_20px_rgba(128,0,32,0.45)]" type="button"><span class="material-symbols-outlined text-base">add</span><span class="font-semibold">New Collection</span></button><img alt="Profile" class="w-8 h-8 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC5cd3rX55351NRoBrQly38xM8XXfeukTW5oYTXKtxerpfcXtJ7pDhGx1qYuN0qR3Uf_QNm4IdsOcOrbCGfeBHAW8OF_yrsv3RNoVM-606gX-107rMozRKhE9JkuW-ICpmXQZTBeJk11gKWILjNPErWh_NA5uyYB28xJ2_G08MX1-rF8oZxl_KK6fTDQeDB28-bMhz-BR04b-bcOl4epB5mZcn2sBe4XvnN3Xkiv5n2o3Mn-HhNbsJa7A"/></div></header><main class="w-full pt-topbar-height px-gutter-desktop pb-space-3xl flex-1 bg-surface-dim/40"><div class="flex flex-col w-full">
+<div class="flex flex-col gap-space-md">
+<!-- Top Workspace Sub-Header & Action Control Bar -->
+<div class="flex flex-col xl:flex-row xl:items-center justify-between gap-space-md p-space-md rounded-xl bg-surface-container-lowest/90 backdrop-blur-xl shadow-xl">
+<div class="flex flex-wrap items-center gap-space-md">
+<div class="flex items-center gap-space-xs">
+<div class="w-10 h-10 rounded-lg bg-primary-container/30 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-2xl">draw</span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-space-xs">
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold tracking-tight">Look 04 — Pleated Asymmetrical Velvet Coat</span>
+<span class="px-space-xs py-0.5 rounded-full bg-secondary-container/40 text-on-secondary-container font-label-sm text-label-sm uppercase tracking-wider">AW26 Draft</span>
+</div>
+<div class="flex items-center gap-space-sm font-label-sm text-label-sm text-outline">
+<span class="text-on-surface-variant font-medium">Collection: Crimson Reverie AW26</span>
+<span>•</span>
+<span>Version: v2.4 (Modified 12m ago)</span>
+<span>•</span>
+<span class="flex items-center gap-1 text-primary-fixed-dim">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+                Auto-saved to Cloud
+              </span>
+</div>
+</div>
+</div>
+</div>
+<!-- Action Operations Toolbar -->
+<div class="flex flex-wrap items-center gap-space-xs">
+<div class="flex items-center bg-surface-container-high/50 p-1 rounded-lg">
+<button class="p-space-xs text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest rounded transition-all" id="undoBtn" title="Undo (Ctrl+Z)" type="button">
+<span class="material-symbols-outlined text-lg">undo</span>
+</button>
+<button class="p-space-xs text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest rounded transition-all" id="redoBtn" title="Redo (Ctrl+Y)" type="button">
+<span class="material-symbols-outlined text-lg">redo</span>
+</button>
+<div class="w-px h-4 bg-outline-variant mx-1"></div>
+<button class="p-space-xs text-on-surface-variant hover:text-error hover:bg-error-container/20 rounded transition-all" id="clearCanvasBtn" title="Clear Canvas" type="button">
+<span class="material-symbols-outlined text-lg">delete_sweep</span>
+</button>
+</div>
+<div class="flex items-center bg-surface-container-high/50 p-1 rounded-lg">
+<button class="px-space-sm py-space-xs text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest rounded text-label-md font-label-md flex items-center gap-1.5 transition-all" type="button">
+<span class="material-symbols-outlined text-base">image</span>
+<span>Export PNG</span>
+</button>
+<button class="px-space-sm py-space-xs text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest rounded text-label-md font-label-md flex items-center gap-1.5 transition-all" type="button">
+<span class="material-symbols-outlined text-base">polyline</span>
+<span>Vector SVG</span>
+</button>
+</div>
+<button class="flex items-center gap-space-xs px-space-md py-space-xs rounded-lg bg-primary-container text-on-primary font-title-sm text-title-sm hover:brightness-110 active:scale-95 transition-all shadow-[0_4px_25px_rgba(128,0,32,0.65)]" id="triggerAiCritiqueBtn" type="button">
+<span class="material-symbols-outlined text-base animate-spin" id="aiBtnSpinner" style="display: none;">sync</span>
+<span class="material-symbols-outlined text-base" id="aiBtnIcon">auto_awesome</span>
+<span class="font-semibold tracking-wide">Gemini Fashion Critique</span>
+</button>
+</div>
+</div>
+<!-- Main Workspace Split: Left (Sketchbook Atelier) & Right (Gemini Critique Panel) -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-md items-start">
+<!-- Center-Left: Interactive Fashion Drawing Canvas Area (7 Cols) -->
+<div class="lg:col-span-7 xl:col-span-8 flex flex-col gap-space-sm relative">
+<!-- Canvas Stage Container -->
+<div class="relative w-full rounded-2xl bg-surface-container-lowest/95 shadow-2xl overflow-hidden flex flex-col items-center justify-center min-h-[720px] select-none">
+<!-- Subtle Couture Dot Backdrop Pattern -->
+<div class="absolute inset-0 pointer-events-none opacity-20" style="background-image: radial-gradient(circle, #ffb3b5 1px, transparent 1px); background-size: 28px 28px;"></div>
+<!-- Croquis Stage Ambient Glow -->
+<div class="absolute w-96 h-96 rounded-full bg-primary-container/20 filter blur-3xl pointer-events-none -top-12 -left-12"></div>
+<div class="absolute w-80 h-80 rounded-full bg-secondary-container/20 filter blur-3xl pointer-events-none -bottom-16 right-0"></div>
+<!-- Garment & Croquis Technical Layer (Interactive SVG + HTML Canvas) -->
+<div class="relative w-full h-[720px] flex items-center justify-center">
+<!-- Reference Underlay Model Figure with Avant-Garde Coat Illustration -->
+<div class="absolute inset-0 flex items-center justify-center p-space-md pointer-events-none">
+<div class="relative h-full aspect-[9/16] flex items-center justify-center">
+<!-- Detailed Stylized Fashion Illustration Render -->
+<img class="w-full h-full object-contain filter drop-shadow-[0_12px_36px_rgba(0,0,0,0.8)] opacity-95" data-alt="High fashion editorial sketch of an avant-garde tailoring coat in deep merlot and black velvet on a slender runway mannequin croquis. Architectural pleated asymmetric lapels, sharply structured shoulders, cinched corseted waistline, dramatic cascading biased pleats at the lower left hemline, luxury atelier technical pencil style with deep burgundy velvet wash and gold leaf embroidery accents on dark obsidian textured studio background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDqUqMaZ4aO6sStbgiyGtRIZNTeGfeBCg0FgVFHTeVfxcAlQCM1gl5wTndrrOIGqAnh3B6nv6Z-yjmCbW1mV7kIHjtzSuTE-pVHCZ2sbTu8FNEMLAtF1HIad223op8LJDV5NfdDS7GiDX6zvV6bNp8k397DTFWg3i_nhnEta4LZyzlBESzxFdHx75m--TQRz1n7q0MFu0tEefbk9vogS_F3PJOaQI_b1maTikugrVX4KQpOlzqXFCvSgw"/>
+<!-- Couture Technical Callout Badges Overlaid on Sketch -->
+<div class="absolute top-[28%] -left-6 bg-surface-container-high/90 backdrop-blur-md px-space-xs py-1 rounded-full shadow-lg flex items-center gap-1.5 animate-bounce">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+<span class="font-label-sm text-label-sm text-on-surface">Notch Lapel +1.5cm</span>
+</div>
+<div class="absolute bottom-[24%] -right-4 bg-surface-container-high/90 backdrop-blur-md px-space-xs py-1 rounded-full shadow-lg flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+<span class="font-label-sm text-label-sm text-on-surface">Velvet 380 GSM Bias Flow</span>
+</div>
+<div class="absolute top-[48%] left-2 bg-surface-container-high/90 backdrop-blur-md px-space-xs py-1 rounded-full shadow-lg flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-secondary-container"></span>
+<span class="font-label-sm text-label-sm text-on-surface">Armhole Scye Adjustment</span>
+</div>
+</div>
+</div>
+<!-- Freehand Drawing Canvas Overlay -->
+<canvas class="absolute inset-0 w-full h-full cursor-crosshair z-10 touch-none" id="atelierSketchCanvas"></canvas>
+<!-- Floating Atelier Studio Drawing Toolbar -->
+<div class="absolute bottom-space-md left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-space-xs max-w-full px-space-xs">
+<div class="flex items-center gap-1.5 p-1.5 rounded-2xl bg-surface-container-high/95 backdrop-blur-2xl shadow-2xl">
+<!-- Tool Switchers -->
+<button class="tool-btn p-space-xs rounded-xl bg-primary-container text-on-primary shadow-sm hover:brightness-110 transition-all flex items-center justify-center" data-tool="pen" title="Fine Quill &amp; Pen" type="button">
+<span class="material-symbols-outlined text-xl">edit</span>
+</button>
+<button class="tool-btn p-space-xs rounded-xl text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-all flex items-center justify-center" data-tool="charcoal" title="Charcoal Chalk" type="button">
+<span class="material-symbols-outlined text-xl">brush</span>
+</button>
+<button class="tool-btn p-space-xs rounded-xl text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-all flex items-center justify-center" data-tool="wash" title="Aquarelle Wash" type="button">
+<span class="material-symbols-outlined text-xl">format_paint</span>
+</button>
+<button class="tool-btn p-space-xs rounded-xl text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-all flex items-center justify-center" data-tool="eraser" title="Eraser" type="button">
+<span class="material-symbols-outlined text-xl">ink_eraser</span>
+</button>
+<button class="tool-btn p-space-xs rounded-xl text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-all flex items-center justify-center" data-tool="ruler" title="Straight Ruler" type="button">
+<span class="material-symbols-outlined text-xl">straighten</span>
+</button>
+<button class="tool-btn p-space-xs rounded-xl text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-all flex items-center justify-center" data-tool="curve" title="French Curve Tool" type="button">
+<span class="material-symbols-outlined text-xl">gesture</span>
+</button>
+<!-- Separator -->
+<div class="w-px h-6 bg-outline-variant/60 mx-1"></div>
+<!-- Stroke Width Slider Control -->
+<div class="flex items-center gap-space-xs px-space-xs">
+<span class="material-symbols-outlined text-xs text-outline">line_weight</span>
+<input class="w-20 accent-primary bg-surface-container-low cursor-pointer" id="brushSize" max="40" min="1" type="range" value="3"/>
+<span class="font-label-sm text-label-sm text-outline w-6 text-right" id="brushSizeDisplay">3px</span>
+</div>
+<!-- Separator -->
+<div class="w-px h-6 bg-outline-variant/60 mx-1"></div>
+<!-- Curated Fashion Atelier Swatches -->
+<div class="flex items-center gap-1 px-space-xs">
+<button class="color-swatch w-6 h-6 rounded-full bg-primary ring-2 ring-primary ring-offset-2 ring-offset-surface-container-lowest transition-transform hover:scale-110" data-color="#ff828a" title="Crimson Rose" type="button"></button>
+<button class="color-swatch w-6 h-6 rounded-full bg-primary-container transition-transform hover:scale-110" data-color="#800020" title="Velvet Merlot" type="button"></button>
+<button class="color-swatch w-6 h-6 rounded-full bg-secondary-fixed transition-transform hover:scale-110" data-color="#ffd9e0" title="Champagne Pearl" type="button"></button>
+<button class="color-swatch w-6 h-6 rounded-full bg-outline transition-transform hover:scale-110" data-color="#a78a8a" title="Atelier Slate" type="button"></button>
+<button class="color-swatch w-6 h-6 rounded-full bg-surface-container-lowest transition-transform hover:scale-110" data-color="#160b0f" title="Obsidian Noir" type="button"></button>
+<button class="color-swatch w-6 h-6 rounded-full bg-on-surface transition-transform hover:scale-110" data-color="#f4dce3" title="Alabaster Chalk" type="button"></button>
+</div>
+</div>
+<!-- Sketching Hint Footer Pill -->
+<div class="flex items-center gap-2 px-space-sm py-1 rounded-full bg-surface-container-low/80 backdrop-blur-md shadow-md">
+<span class="material-symbols-outlined text-xs text-primary">touch_app</span>
+<span class="font-label-sm text-label-sm text-outline">Interactive drawing active • Click and drag to annotate or sketch</span>
+</div>
+</div>
+<!-- Top Floating Canvas Info Chips -->
+<div class="absolute top-space-md left-space-md z-20 flex items-center gap-space-xs">
+<span class="px-space-sm py-1 rounded-lg bg-surface-container-high/80 backdrop-blur-md text-on-surface font-label-sm text-label-sm flex items-center gap-1.5">
+<span class="material-symbols-outlined text-sm text-primary">grid_3x3</span>
+<span>Proportional 8-Head Grid: On</span>
+</span>
+<span class="px-space-sm py-1 rounded-lg bg-surface-container-high/80 backdrop-blur-md text-on-surface-variant font-label-sm text-label-sm flex items-center gap-1.5">
+<span class="material-symbols-outlined text-sm">layers</span>
+<span>Layer 2: Outer Tailoring</span>
+</span>
+</div>
+<!-- Top Right Zoom Controls -->
+<div class="absolute top-space-md right-space-md z-20 flex items-center bg-surface-container-high/80 backdrop-blur-md rounded-lg p-0.5">
+<button class="p-1 text-on-surface-variant hover:text-on-surface transition-colors" title="Zoom Out" type="button">
+<span class="material-symbols-outlined text-base">remove</span>
+</button>
+<span class="px-2 font-label-sm text-label-sm text-on-surface">100%</span>
+<button class="p-1 text-on-surface-variant hover:text-on-surface transition-colors" title="Zoom In" type="button">
+<span class="material-symbols-outlined text-base">add</span>
+</button>
+<button class="p-1 text-on-surface-variant hover:text-on-surface transition-colors" title="Fit to Screen" type="button">
+<span class="material-symbols-outlined text-base">crop_free</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Specimen Technical Fabric & Specs Matrix Strip -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-space-sm">
+<div class="p-space-md rounded-xl bg-surface-container-low/70 backdrop-blur-md flex items-center gap-space-sm shadow-md">
+<div class="w-10 h-10 rounded-lg bg-secondary-container/30 flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-2xl">texture</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-sm text-label-sm text-outline uppercase tracking-wider">Primary Textile</span>
+<span class="font-title-sm text-title-sm text-on-surface font-semibold truncate">Lyon Silk Velvet • 380 GSM</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Deep Crimson • Pile Weave</span>
+</div>
+</div>
+<div class="p-space-md rounded-xl bg-surface-container-low/70 backdrop-blur-md flex items-center gap-space-sm shadow-md">
+<div class="w-10 h-10 rounded-lg bg-primary-container/30 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-2xl">straighten</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-sm text-label-sm text-outline uppercase tracking-wider">Construction Ease</span>
+<span class="font-title-sm text-title-sm text-on-surface font-semibold truncate">Tailored Fit • +4cm Bust</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Horsehair Canvas Interfacing</span>
+</div>
+</div>
+<div class="p-space-md rounded-xl bg-surface-container-low/70 backdrop-blur-md flex items-center gap-space-sm shadow-md">
+<div class="w-10 h-10 rounded-lg bg-tertiary-container/40 flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined text-2xl">psychology</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-sm text-label-sm text-outline uppercase tracking-wider">Pattern AI Verification</span>
+<span class="font-title-sm text-title-sm text-on-surface font-semibold truncate">3 Warnings Resolved</span>
+<span class="font-body-sm text-body-sm text-primary-fixed-dim">Lapel grainline locked</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: AI Design Mentor Panel (Google Gemini 2.0 Fashion Critique) (5 Cols) -->
+<div class="lg:col-span-5 xl:col-span-4 flex flex-col gap-space-md">
+<!-- Gemini 2.0 Flash Fashion Critique Card -->
+<div class="p-space-lg rounded-2xl bg-surface-container-low/90 backdrop-blur-2xl shadow-2xl flex flex-col gap-space-md relative overflow-hidden">
+<!-- Subtle Burgundy Tint Inset Glow -->
+<div class="absolute top-0 right-0 w-64 h-64 bg-primary-container/20 rounded-full filter blur-3xl pointer-events-none"></div>
+<!-- AI Header Badge -->
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<div class="w-8 h-8 rounded-lg bg-gradient-to-br from-primary-container to-secondary-container flex items-center justify-center text-primary-fixed shadow-md">
+<span class="material-symbols-outlined text-lg animate-pulse">auto_awesome</span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-1.5">
+<span class="font-title-sm text-title-sm text-on-surface font-semibold">Gemini 2.0 Flash</span>
+<span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-primary text-on-primary">AI MENTOR</span>
+</div>
+<span class="font-label-sm text-label-sm text-outline">Fashion Professor &amp; Couture Drapery Model</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline hover:text-on-surface cursor-pointer text-xl">info</span>
+</div>
+<!-- Overall Aesthetic Rating & Silhouette Score Bar -->
+<div class="p-space-md rounded-xl bg-surface-container-high/60 backdrop-blur-md flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Aesthetic &amp; Silhouette Rating</span>
+<span class="font-headline-sm text-headline-sm text-primary font-bold">94<span class="text-body-sm text-outline font-normal">/100</span></span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface">
+<span class="font-semibold text-primary-fixed">Dark Romantic Tailoring</span> — Strong architectural expression with balanced asymmetry.
+            </p>
+<!-- Progress Fill Bar -->
+<div class="w-full h-2 rounded-full bg-surface-container-highest overflow-hidden mt-1">
+<div class="h-full rounded-full bg-gradient-to-r from-secondary-container via-primary-container to-primary" style="width: 94%;"></div>
+</div>
+</div>
+<!-- Section: Works Well (Checkmarks) -->
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-center gap-space-xs text-primary-fixed-dim">
+<span class="material-symbols-outlined text-base">verified</span>
+<span class="font-label-md text-label-md uppercase tracking-wider font-semibold">Works Well</span>
+</div>
+<div class="space-y-2">
+<div class="p-space-sm rounded-lg bg-surface-container-high/40 flex items-start gap-space-xs">
+<span class="material-symbols-outlined text-primary text-lg mt-0.5 shrink-0">check_circle</span>
+<div class="flex flex-col">
+<span class="font-title-sm text-title-sm text-on-surface font-medium">Proportions &amp; Shoulder Arch</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">Strong exaggerated shoulder line creates a striking architectural silhouette that counterbalances the cinched waist.</span>
+</div>
+</div>
+<div class="p-space-sm rounded-lg bg-surface-container-high/40 flex items-start gap-space-xs">
+<span class="material-symbols-outlined text-primary text-lg mt-0.5 shrink-0">check_circle</span>
+<div class="flex flex-col">
+<span class="font-title-sm text-title-sm text-on-surface font-medium">Drape &amp; Movement Physics</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">Dynamic bias flow on the lower left pleats realistically depicts velvet weight (380+ GSM) with authentic draping fold lines.</span>
+</div>
+</div>
+<div class="p-space-sm rounded-lg bg-surface-container-high/40 flex items-start gap-space-xs">
+<span class="material-symbols-outlined text-primary text-lg mt-0.5 shrink-0">check_circle</span>
+<div class="flex flex-col">
+<span class="font-title-sm text-title-sm text-on-surface font-medium">Focal Point Anchor</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">Cinched waistline with asymmetrical closure anchors the garment balance without visual chaos.</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Section: Actionable Improvements (Alerts) -->
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-center gap-space-xs text-secondary">
+<span class="material-symbols-outlined text-base">warning</span>
+<span class="font-label-md text-label-md uppercase tracking-wider font-semibold">Actionable Alterations</span>
+</div>
+<div class="space-y-2">
+<div class="p-space-sm rounded-lg bg-secondary-container/20 flex items-start gap-space-xs">
+<span class="material-symbols-outlined text-secondary text-lg mt-0.5 shrink-0">error</span>
+<div class="flex flex-col">
+<div class="flex items-center justify-between">
+<span class="font-title-sm text-title-sm text-on-surface font-medium">Lapel Seam Placement</span>
+<span class="font-label-sm text-label-sm text-secondary font-bold">1.5cm Delta</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">Right lapel peak exceeds balance ratio by 1.5cm; consider softening the notch angle by 7° to prevent neck collapse.</span>
+</div>
+</div>
+<div class="p-space-sm rounded-lg bg-secondary-container/20 flex items-start gap-space-xs">
+<span class="material-symbols-outlined text-secondary text-lg mt-0.5 shrink-0">error</span>
+<div class="flex flex-col">
+<div class="flex items-center justify-between">
+<span class="font-title-sm text-title-sm text-on-surface font-medium">Armhole Scye Depth</span>
+<span class="font-label-sm text-label-sm text-secondary font-bold">+1.2cm Ease</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">For heavy silk-velvet layering over winter base layers, increase scye depth by 1.2cm to ensure ease of movement.</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Section: Atelier Director & Professor Summary Note -->
+<div class="p-space-md rounded-xl bg-gradient-to-br from-primary-container/40 to-surface-container-high/60 backdrop-blur-md flex flex-col gap-space-xs shadow-md">
+<div class="flex items-center gap-space-xs text-on-surface">
+<span class="material-symbols-outlined text-base text-primary">format_quote</span>
+<span class="font-label-md text-label-md uppercase tracking-wider font-semibold">Professor &amp; Atelier Director Note</span>
+</div>
+<p class="font-headline-sm text-headline-sm italic text-primary-fixed-dim leading-snug">
+              “Inspiring couture direction, Aria. The tension between rigid military tailoring and fluid drapery gives this look runway standout presence. Ready for toile cutting once lapel notch is adjusted.”
+            </p>
+<div class="flex items-center justify-between pt-space-xs mt-1 border-t border-outline-variant/30">
+<span class="font-label-sm text-label-sm text-outline">Prof. Gabriel Laurent • RCA Fashion Chair</span>
+<span class="font-label-sm text-label-sm text-primary flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">verified_user</span> Approved for Prototype
+              </span>
+</div>
+</div>
+<!-- Action Buttons in Right Panel -->
+<div class="flex flex-col gap-space-xs pt-space-2xs">
+<button class="w-full py-space-sm px-space-md rounded-lg bg-primary-container text-on-primary font-title-sm text-title-sm font-semibold hover:brightness-110 active:scale-[0.99] transition-all flex items-center justify-center gap-2 shadow-[0_4px_16px_rgba(128,0,32,0.4)]" type="button">
+<span class="material-symbols-outlined text-base">architecture</span>
+<span>Apply Suggestions to Tech Pack</span>
+</button>
+<button class="w-full py-space-sm px-space-md rounded-lg bg-surface-container-high/70 hover:bg-surface-container-highest text-on-surface font-title-sm text-title-sm transition-all flex items-center justify-center gap-2" type="button">
+<span class="material-symbols-outlined text-base">bookmark_add</span>
+<span>Save to Collection Portfolio</span>
+</button>
+</div>
+</div>
+<!-- Extra AI Pattern Recommendation Card: Yardage & Draping Calculation -->
+<div class="p-space-md rounded-xl bg-surface-container-low/70 backdrop-blur-md shadow-lg flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-lg">calculate</span>
+<span class="font-title-sm text-title-sm text-on-surface font-semibold">AI Yardage &amp; Consumption</span>
+</div>
+<span class="font-label-sm text-label-sm text-outline">Tolerance: ±2.5%</span>
+</div>
+<div class="grid grid-cols-2 gap-space-xs">
+<div class="p-space-xs rounded-lg bg-surface-container-high/50 flex flex-col">
+<span class="font-label-sm text-label-sm text-outline">Estimated Fabric</span>
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold">3.85 <span class="text-body-sm font-normal text-outline">Meters</span></span>
+<span class="font-label-sm text-label-sm text-primary">Includes 45° Bias Drape</span>
+</div>
+<div class="p-space-xs rounded-lg bg-surface-container-high/50 flex flex-col">
+<span class="font-label-sm text-label-sm text-outline">Sample Cost</span>
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold">€245 <span class="text-body-sm font-normal text-outline">Est.</span></span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Silk Velvet + Habotai Lining</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script>
+  // Interactive Drawing Canvas Script for Atelier Sketchbook
+  (function initAtelierSketchbook() {
+    const canvas = document.getElementById('atelierSketchCanvas');
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d');
+    let isDrawing = false;
+    let currentColor = '#ff828a';
+    let currentSize = 3;
+    let currentTool = 'pen';
+    let strokesHistory = [];
+    let redoHistory = [];
+
+    // Resize canvas correctly for high-DPI displays
+    function resizeCanvas() {
+      const rect = canvas.getBoundingClientRect();
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = rect.width * dpr;
+      canvas.height = rect.height * dpr;
+      ctx.scale(dpr, dpr);
+      redrawCanvas();
+    }
+
+    // Capture strokes & redraw
+    function redrawCanvas() {
+      const rect = canvas.getBoundingClientRect();
+      ctx.clearRect(0, 0, rect.width, rect.height);
+      
+      for (const stroke of strokesHistory) {
+        if (stroke.points.length < 2) continue;
+        ctx.beginPath();
+        ctx.strokeStyle = stroke.color;
+        ctx.lineWidth = stroke.size;
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+
+        if (stroke.tool === 'wash') {
+          ctx.globalAlpha = 0.25;
+        } else if (stroke.tool === 'charcoal') {
+          ctx.globalAlpha = 0.65;
+          ctx.setLineDash([2, 4]);
+        } else {
+          ctx.globalAlpha = 1.0;
+          ctx.setLineDash([]);
+        }
+
+        if (stroke.tool === 'eraser') {
+          ctx.globalCompositeOperation = 'destination-out';
+        } else {
+          ctx.globalCompositeOperation = 'source-over';
+        }
+
+        ctx.moveTo(stroke.points[0].x, stroke.points[0].y);
+        for (let i = 1; i < stroke.points.length; i++) {
+          ctx.lineTo(stroke.points[i].x, stroke.points[i].y);
+        }
+        ctx.stroke();
+      }
+      ctx.globalAlpha = 1.0;
+      ctx.globalCompositeOperation = 'source-over';
+      ctx.setLineDash([]);
+    }
+
+    // Event listeners for drawing
+    let currentPoints = [];
+
+    function startDrawing(e) {
+      isDrawing = true;
+      const rect = canvas.getBoundingClientRect();
+      const x = (e.clientX || (e.touches && e.touches[0].clientX)) - rect.left;
+      const y = (e.clientY || (e.touches && e.touches[0].clientY)) - rect.top;
+      currentPoints = [{ x, y }];
+      redoHistory = [];
+    }
+
+    function draw(e) {
+      if (!isDrawing) return;
+      e.preventDefault();
+      const rect = canvas.getBoundingClientRect();
+      const x = (e.clientX || (e.touches && e.touches[0].clientX)) - rect.left;
+      const y = (e.clientY || (e.touches && e.touches[0].clientY)) - rect.top;
+      currentPoints.push({ x, y });
+
+      ctx.beginPath();
+      ctx.strokeStyle = currentColor;
+      ctx.lineWidth = currentSize;
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+
+      if (currentTool === 'wash') {
+        ctx.globalAlpha = 0.25;
+      } else if (currentTool === 'charcoal') {
+        ctx.globalAlpha = 0.65;
+        ctx.setLineDash([2, 4]);
+      } else {
+        ctx.globalAlpha = 1.0;
+        ctx.setLineDash([]);
+      }
+
+      if (currentTool === 'eraser') {
+        ctx.globalCompositeOperation = 'destination-out';
+      } else {
+        ctx.globalCompositeOperation = 'source-over';
+      }
+
+      const prev = currentPoints[currentPoints.length - 2];
+      ctx.moveTo(prev.x, prev.y);
+      ctx.lineTo(x, y);
+      ctx.stroke();
+    }
+
+    function stopDrawing() {
+      if (!isDrawing) return;
+      isDrawing = false;
+      if (currentPoints.length > 1) {
+        strokesHistory.push({
+          tool: currentTool,
+          color: currentColor,
+          size: currentSize,
+          points: currentPoints
+        });
+      }
+      currentPoints = [];
+    }
+
+    canvas.addEventListener('mousedown', startDrawing);
+    canvas.addEventListener('mousemove', draw);
+    window.addEventListener('mouseup', stopDrawing);
+
+    canvas.addEventListener('touchstart', startDrawing, { passive: false });
+    canvas.addEventListener('touchmove', draw, { passive: false });
+    window.addEventListener('touchend', stopDrawing);
+
+    // Brush Size Slider
+    const sizeSlider = document.getElementById('brushSize');
+    const sizeDisplay = document.getElementById('brushSizeDisplay');
+    if (sizeSlider && sizeDisplay) {
+      sizeSlider.addEventListener('input', (e) => {
+        currentSize = parseInt(e.target.value, 10);
+        sizeDisplay.textContent = currentSize + 'px';
+      });
+    }
+
+    // Color Swatches
+    const swatches = document.querySelectorAll('.color-swatch');
+    swatches.forEach(swatch => {
+      swatch.addEventListener('click', () => {
+        swatches.forEach(s => s.classList.remove('ring-2', 'ring-primary', 'ring-offset-2', 'ring-offset-surface-container-lowest'));
+        swatch.classList.add('ring-2', 'ring-primary', 'ring-offset-2', 'ring-offset-surface-container-lowest');
+        currentColor = swatch.getAttribute('data-color');
+      });
+    });
+
+    // Tool Buttons
+    const toolBtns = document.querySelectorAll('.tool-btn');
+    toolBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        toolBtns.forEach(b => {
+          b.classList.remove('bg-primary-container', 'text-on-primary');
+          b.classList.add('text-on-surface-variant');
+        });
+        btn.classList.add('bg-primary-container', 'text-on-primary');
+        btn.classList.remove('text-on-surface-variant');
+        currentTool = btn.getAttribute('data-tool');
+      });
+    });
+
+    // Undo / Redo / Clear
+    const undoBtn = document.getElementById('undoBtn');
+    if (undoBtn) {
+      undoBtn.addEventListener('click', () => {
+        if (strokesHistory.length > 0) {
+          redoHistory.push(strokesHistory.pop());
+          redrawCanvas();
+        }
+      });
+    }
+
+    const redoBtn = document.getElementById('redoBtn');
+    if (redoBtn) {
+      redoBtn.addEventListener('click', () => {
+        if (redoHistory.length > 0) {
+          strokesHistory.push(redoHistory.pop());
+          redrawCanvas();
+        }
+      });
+    }
+
+    const clearBtn = document.getElementById('clearCanvasBtn');
+    if (clearBtn) {
+      clearBtn.addEventListener('click', () => {
+        if (confirm('Clear sketch annotation layer?')) {
+          strokesHistory = [];
+          redoHistory = [];
+          redrawCanvas();
+        }
+      });
+    }
+
+    // Gemini Critique Trigger Simulation
+    const aiCritiqueBtn = document.getElementById('triggerAiCritiqueBtn');
+    const aiSpinner = document.getElementById('aiBtnSpinner');
+    const aiIcon = document.getElementById('aiBtnIcon');
+    if (aiCritiqueBtn) {
+      aiCritiqueBtn.addEventListener('click', () => {
+        aiSpinner.style.display = 'inline-block';
+        aiIcon.style.display = 'none';
+        aiCritiqueBtn.classList.add('opacity-80', 'pointer-events-none');
+
+        setTimeout(() => {
+          aiSpinner.style.display = 'none';
+          aiIcon.style.display = 'inline-block';
+          aiCritiqueBtn.classList.remove('opacity-80', 'pointer-events-none');
+        }, 1200);
+      });
+    }
+
+    // Set initial size
+    window.addEventListener('resize', resizeCanvas);
+    setTimeout(resizeCanvas, 50);
+  })();
+</script></main></div></body></html>
