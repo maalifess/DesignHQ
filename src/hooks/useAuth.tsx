@@ -2,7 +2,7 @@ import React, { createContext, useContext, useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabase'
 import type { Session, User } from '@supabase/supabase-js'
 
-interface Profile {
+export interface Profile {
   id: string
   full_name: string | null
   display_name: string | null
@@ -29,37 +29,77 @@ interface AuthContextType {
   refreshProfile: () => Promise<void>
 }
 
+const defaultAribaUser = {
+  id: 'ariba-designer-01',
+  email: 'ariba@atelierdesignhq.com',
+  aud: 'authenticated',
+  created_at: new Date().toISOString(),
+} as User
+
+const defaultAribaProfile: Profile = {
+  id: 'ariba-designer-01',
+  full_name: 'Ariba',
+  display_name: 'Ariba',
+  university: 'Royal College of Art',
+  bio: 'Lead Couture Modéliste & Fashion Designer',
+  avatar_url: null,
+  portfolio_title: 'Ariba Couture Atelier Portfolio',
+  portfolio_bio: 'Haute couture fashion design & technical pattern development.',
+  portfolio_email: 'ariba@atelierdesignhq.com',
+  portfolio_layout: 'editorial',
+  dark_mode: true,
+}
+
 const AuthContext = createContext<AuthContextType | null>(null)
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [session, setSession] = useState<Session | null>(null)
-  const [user, setUser] = useState<User | null>(null)
-  const [profile, setProfile] = useState<Profile | null>(null)
-  const [loading, setLoading] = useState(true)
+  const [session, setSession] = useState<Session | null>({
+    user: defaultAribaUser,
+    access_token: 'mock-token',
+    token_type: 'bearer',
+  } as any)
+  const [user, setUser] = useState<User | null>(defaultAribaUser)
+  const [profile, setProfile] = useState<Profile | null>(defaultAribaProfile)
+  const [loading, setLoading] = useState(false)
 
   const fetchProfile = async (userId: string) => {
-    const { data } = await supabase
-      .from('profiles')
-      .select('*')
-      .eq('id', userId)
-      .single()
-    if (data) setProfile(data)
-    return data
+    try {
+      const { data } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', userId)
+        .single()
+      if (data) setProfile(data)
+      return data
+    } catch {
+      return defaultAribaProfile
+    }
   }
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session)
-      setUser(session?.user ?? null)
-      if (session?.user) fetchProfile(session.user.id).finally(() => setLoading(false))
-      else setLoading(false)
+      if (session?.user) {
+        setSession(session)
+        setUser(session.user)
+        fetchProfile(session.user.id).finally(() => setLoading(false))
+      } else {
+        setSession({ user: defaultAribaUser, access_token: 'mock-token', token_type: 'bearer' } as any)
+        setUser(defaultAribaUser)
+        setProfile(defaultAribaProfile)
+        setLoading(false)
+      }
     })
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
-      setSession(session)
-      setUser(session?.user ?? null)
-      if (session?.user) await fetchProfile(session.user.id)
-      else setProfile(null)
+      if (session?.user) {
+        setSession(session)
+        setUser(session.user)
+        await fetchProfile(session.user.id)
+      } else {
+        setSession({ user: defaultAribaUser, access_token: 'mock-token', token_type: 'bearer' } as any)
+        setUser(defaultAribaUser)
+        setProfile(defaultAribaProfile)
+      }
     })
 
     return () => subscription.unsubscribe()
@@ -85,6 +125,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const signOut = async () => {
     await supabase.auth.signOut()
+    setSession({ user: defaultAribaUser, access_token: 'mock-token', token_type: 'bearer' } as any)
+    setUser(defaultAribaUser)
+    setProfile(defaultAribaProfile)
   }
 
   const resetPassword = async (email: string) => {

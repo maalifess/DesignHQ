@@ -1,211 +1,174 @@
 /* ============================================================
-   DesignHQ — Haute Atelier Glassmorphism System
-   Design Specs: Obsidian Noir, Haute Wine (#800020), Blush Rose (#C05070)
+   DesignHQ — Atelier Studio Material Design 3 (Velvet Dark Theme)
    ============================================================ */
+
+@theme {
+  --color-surface-variant: #403136;
+  --color-on-tertiary-container: #ff828c;
+  --color-on-primary: #ffffff;
+  --color-surface-dim: #1c1014;
+  --color-secondary-fixed-dim: #ffb1c2;
+  --color-on-primary-fixed-variant: #8e0f28;
+  --color-on-error: #690005;
+  --color-background: #1c1014;
+  --color-secondary-container: #832041;
+  --color-outline-variant: #584141;
+  --color-primary-container: #8d0023;
+  --color-on-tertiary-fixed: #40000d;
+  --color-primary-fixed-dim: #ffb3b5;
+  --color-surface-container-lowest: #160b0f;
+  --color-error: #ffb4ab;
+  --color-primary: #ffb3b5;
+  --color-outline: #a78a8a;
+  --color-tertiary-fixed-dim: #ffb3b6;
+  --color-surface-container: #291c21;
+  --color-on-primary-fixed: #40000b;
+  --color-secondary: #ffb1c2;
+  --color-surface-container-highest: #403136;
+  --color-on-error-container: #ffdad6;
+  --color-surface: #1c1014;
+  --color-tertiary: #ffb3b6;
+  --color-on-secondary: #ffffff;
+  --color-on-secondary-container: #ffffff;
+  --color-inverse-surface: #f4dce3;
+  --color-surface-bright: #44353a;
+  --color-on-secondary-fixed-variant: #832041;
+  --color-surface-container-low: #25181d;
+  --color-tertiary-container: #771727;
+  --color-inverse-on-surface: #3b2c31;
+  --color-on-secondary-fixed: #3f0018;
+  --color-on-background: #f4dce3;
+  --color-primary-fixed: #ffdada;
+  --color-surface-container-high: #34262b;
+  --color-on-tertiary: #ffffff;
+  --color-error-container: #93000a;
+  --color-surface-tint: #ffb3b5;
+  --color-secondary-fixed: #ffd9e0;
+  --color-tertiary-fixed: #ffdada;
+  --color-inverse-primary: #af2b3e;
+  --color-on-surface: #f4dce3;
+  --color-on-primary-container: #ffffff;
+  --color-on-tertiary-fixed-variant: #842130;
+  --color-on-surface-variant: #e0bfbf;
+
+  --radius-DEFAULT: 0.25rem;
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.75rem;
+  --radius-full: 9999px;
+
+  --spacing-sidebar-width: 15rem;
+  --spacing-topbar-height: 4rem;
+  --spacing-space-xs: 0.5rem;
+  --spacing-sidebar-collapsed: 4rem;
+  --spacing-space-3xl: 4rem;
+  --spacing-gutter-mobile: 1rem;
+  --spacing-space-sm: 0.75rem;
+  --spacing-space-md: 1rem;
+  --spacing-space-2xl: 3rem;
+  --spacing-gutter-desktop: 1.5rem;
+  --spacing-space-lg: 1.5rem;
+  --spacing-space-xl: 2rem;
+  --spacing-space-2xs: 0.25rem;
+
+  --font-headline-hero: "Playfair Display", Georgia, serif;
+  --font-headline-hero-mobile: "Playfair Display", Georgia, serif;
+  --font-headline-lg: "Playfair Display", Georgia, serif;
+  --font-headline-lg-mobile: "Playfair Display", Georgia, serif;
+  --font-headline-md: "Playfair Display", Georgia, serif;
+  --font-headline-sm: "Playfair Display", Georgia, serif;
+
+  --font-title-md: "Plus Jakarta Sans", sans-serif;
+  --font-title-sm: "Plus Jakarta Sans", sans-serif;
+  --font-body-lg: "Plus Jakarta Sans", sans-serif;
+  --font-body-md: "Plus Jakarta Sans", sans-serif;
+  --font-body-sm: "Plus Jakarta Sans", sans-serif;
+  --font-label-md: "Plus Jakarta Sans", sans-serif;
+  --font-label-sm: "Plus Jakarta Sans", sans-serif;
+}
 
 :root {
-  /* Core Foundation Canvas */
-  --bg-base:         #0D0407;
-  --bg-surface:      rgba(30, 8, 14, 0.75);
-  --bg-surface-deep: rgba(20, 5, 10, 0.85);
-  --bg-surface-high: rgba(40, 10, 20, 0.90);
-
-  /* Glass Effects */
-  --glass-border:     rgba(200, 80, 100, 0.20);
-  --pearl-highlight:  rgba(255, 255, 255, 0.12);
-  --glass-shadow:     0 8px 32px 0 rgba(0, 0, 0, 0.45);
-  --glass-shadow-lg:  0 16px 48px 0 rgba(0, 0, 0, 0.65), 0 0 16px 2px rgba(128, 0, 32, 0.20);
-  --glass-blur:       blur(20px) saturate(180%);
-
-  /* Palette Architecture */
-  --accent-primary:   #800020;  /* Haute Wine */
-  --accent-deep:      #5C0016;  /* Velvet Merlot */
-  --accent-mid:       #A0002A;  /* Rich Crimson */
-  --accent-secondary: #C05070;  /* Blush Rose */
-  --accent-light:     rgba(128, 0, 32, 0.10);
-  --accent-hover:     rgba(128, 0, 32, 0.18);
-
-  /* Text Colors */
-  --text-primary:     #FFF0F3;  /* Luminous Pearl White */
-  --text-secondary:   #D4909A;  /* Rose Dust */
-  --text-muted:       #886070;  /* Deep Antique Mauve */
-  --white-glass:      rgba(255, 255, 255, 0.9);
-
-  /* Status Colors */
-  --status-success:   #4DB87A;  /* Atelier Emerald */
-  --status-warning:   #F0A030;  /* Amber Ochre */
-  --status-danger:    #F04060;  /* Couture Crimson */
-  --status-info:      #4090C0;  /* Tailor Slate */
-
-  /* Atmospheric Gradient Mesh */
-  --bg-gradient: radial-gradient(circle at 85% 15%, rgba(128, 0, 32, 0.22) 0%, transparent 60%),
-                 radial-gradient(circle at 15% 85%, rgba(192, 80, 112, 0.15) 0%, transparent 60%),
-                 #0D0407;
-
-  /* Typography Stack */
-  --font-display:     'Playfair Display', Georgia, serif;
-  --font-ui:          'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-
-  /* Spacing & Radii */
-  --radius-sm:        0.25rem;  /* 4px */
-  --radius-md:        0.5rem;   /* 8px */
-  --radius-lg:        1rem;     /* 16px */
-  --radius-xl:        1.5rem;   /* 24px */
-  --radius-full:      9999px;
-
-  /* Layout Frame */
-  --sidebar-width:    15rem;    /* 240px */
-  --sidebar-collapsed: 4rem;    /* 64px */
-  --topbar-height:    4rem;     /* 64px */
-  --bottomnav-height: 4.25rem;  /* 68px */
-
-  /* Z-Index Hierarchy */
-  --z-base:           0;
-  --z-raised:         10;
-  --z-bottomnav:      90;
-  --z-sidebar:        100;
-  --z-topbar:         200;
-  --z-modal:          300;
-  --z-toast:          400;
+  --bg-base: #1c1014;
+  --text-primary: #f4dce3;
+  --sidebar-width: 15rem;
+  --topbar-height: 4rem;
+  --sidebar-collapsed: 4rem;
+  --bottomnav-height: 4.25rem;
 }
 
-/* Daylight Studio Alternate Theme */
-[data-theme="light"] {
-  --bg-base:          #FDF6F6;
-  --bg-surface:       rgba(255, 255, 255, 0.70);
-  --bg-surface-deep:  rgba(255, 245, 245, 0.85);
-  --bg-surface-high:  rgba(255, 255, 255, 0.95);
-
-  --glass-border:     rgba(128, 0, 32, 0.15);
-  --pearl-highlight:  rgba(255, 255, 255, 0.60);
-  --glass-shadow:     0 8px 32px 0 rgba(128, 0, 32, 0.10);
-
-  --accent-primary:   #800020;
-  --accent-deep:      #5C0016;
-  --accent-secondary: #C05070;
-  --accent-light:     rgba(128, 0, 32, 0.08);
-
-  --text-primary:     #1E080E;
-  --text-secondary:   #6B3344;
-  --text-muted:       #A07080;
-
-  --bg-gradient: radial-gradient(circle at top left, rgba(128, 0, 32, 0.06), transparent 60%),
-                 radial-gradient(circle at bottom right, rgba(192, 80, 112, 0.04), transparent 60%),
-                 #FDF6F6;
-}
-
-/* ============================================================
-   RESET & BASE STYLES
-   ============================================================ */
-*, *::before, *::after {
-  box-sizing: border-box;
+html, body {
   margin: 0;
   padding: 0;
-}
-
-html {
-  font-size: 16px;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  scroll-behavior: smooth;
-}
-
-body {
-  font-family: var(--font-ui);
-  font-size: 0.9375rem;
-  line-height: 1.6;
-  color: var(--text-primary);
-  background-color: var(--bg-base);
-  background-image: var(--bg-gradient);
-  background-attachment: fixed;
+  background-color: #1c1014;
+  color: #f4dce3;
+  font-family: 'Plus Jakarta Sans', sans-serif;
   min-height: 100vh;
-  overflow-x: hidden;
+  overscroll-behavior: none;
 }
 
-a {
-  color: var(--text-primary);
-  text-decoration: none;
-}
-
-img, video {
-  display: block;
-  max-width: 100%;
-}
-
-/* ============================================================
-   TYPOGRAPHY UTILITIES
-   ============================================================ */
-.font-display { font-family: var(--font-display); }
-.font-ui      { font-family: var(--font-ui); }
-
-h1, h2, h3, h4 {
-  font-family: var(--font-display);
-  line-height: 1.15;
-  letter-spacing: -0.01em;
-  color: var(--text-primary);
-}
-
-h1 { font-size: 2.5rem; font-weight: 600; }
-h2 { font-size: 2rem;   font-weight: 600; }
-h3 { font-size: 1.5rem; font-weight: 500; }
-h4 { font-size: 1.25rem; font-weight: 500; }
-
-@media (max-width: 768px) {
-  h1 { font-size: 1.875rem; line-height: 1.2; }
-  h2 { font-size: 1.5rem;   line-height: 1.25; }
-  h3 { font-size: 1.25rem; }
-}
-
-.text-xs   { font-size: 0.75rem;   }
-.text-sm   { font-size: 0.8125rem; }
-.text-base { font-size: 0.9375rem; }
-.text-lg   { font-size: 1.125rem;  }
-.text-xl   { font-size: 1.25rem;   }
-
-.text-primary   { color: var(--text-primary);   }
-.text-secondary { color: var(--text-secondary); }
-.text-muted     { color: var(--text-muted);     }
-.text-accent    { color: var(--accent-primary); }
-
-.truncate {
-  overflow: hidden;
-  text-overflow: ellipsis;
+/* Material Symbols Variable Font */
+.material-symbols-outlined {
+  font-family: 'Material Symbols Outlined';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
   white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-smoothing: antialiased;
 }
 
-/* Status colors */
-.text-success { color: var(--status-success); }
-.text-warning { color: var(--status-warning); }
-.text-danger  { color: var(--status-danger);  }
-.text-info    { color: var(--status-info);    }
+/* Typography Utility Classes */
+.font-headline-hero { font-family: 'Playfair Display', Georgia, serif; }
+.text-headline-hero { font-size: 40px; line-height: 48px; letter-spacing: -0.01em; font-weight: 600; }
+.font-headline-hero-mobile { font-family: 'Playfair Display', Georgia, serif; }
+.text-headline-hero-mobile { font-size: 30px; line-height: 36px; letter-spacing: -0.01em; font-weight: 600; }
 
-/* ============================================================
-   SCROLLBARS
-   ============================================================ */
-::-webkit-scrollbar { width: 6px; height: 6px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb {
-  background: var(--glass-border);
-  border-radius: var(--radius-full);
-}
-::-webkit-scrollbar-thumb:hover { background: var(--accent-secondary); }
+.font-headline-lg { font-family: 'Playfair Display', Georgia, serif; }
+.text-headline-lg { font-size: 32px; line-height: 38px; letter-spacing: -0.01em; font-weight: 600; }
+.font-headline-lg-mobile { font-family: 'Playfair Display', Georgia, serif; }
+.text-headline-lg-mobile { font-size: 24px; line-height: 30px; letter-spacing: -0.01em; font-weight: 600; }
 
-/* Horizontal touch scroll helper */
-.mobile-scroll-x {
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: thin;
+.font-headline-md { font-family: 'Playfair Display', Georgia, serif; }
+.text-headline-md { font-size: 24px; line-height: 30px; letter-spacing: 0em; font-weight: 500; }
+
+.font-headline-sm { font-family: 'Playfair Display', Georgia, serif; }
+.text-headline-sm { font-size: 20px; line-height: 26px; letter-spacing: 0em; font-weight: 500; }
+
+.font-title-md { font-family: 'Plus Jakarta Sans', sans-serif; }
+.text-title-md { font-size: 16px; line-height: 24px; letter-spacing: 0em; font-weight: 600; }
+
+.font-title-sm { font-family: 'Plus Jakarta Sans', sans-serif; }
+.text-title-sm { font-size: 14px; line-height: 20px; letter-spacing: 0.01em; font-weight: 600; }
+
+.font-body-lg { font-family: 'Plus Jakarta Sans', sans-serif; }
+.text-body-lg { font-size: 15px; line-height: 24px; letter-spacing: 0em; font-weight: 400; }
+
+.font-body-md { font-family: 'Plus Jakarta Sans', sans-serif; }
+.text-body-md { font-size: 13px; line-height: 19.5px; letter-spacing: 0.005em; font-weight: 400; }
+
+.font-body-sm { font-family: 'Plus Jakarta Sans', sans-serif; }
+.text-body-sm { font-size: 12px; line-height: 16px; letter-spacing: 0.01em; font-weight: 400; }
+
+.font-label-md { font-family: 'Plus Jakarta Sans', sans-serif; }
+.text-label-md { font-size: 12px; line-height: 16px; letter-spacing: 0.03em; font-weight: 600; }
+
+.font-label-sm { font-family: 'Plus Jakarta Sans', sans-serif; }
+.text-label-sm { font-size: 11px; line-height: 14px; letter-spacing: 0.04em; font-weight: 600; }
+
+/* Custom Scrollbar */
+::-webkit-scrollbar { display: none; }
+
+/* Ensure text on #8d0023 or #800020 background is pure white */
+.bg-primary-container,
+.bg-secondary-container,
+[class*="bg-[#8d0023]"],
+[class*="bg-[#800020]"],
+[style*="8d0023"],
+[style*="800020"] {
+  color: #ffffff !important;
 }
 
-/* Focus Ring */
-:focus-visible {
-  outline: 2px solid var(--accent-secondary);
-  outline-offset: 2px;
-  border-radius: var(--radius-sm);
-}
-
-/* Grid overlay background for pinboard canvas */
-.dot-grid-bg {
-  background-image: radial-gradient(circle, rgba(200, 80, 100, 0.25) 1px, transparent 1px);
-  background-size: 24px 24px;
-}

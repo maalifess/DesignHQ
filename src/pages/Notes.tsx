@@ -1,348 +1,239 @@
-import React, { useState, useCallback, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { Plus, Search, Pin, FileText, X } from 'lucide-react'
-import { supabase } from '@/lib/supabase'
-import { useAuth } from '@/hooks/useAuth'
-import { useAppStore } from '@/store/useAppStore'
-import { GlassModal } from '@/components/ui/GlassModal'
-import { Button } from '@/components/ui/Button'
-import { Input } from '@/components/ui/Input'
-import { Badge, PROJECT_COLORS } from '@/components/ui/Badge'
-import { formatDate } from '@/lib/export'
-import { useEditor, EditorContent } from '@tiptap/react'
-import StarterKit from '@tiptap/starter-kit'
-import Underline from '@tiptap/extension-underline'
-import TaskList from '@tiptap/extension-task-list'
-import TaskItem from '@tiptap/extension-task-item'
-import CharacterCount from '@tiptap/extension-character-count'
-import Link from '@tiptap/extension-link'
+import React, { useState } from 'react'
 
-interface Note {
+interface FittingNote {
   id: string
   title: string
-  content: any
-  tags: string[]
-  color_label: string | null
+  look: string
+  modeliste: string
+  fitModel: string
+  date: string
+  status: string
+  content: string
   pinned: boolean
-  created_at: string
-  updated_at: string
 }
 
-const NOTE_TEMPLATES = [
+const PRESEEDED_NOTES: FittingNote[] = [
   {
-    id: 'design-brief',
-    label: 'Design Brief',
-    content: {
-      type: 'doc',
-      content: [
-        { type: 'heading', attrs: { level: 1 }, content: [{ type: 'text', text: 'Design Brief' }] },
-        { type: 'heading', attrs: { level: 2 }, content: [{ type: 'text', text: 'Project Overview' }] },
-        { type: 'paragraph', content: [{ type: 'text', text: 'Describe the project concept here...' }] },
-        { type: 'heading', attrs: { level: 2 }, content: [{ type: 'text', text: 'Target Customer' }] },
-        { type: 'paragraph', content: [{ type: 'text', text: 'Who is this collection for?' }] },
-        { type: 'heading', attrs: { level: 2 }, content: [{ type: 'text', text: 'Key Requirements' }] },
-        { type: 'bulletList', content: [{ type: 'listItem', content: [{ type: 'paragraph', content: [{ type: 'text', text: 'Requirement 1' }] }] }] },
-      ]
-    }
+    id: 'fn-01',
+    title: 'Look 04 Velvet Opera Cape — Fitting Adjustments',
+    look: 'Look 04 (CR-209)',
+    modeliste: 'Sarah Lindqvist',
+    fitModel: 'Maya Lin (Size 36 FR)',
+    date: 'Oct 23, 2026',
+    status: 'Action Required ⚠️',
+    content: `Fitting Notes & Seam Revisions:
+1. Collar pedestal tension: The silk-velvet pile weight (380 GSM) causes slight pulling at the neck pedestal. Rotate shoulder grainline forward by 1.5cm.
+2. Hem facing: Insert 4cm horsehair tape facing inside bottom hem to achieve crisp architectural flared structure.
+3. Clasp anchor: Reinforced internal stay button behind antiqued brass clasp to prevent velvet tear under runway movement.`,
+    pinned: true,
   },
   {
-    id: 'submission-checklist',
-    label: 'Submission Checklist',
-    content: {
-      type: 'doc',
-      content: [
-        { type: 'heading', attrs: { level: 1 }, content: [{ type: 'text', text: 'Submission Checklist' }] },
-        { type: 'taskList', content: [
-          { type: 'taskItem', attrs: { checked: false }, content: [{ type: 'paragraph', content: [{ type: 'text', text: 'Final sketches complete' }] }] },
-          { type: 'taskItem', attrs: { checked: false }, content: [{ type: 'paragraph', content: [{ type: 'text', text: 'Mood board finalized' }] }] },
-          { type: 'taskItem', attrs: { checked: false }, content: [{ type: 'paragraph', content: [{ type: 'text', text: 'Fabric samples sourced' }] }] },
-          { type: 'taskItem', attrs: { checked: false }, content: [{ type: 'paragraph', content: [{ type: 'text', text: 'Portfolio page updated' }] }] },
-          { type: 'taskItem', attrs: { checked: false }, content: [{ type: 'paragraph', content: [{ type: 'text', text: 'PDF submitted to portal' }] }] },
-        ]}
-      ]
-    }
+    id: 'fn-02',
+    title: 'Look 01 Architectural Peplum Jacket — First Toile Approval',
+    look: 'Look 01 (CR-201)',
+    modeliste: 'Elena Rossi',
+    fitModel: 'Maya Lin (Size 36 FR)',
+    date: 'Oct 22, 2026',
+    status: 'Approved ✅',
+    content: `First Toile Inspection:
+- Hand-canvassed chest piece provides ideal rigidity.
+- Origami peplum pleats fold sharply without bulk.
+- Armhole scye depth approved for production sample cutting in Double-face Wool Crepe.`,
+    pinned: true,
   },
   {
-    id: 'research-notes',
-    label: 'Research Notes',
-    content: {
-      type: 'doc',
-      content: [
-        { type: 'heading', attrs: { level: 1 }, content: [{ type: 'text', text: 'Research Notes' }] },
-        { type: 'heading', attrs: { level: 2 }, content: [{ type: 'text', text: 'Trend Research' }] },
-        { type: 'paragraph', content: [{ type: 'text', text: 'Key trends observed...' }] },
-        { type: 'heading', attrs: { level: 2 }, content: [{ type: 'text', text: 'Inspiration References' }] },
-        { type: 'paragraph', content: [{ type: 'text', text: 'Designers, eras, cultures...' }] },
-        { type: 'heading', attrs: { level: 2 }, content: [{ type: 'text', text: 'Sources' }] },
-        { type: 'bulletList', content: [{ type: 'listItem', content: [{ type: 'paragraph', content: [{ type: 'text', text: 'Source 1' }] }] }] },
-      ]
-    }
+    id: 'fn-03',
+    title: 'Look 02 Bias-Cut Silk Gown — Drape Inspection',
+    look: 'Look 02 (CR-204)',
+    modeliste: 'Marco Valenti',
+    fitModel: 'Camille D. (Size 34 FR)',
+    date: 'Oct 20, 2026',
+    status: 'In Progress ✂️',
+    content: `Gravity Drape Check:
+- True 45-degree grain bias drape verified on mannequin. Zero hem puckering.
+- Microscopic French seams lie completely flat along side body.
+- Rouleau back ties need 2cm extra length for hand knotting.`,
+    pinned: false,
   },
 ]
 
-function TiptapToolbar({ editor }: { editor: any }) {
-  if (!editor) return null
-  const btn = (action: () => void, label: string, isActive?: boolean, children?: any) => (
-    <button
-      type="button"
-      onClick={action}
-      title={label}
-      style={{
-        background: isActive ? 'var(--accent-light)' : 'none',
-        border: '1px solid var(--glass-border)',
-        borderRadius: 'var(--radius-sm)',
-        padding: '0.25rem 0.5rem',
-        cursor: 'pointer',
-        fontSize: '0.875rem',
-        fontFamily: 'var(--font-ui)',
-        color: isActive ? 'var(--accent-primary)' : 'var(--text-secondary)',
-        fontWeight: isActive ? 600 : 400,
-      }}
-    >
-      {children || label}
-    </button>
-  )
-
-  return (
-    <div style={{
-      display: 'flex',
-      gap: '0.25rem',
-      flexWrap: 'wrap',
-      padding: '0.625rem',
-      borderBottom: '1px solid var(--glass-border)',
-      background: 'var(--bg-surface)',
-    }}>
-      {btn(() => editor.chain().focus().toggleBold().run(), 'Bold', editor.isActive('bold'), <strong>B</strong>)}
-      {btn(() => editor.chain().focus().toggleItalic().run(), 'Italic', editor.isActive('italic'), <em>I</em>)}
-      {btn(() => editor.chain().focus().toggleUnderline().run(), 'Underline', editor.isActive('underline'), <u>U</u>)}
-      {btn(() => editor.chain().focus().toggleStrike().run(), 'Strikethrough', editor.isActive('strike'), <s>S</s>)}
-      <div className="divider" style={{ width: 1, height: 24, margin: '0 0.125rem' }} />
-      {btn(() => editor.chain().focus().toggleHeading({ level: 1 }).run(), 'H1', editor.isActive('heading', { level: 1 }), 'H1')}
-      {btn(() => editor.chain().focus().toggleHeading({ level: 2 }).run(), 'H2', editor.isActive('heading', { level: 2 }), 'H2')}
-      {btn(() => editor.chain().focus().toggleHeading({ level: 3 }).run(), 'H3', editor.isActive('heading', { level: 3 }), 'H3')}
-      <div className="divider" style={{ width: 1, height: 24, margin: '0 0.125rem' }} />
-      {btn(() => editor.chain().focus().toggleBulletList().run(), 'Bullet List', editor.isActive('bulletList'), '• List')}
-      {btn(() => editor.chain().focus().toggleOrderedList().run(), 'Ordered List', editor.isActive('orderedList'), '1. List')}
-      {btn(() => editor.chain().focus().toggleTaskList().run(), 'Checklist', editor.isActive('taskList'), ' Check')}
-      <div className="divider" style={{ width: 1, height: 24, margin: '0 0.125rem' }} />
-      {btn(() => editor.chain().focus().setHorizontalRule().run(), 'Divider', false, '—')}
-    </div>
-  )
-}
-
-function NoteEditor({ note, onSave, onClose }: { note: Note; onSave: (id: string, data: Partial<Note>) => void; onClose: () => void }) {
-  const [title, setTitle] = useState(note.title)
-  const [saving, setSaving] = useState(false)
-
-  const editor = useEditor({
-    extensions: [
-      StarterKit,
-      Underline,
-      TaskList,
-      TaskItem.configure({ nested: true }),
-      CharacterCount,
-      Link.configure({ openOnClick: true }),
-    ],
-    content: note.content || '',
-  })
-
-  const handleSave = async () => {
-    if (!editor) return
-    setSaving(true)
-    await onSave(note.id, { title, content: editor.getJSON() })
-    setSaving(false)
-  }
-
-  return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-      {/* Note top bar */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '1rem 1.25rem', borderBottom: '1px solid var(--glass-border)', flexShrink: 0 }}>
-        <input
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          placeholder="Note title..."
-          style={{
-            flex: 1, fontFamily: 'var(--font-display)', fontSize: '1.25rem', fontWeight: 600,
-            background: 'none', border: 'none', outline: 'none', color: 'var(--text-primary)',
-          }}
-        />
-        <Button size="sm" loading={saving} onClick={handleSave}>Save</Button>
-        <button className="btn btn-ghost btn-icon" onClick={onClose}><X size={16} /></button>
-      </div>
-
-      <TiptapToolbar editor={editor} />
-
-      <div style={{ flex: 1, overflowY: 'auto', padding: '1.5rem' }}>
-        <EditorContent
-          editor={editor}
-          style={{
-            fontFamily: 'var(--font-ui)',
-            fontSize: '0.9375rem',
-            lineHeight: 1.7,
-            color: 'var(--text-primary)',
-            minHeight: 300,
-          }}
-        />
-      </div>
-
-      {editor && (
-        <div style={{ padding: '0.5rem 1.25rem', borderTop: '1px solid var(--glass-border)', fontSize: '0.75rem', color: 'var(--text-muted)' }}>
-          {editor.storage.characterCount?.characters()} characters
-        </div>
-      )}
-    </div>
-  )
-}
-
 export default function Notes() {
-  const { user } = useAuth()
-  const { addToast } = useAppStore()
-  const [notes, setNotes] = useState<Note[]>([])
-  const [loading, setLoading] = useState(true)
-  const [activeNote, setActiveNote] = useState<Note | null>(null)
-  const [search, setSearch] = useState('')
-  const [showTemplates, setShowTemplates] = useState(false)
+  const [notesList, setNotesList] = useState<FittingNote[]>(PRESEEDED_NOTES)
+  const [activeNoteId, setActiveNoteId] = useState<string>('fn-01')
+  const [searchQuery, setSearchQuery] = useState<string>('')
 
-  useEffect(() => {
-    if (!user) return
-    supabase.from('notes').select('*').eq('user_id', user.id).order('pinned', { ascending: false }).order('updated_at', { ascending: false })
-      .then(({ data }) => { setNotes(data || []); setLoading(false) })
-  }, [user])
+  const activeNote = notesList.find((n) => n.id === activeNoteId) || notesList[0]
 
-  const createNote = async (template?: typeof NOTE_TEMPLATES[0]) => {
-    if (!user) return
-    const { data } = await supabase.from('notes').insert({
-      user_id: user.id,
-      title: template ? template.label : 'Untitled Note',
-      content: template?.content || null,
-      tags: [],
-    }).select().single()
-    if (data) {
-      setNotes((prev) => [data, ...prev])
-      setActiveNote(data)
+  const filteredNotes = notesList.filter(
+    (n) =>
+      n.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      n.look.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      n.content.toLowerCase().includes(searchQuery.toLowerCase())
+  )
+
+  const handleContentChange = (newContent: string) => {
+    setNotesList((prev) =>
+      prev.map((n) => (n.id === activeNoteId ? { ...n, content: newContent } : n))
+    )
+  }
+
+  const handleTitleChange = (newTitle: string) => {
+    setNotesList((prev) =>
+      prev.map((n) => (n.id === activeNoteId ? { ...n, title: newTitle } : n))
+    )
+  }
+
+  const handleCreateNote = () => {
+    const newNote: FittingNote = {
+      id: `fn-${Date.now()}`,
+      title: 'New Fitting Note',
+      look: 'Look 05 (CR-210)',
+      modeliste: 'Ariba',
+      fitModel: 'Fit Size 36 FR',
+      date: 'Today',
+      status: 'Draft 📝',
+      content: 'Enter technical fitting observation notes, seam allowances, and toile adjustments...',
+      pinned: false,
     }
-    setShowTemplates(false)
+    setNotesList([newNote, ...notesList])
+    setActiveNoteId(newNote.id)
   }
-
-  const saveNote = async (id: string, updates: Partial<Note>) => {
-    const { error } = await supabase.from('notes').update({ ...updates, updated_at: new Date().toISOString() }).eq('id', id)
-    if (!error) {
-      setNotes((prev) => prev.map((n) => n.id === id ? { ...n, ...updates } : n))
-      if (activeNote?.id === id) setActiveNote((prev) => prev ? { ...prev, ...updates } : prev)
-      addToast('Note saved', 'success')
-    }
-  }
-
-  const deleteNote = async (id: string) => {
-    await supabase.from('notes').delete().eq('id', id)
-    setNotes((prev) => prev.filter((n) => n.id !== id))
-    if (activeNote?.id === id) setActiveNote(null)
-    addToast('Note deleted', 'info')
-  }
-
-  const togglePin = async (note: Note) => {
-    await saveNote(note.id, { pinned: !note.pinned })
-  }
-
-  const filtered = notes.filter((n) => !search || n.title.toLowerCase().includes(search.toLowerCase()))
 
   return (
-    <div style={{ display: 'flex', height: 'calc(100vh - var(--topbar-height) - 2rem)', margin: '-2rem', overflow: 'hidden' }}>
-      {/* Notes list */}
-      <div className="glass-panel" style={{
-        width: 300,
-        display: 'flex',
-        flexDirection: 'column',
-        borderRight: '1px solid var(--glass-border)',
-        borderRadius: 0,
-        flexShrink: 0,
-      }}>
-        {/* List header */}
-        <div style={{ padding: '1rem', borderBottom: '1px solid var(--glass-border)' }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.75rem' }}>
-            <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1.25rem', fontWeight: 600, color: 'var(--text-primary)' }}>Notes</h2>
-            <Button size="sm" icon={<Plus size={14} />} onClick={() => setShowTemplates(true)}>New</Button>
+    <div className="flex flex-col w-full max-w-7xl mx-auto space-y-space-xl pb-space-3xl">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-space-md border-b border-outline-variant/20 pb-space-lg">
+        <div>
+          <h1 className="font-headline-hero text-headline-hero text-on-surface tracking-tight">
+            Atelier Fitting Notes &amp; Technical Specifications
+          </h1>
+          <p className="font-body-lg text-body-lg text-on-surface-variant mt-1">
+            Toile fitting logs, pattern modification notes, model scye measurements, and head tailor dispatches.
+          </p>
+        </div>
+
+        <button
+          onClick={handleCreateNote}
+          className="flex items-center gap-space-xs px-space-md py-space-xs rounded-lg bg-primary-container text-on-primary font-title-sm text-title-sm font-semibold shadow-lg hover:brightness-110 active:scale-95 transition-all cursor-pointer w-max"
+          type="button"
+        >
+          <span className="material-symbols-outlined text-base">add</span>
+          <span>New Fitting Note</span>
+        </button>
+      </div>
+
+      {/* Main 2-Column Split: Notes List (300px) + Editor Area (Flex 1) */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-space-xl items-start">
+        {/* Left Column: Notes List */}
+        <div className="lg:col-span-4 flex flex-col gap-space-md">
+          <div className="relative w-full">
+            <span className="material-symbols-outlined absolute left-space-sm top-1/2 -translate-y-1/2 text-outline text-lg pointer-events-none">
+              search
+            </span>
+            <input
+              type="text"
+              placeholder="Search fitting notes..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full pl-9 pr-space-md py-space-xs rounded-lg bg-surface-container-high/60 text-on-surface placeholder:text-outline font-body-sm text-body-sm focus:outline-none focus:bg-surface-container-highest transition-all border border-outline-variant/20"
+            />
           </div>
-          <div style={{ position: 'relative' }}>
-            <Search size={14} style={{ position: 'absolute', left: '0.75rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)', pointerEvents: 'none' }} />
-            <input className="input" style={{ paddingLeft: '2.25rem', fontSize: '0.875rem' }} placeholder="Search notes..." value={search} onChange={(e) => setSearch(e.target.value)} id="notes-search" />
+
+          <div className="flex flex-col gap-space-xs">
+            {filteredNotes.map((note) => {
+              const isActive = note.id === activeNoteId
+              return (
+                <div
+                  key={note.id}
+                  onClick={() => setActiveNoteId(note.id)}
+                  className={`p-space-md rounded-xl bg-surface-container-low/90 backdrop-blur-xl border transition-all cursor-pointer flex flex-col gap-1 ${
+                    isActive
+                      ? 'border-primary ring-2 ring-primary/40 bg-surface-container-low shadow-lg'
+                      : 'border-outline-variant/20 hover:border-outline-variant/50'
+                  }`}
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="font-label-sm text-[10px] text-primary font-bold uppercase tracking-wider">
+                      {note.look}
+                    </span>
+                    <span className="font-label-sm text-[10px] text-outline">{note.date}</span>
+                  </div>
+
+                  <h3 className="font-title-sm text-title-sm text-on-surface font-bold truncate mt-0.5">
+                    {note.title}
+                  </h3>
+
+                  <div className="flex items-center justify-between text-label-sm font-label-sm mt-1 pt-1 border-t border-outline-variant/20">
+                    <span className="text-outline">Model: {note.fitModel}</span>
+                    <span className="text-secondary font-semibold">{note.status}</span>
+                  </div>
+                </div>
+              )
+            })}
           </div>
         </div>
 
-        {/* Notes list */}
-        <div style={{ flex: 1, overflowY: 'auto' }}>
-          {loading ? (
-            <div style={{ padding: '1rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-              {[...Array(4)].map((_, i) => <div key={i} className="skeleton" style={{ height: 72 }} />)}
-            </div>
-          ) : filtered.length === 0 ? (
-            <div style={{ padding: '2rem 1rem', textAlign: 'center', color: 'var(--text-muted)', fontSize: '0.875rem' }}>
-              {search ? 'No notes match.' : 'No notes yet. Create your first!'}
-            </div>
-          ) : filtered.map((note) => (
-            <div
-              key={note.id}
-              onClick={() => setActiveNote(note)}
-              style={{
-                padding: '0.875rem 1rem',
-                borderBottom: '1px solid var(--glass-border)',
-                cursor: 'pointer',
-                background: activeNote?.id === note.id ? 'var(--accent-light)' : 'transparent',
-                borderLeft: activeNote?.id === note.id ? '3px solid var(--accent-primary)' : '3px solid transparent',
-                transition: 'all var(--transition-base)',
-              }}
-            >
-              <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '0.375rem', marginBottom: '0.25rem' }}>
-                <p style={{ fontWeight: 500, fontSize: '0.9rem', color: 'var(--text-primary)', lineHeight: 1.3 }} className="truncate">{note.title}</p>
+        {/* Right Column: Note Detail & Rich Editor Area */}
+        <div className="lg:col-span-8 flex flex-col gap-space-md">
+          {activeNote ? (
+            <div className="rounded-xl bg-surface-container-low/95 backdrop-blur-2xl shadow-2xl border border-outline-variant/30 p-space-lg flex flex-col gap-space-md">
+              {/* Note Meta Bar */}
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-space-xs border-b border-outline-variant/20 pb-space-md">
+                <div className="flex flex-col flex-1">
+                  <input
+                    type="text"
+                    value={activeNote.title}
+                    onChange={(e) => handleTitleChange(e.target.value)}
+                    className="font-headline-sm text-headline-sm text-on-surface font-bold bg-transparent border-none focus:outline-none"
+                  />
+                  <div className="flex flex-wrap items-center gap-space-xs text-label-sm font-label-sm text-outline mt-1">
+                    <span>Look Assignment: <strong className="text-primary">{activeNote.look}</strong></span>
+                    <span>•</span>
+                    <span>Modéliste: <strong className="text-on-surface">{activeNote.modeliste}</strong></span>
+                    <span>•</span>
+                    <span>Fit Model: <strong className="text-on-surface">{activeNote.fitModel}</strong></span>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-space-xs">
+                  <span className="px-space-xs py-1 rounded bg-secondary-container/40 text-secondary font-label-sm text-label-sm font-bold">
+                    {activeNote.status}
+                  </span>
+                </div>
+              </div>
+
+              {/* Text Area */}
+              <div className="flex flex-col gap-space-xs">
+                <label className="font-label-md text-label-md text-outline uppercase tracking-wider">
+                  Technical Specifications &amp; Toile Adjustment Log
+                </label>
+                <textarea
+                  value={activeNote.content}
+                  onChange={(e) => handleContentChange(e.target.value)}
+                  rows={14}
+                  className="w-full p-space-md rounded-lg bg-surface-container-high/60 text-on-surface font-body-md text-body-md leading-relaxed border border-outline-variant/30 focus:outline-none focus:bg-surface-container-highest transition-all resize-y"
+                />
+              </div>
+
+              <div className="flex items-center justify-between pt-space-xs border-t border-outline-variant/20 font-label-sm text-label-sm text-outline">
+                <span>Auto-saved to Atelier Cloud</span>
                 <button
-                  onClick={(e) => { e.stopPropagation(); togglePin(note) }}
-                  style={{ background: 'none', border: 'none', cursor: 'pointer', color: note.pinned ? 'var(--accent-primary)' : 'var(--text-muted)', flexShrink: 0 }}
+                  type="button"
+                  onClick={() => alert('Fitting note saved successfully!')}
+                  className="px-space-md py-space-xs rounded-lg bg-primary-container text-on-primary font-title-sm text-title-sm font-semibold hover:brightness-110 transition-all cursor-pointer"
                 >
-                  <Pin size={13} />
+                  Save Specification
                 </button>
               </div>
-              <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{formatDate(note.updated_at)}</p>
-              {note.tags?.length > 0 && (
-                <div style={{ display: 'flex', gap: '0.25rem', flexWrap: 'wrap', marginTop: '0.375rem' }}>
-                  {note.tags.slice(0, 2).map((t) => <Badge key={t} variant="muted" className="text-xs">#{t}</Badge>)}
-                </div>
-              )}
             </div>
-          ))}
+          ) : (
+            <div className="rounded-xl bg-surface-container-low/90 backdrop-blur-2xl shadow-xl border border-outline-variant/20 p-space-2xl text-center flex flex-col items-center justify-center gap-space-md">
+              <span className="material-symbols-outlined text-5xl text-outline">straighten</span>
+              <h3 className="font-headline-sm text-headline-sm text-on-surface font-bold">Select a fitting note to inspect</h3>
+            </div>
+          )}
         </div>
       </div>
-
-      {/* Editor area */}
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', background: 'var(--bg-base)', minWidth: 0 }}>
-        {activeNote ? (
-          <NoteEditor note={activeNote} onSave={saveNote} onClose={() => setActiveNote(null)} />
-        ) : (
-          <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '1rem', padding: '2rem' }}>
-            <FileText size={56} style={{ color: 'var(--glass-border)', opacity: 0.6 }} />
-            <div style={{ textAlign: 'center' }}>
-              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.5rem', color: 'var(--text-primary)', marginBottom: '0.5rem' }}>Select a note or create one</h3>
-              <p style={{ color: 'var(--text-muted)' }}>Your design thinking lives here.</p>
-            </div>
-            <Button icon={<Plus size={16} />} onClick={() => setShowTemplates(true)}>New Note</Button>
-          </div>
-        )}
-      </div>
-
-      {/* Template selector modal */}
-      <GlassModal isOpen={showTemplates} onClose={() => setShowTemplates(false)} title="Choose a Template" size="md">
-        <div style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-          <div className="glass-card" style={{ padding: '1rem', cursor: 'pointer' }} onClick={() => createNote()}>
-            <p style={{ fontWeight: 600, color: 'var(--text-primary)' }}>Blank Note</p>
-            <p style={{ fontSize: '0.8125rem', color: 'var(--text-muted)' }}>Start with a clean slate</p>
-          </div>
-          {NOTE_TEMPLATES.map((t) => (
-            <div key={t.id} className="glass-card" style={{ padding: '1rem', cursor: 'pointer' }} onClick={() => createNote(t)}>
-              <p style={{ fontWeight: 600, color: 'var(--text-primary)' }}>{t.label}</p>
-              <p style={{ fontSize: '0.8125rem', color: 'var(--text-muted)' }}>Pre-filled template</p>
-            </div>
-          ))}
-        </div>
-      </GlassModal>
     </div>
   )
 }
