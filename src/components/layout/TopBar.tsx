@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { motion, AnimatePresence } from 'framer-motion'
 import { useAppStore } from '@/store/useAppStore'
 
 interface TopBarProps {
@@ -50,37 +51,53 @@ export function TopBar({ onOpenMobile }: TopBarProps) {
 
       {/* Right Action Controls */}
       <div className="flex items-center gap-space-md">
-        {/* Velvet / Alabaster Theme Toggle */}
-        <div className="flex items-center rounded-lg bg-surface-container-high/40 p-0.5 border border-outline-variant/20">
-          <button
-            type="button"
-            onClick={toggleDarkMode}
-            className={`px-space-xs py-space-2xs rounded-lg font-label-sm text-label-sm flex items-center gap-1 transition-all ${
-              darkMode
-                ? 'bg-secondary-container text-on-secondary-container font-semibold'
-                : 'text-on-surface-variant hover:text-on-surface'
+        {/* Animated Single Theme Toggle Button */}
+        <motion.button
+          type="button"
+          onClick={toggleDarkMode}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.94 }}
+          className={`relative flex items-center gap-2 px-3 py-1.5 rounded-full border shadow-sm backdrop-blur-md cursor-pointer select-none transition-colors duration-300 ${
+            darkMode
+              ? 'bg-surface-container-high/80 border-outline-variant/40 text-on-surface hover:bg-surface-container-highest shadow-[0_0_12px_rgba(255,177,194,0.12)]'
+              : 'bg-surface-container-high border-outline-variant/50 text-on-surface hover:bg-surface-container-highest shadow-[0_2px_8px_rgba(0,0,0,0.08)]'
+          }`}
+          aria-label="Toggle theme mode"
+          title={darkMode ? 'Currently Dark (Velvet). Click to switch to Light (Alabaster)' : 'Currently Light (Alabaster). Click to switch to Dark (Velvet)'}
+        >
+          <motion.span
+            key={darkMode ? 'dark-icon' : 'light-icon'}
+            initial={{ rotate: -180, scale: 0.4, opacity: 0 }}
+            animate={{ rotate: 0, scale: 1, opacity: 1 }}
+            exit={{ rotate: 180, scale: 0.4, opacity: 0 }}
+            transition={{ duration: 0.3, ease: 'backOut' }}
+            className={`material-symbols-outlined text-lg ${
+              darkMode ? 'text-secondary' : 'text-amber-500'
             }`}
-            title="Dark Velvet Mode"
           >
-            <span className="material-symbols-outlined text-sm">dark_mode</span>
-            <span className="hidden sm:inline">Velvet</span>
-          </button>
-          <button
-            type="button"
-            onClick={toggleDarkMode}
-            className={`px-space-xs py-space-2xs rounded-lg font-label-sm text-label-sm flex items-center gap-1 transition-all ${
-              !darkMode
-                ? 'bg-secondary-container text-on-secondary-container font-semibold'
-                : 'text-on-surface-variant hover:text-on-surface'
-            }`}
-            title="Atelier Light Mode"
-          >
-            <span className="material-symbols-outlined text-sm">light_mode</span>
-            <span className="hidden sm:inline">Alabaster</span>
-          </button>
-        </div>
+            {darkMode ? 'dark_mode' : 'light_mode'}
+          </motion.span>
 
-
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.div
+              key={darkMode ? 'dark-label' : 'light-label'}
+              initial={{ y: -10, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: 10, opacity: 0 }}
+              transition={{ duration: 0.2, ease: 'easeOut' }}
+              className="flex items-center gap-1.5 text-xs font-semibold"
+            >
+              <span>{darkMode ? 'Dark' : 'Light'}</span>
+              <span className={`text-[10px] uppercase px-1.5 py-0.2 rounded-full font-bold tracking-wider ${
+                darkMode 
+                  ? 'bg-secondary-container/60 text-secondary' 
+                  : 'bg-primary/15 text-primary'
+              }`}>
+                {darkMode ? 'Velvet' : 'Alabaster'}
+              </span>
+            </motion.div>
+          </AnimatePresence>
+        </motion.button>
 
         {/* Primary CTA: New Collection */}
         <button
@@ -100,3 +117,4 @@ export function TopBar({ onOpenMobile }: TopBarProps) {
     </header>
   )
 }
+
