@@ -80,17 +80,7 @@ export function TopBar({ onOpenMobile }: TopBarProps) {
           </button>
         </div>
 
-        {/* Notifications Bell */}
-        <button
-          type="button"
-          className="relative p-space-xs rounded-lg bg-surface-container-high/50 text-on-surface-variant hover:text-on-surface transition-colors"
-          title="Notifications"
-        >
-          <span className="material-symbols-outlined text-lg">notifications</span>
-          <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-error text-on-error font-label-sm text-[9px] font-bold flex items-center justify-center leading-none">
-            3
-          </span>
-        </button>
+
 
         {/* Primary CTA: New Collection */}
         <button

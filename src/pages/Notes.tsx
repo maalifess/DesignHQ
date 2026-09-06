@@ -12,50 +12,7 @@ interface FittingNote {
   pinned: boolean
 }
 
-const PRESEEDED_NOTES: FittingNote[] = [
-  {
-    id: 'fn-01',
-    title: 'Look 04 Velvet Opera Cape — Fitting Adjustments',
-    look: 'Look 04 (CR-209)',
-    modeliste: 'Sarah Lindqvist',
-    fitModel: 'Maya Lin (Size 36 FR)',
-    date: 'Oct 23, 2026',
-    status: 'Action Required ⚠️',
-    content: `Fitting Notes & Seam Revisions:
-1. Collar pedestal tension: The silk-velvet pile weight (380 GSM) causes slight pulling at the neck pedestal. Rotate shoulder grainline forward by 1.5cm.
-2. Hem facing: Insert 4cm horsehair tape facing inside bottom hem to achieve crisp architectural flared structure.
-3. Clasp anchor: Reinforced internal stay button behind antiqued brass clasp to prevent velvet tear under runway movement.`,
-    pinned: true,
-  },
-  {
-    id: 'fn-02',
-    title: 'Look 01 Architectural Peplum Jacket — First Toile Approval',
-    look: 'Look 01 (CR-201)',
-    modeliste: 'Elena Rossi',
-    fitModel: 'Maya Lin (Size 36 FR)',
-    date: 'Oct 22, 2026',
-    status: 'Approved ✅',
-    content: `First Toile Inspection:
-- Hand-canvassed chest piece provides ideal rigidity.
-- Origami peplum pleats fold sharply without bulk.
-- Armhole scye depth approved for production sample cutting in Double-face Wool Crepe.`,
-    pinned: true,
-  },
-  {
-    id: 'fn-03',
-    title: 'Look 02 Bias-Cut Silk Gown — Drape Inspection',
-    look: 'Look 02 (CR-204)',
-    modeliste: 'Marco Valenti',
-    fitModel: 'Camille D. (Size 34 FR)',
-    date: 'Oct 20, 2026',
-    status: 'In Progress ✂️',
-    content: `Gravity Drape Check:
-- True 45-degree grain bias drape verified on mannequin. Zero hem puckering.
-- Microscopic French seams lie completely flat along side body.
-- Rouleau back ties need 2cm extra length for hand knotting.`,
-    pinned: false,
-  },
-]
+const PRESEEDED_NOTES: FittingNote[] = []
 
 export default function Notes() {
   const [notesList, setNotesList] = useState<FittingNote[]>(PRESEEDED_NOTES)
@@ -140,36 +97,51 @@ export default function Notes() {
           </div>
 
           <div className="flex flex-col gap-space-xs">
-            {filteredNotes.map((note) => {
-              const isActive = note.id === activeNoteId
-              return (
-                <div
-                  key={note.id}
-                  onClick={() => setActiveNoteId(note.id)}
-                  className={`p-space-md rounded-xl bg-surface-container-low/90 backdrop-blur-xl border transition-all cursor-pointer flex flex-col gap-1 ${
-                    isActive
-                      ? 'border-primary ring-2 ring-primary/40 bg-surface-container-low shadow-lg'
-                      : 'border-outline-variant/20 hover:border-outline-variant/50'
-                  }`}
+            {filteredNotes.length === 0 ? (
+              <div className="p-space-lg rounded-xl bg-surface-container-low/90 backdrop-blur-xl border border-outline-variant/20 text-center flex flex-col items-center gap-space-xs">
+                <span className="material-symbols-outlined text-3xl text-outline">edit_note</span>
+                <span className="font-body-sm text-body-sm text-on-surface-variant font-semibold">
+                  No fitting notes found.
+                </span>
+                <button
+                  onClick={handleCreateNote}
+                  className="px-space-sm py-1 rounded bg-primary-container text-on-primary font-label-sm text-label-sm font-semibold cursor-pointer"
                 >
-                  <div className="flex items-center justify-between">
-                    <span className="font-label-sm text-[10px] text-primary font-bold uppercase tracking-wider">
-                      {note.look}
-                    </span>
-                    <span className="font-label-sm text-[10px] text-outline">{note.date}</span>
-                  </div>
+                  + Create Fitting Note
+                </button>
+              </div>
+            ) : (
+              filteredNotes.map((note) => {
+                const isActive = note.id === activeNoteId
+                return (
+                  <div
+                    key={note.id}
+                    onClick={() => setActiveNoteId(note.id)}
+                    className={`p-space-md rounded-xl bg-surface-container-low/90 backdrop-blur-xl border transition-all cursor-pointer flex flex-col gap-1 ${
+                      isActive
+                        ? 'border-primary ring-2 ring-primary/40 bg-surface-container-low shadow-lg'
+                        : 'border-outline-variant/20 hover:border-outline-variant/50'
+                    }`}
+                  >
+                    <div className="flex items-center justify-between">
+                      <span className="font-label-sm text-[10px] text-primary font-bold uppercase tracking-wider">
+                        {note.look}
+                      </span>
+                      <span className="font-label-sm text-[10px] text-outline">{note.date}</span>
+                    </div>
 
-                  <h3 className="font-title-sm text-title-sm text-on-surface font-bold truncate mt-0.5">
-                    {note.title}
-                  </h3>
+                    <h3 className="font-title-sm text-title-sm text-on-surface font-bold truncate mt-0.5">
+                      {note.title}
+                    </h3>
 
-                  <div className="flex items-center justify-between text-label-sm font-label-sm mt-1 pt-1 border-t border-outline-variant/20">
-                    <span className="text-outline">Model: {note.fitModel}</span>
-                    <span className="text-secondary font-semibold">{note.status}</span>
+                    <div className="flex items-center justify-between text-label-sm font-label-sm mt-1 pt-1 border-t border-outline-variant/20">
+                      <span className="text-outline">Model: {note.fitModel}</span>
+                      <span className="text-secondary font-semibold">{note.status}</span>
+                    </div>
                   </div>
-                </div>
-              )
-            })}
+                )
+              })
+            )}
           </div>
         </div>
 

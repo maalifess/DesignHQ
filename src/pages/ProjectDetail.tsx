@@ -20,72 +20,7 @@ interface GarmentLook {
   image: string
 }
 
-const INITIAL_LOOKS_DATA: GarmentLook[] = [
-  {
-    id: 'look-01',
-    number: '01',
-    patternNo: 'CR-201',
-    title: 'Architectural Peplum Jacket',
-    category: 'Outerwear/Tailoring',
-    status: 'First Toile Approved ✅',
-    statusType: 'approved',
-    fabric: 'Double-face Wool Crepe',
-    notions: 'Horn Buttons & Bone Stiffener',
-    nextFitting: 'Tomorrow, 10:30 AM',
-    modeliste: 'Elena Rossi',
-    pieces: 14,
-    description: 'Exaggerated shoulder architecture paired with hand-canvassed chest reinforcement. Features a sharp pinched waist flaring into asymmetric peplum origami folds.',
-    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAyo2wq7MnyGIJ38qxWJbPr7cExho3a8LO1Fr6-Q9FmFn60-EWbP8gGcQ1yAOlZbjXKFux4meJdhSeSn--RG49wSeaBb_NXqQq2Cc7WQf47JTqi3NCIPYGUSJKqkRmM0oum3STZaVc2-lRmXe8xmlDxgwZSOgopiXin14AftsPus2QJw6Ni2WbCypWBoLk9uhi0FPnukZlBF8ElgpDGXuazeLCvo7PvzcLoV2paUrOIBS7NO3mTgnMzUg',
-  },
-  {
-    id: 'look-02',
-    number: '02',
-    patternNo: 'CR-204',
-    title: 'Cascading Bias-Cut Silk Gown',
-    category: 'Eveningwear/Drape',
-    status: 'Sample in Cutting ✂️',
-    statusType: 'cutting',
-    fabric: 'Heavy Mulberry Silk (28mm)',
-    notions: 'Invisible Riri Zipper, Silk Gimp',
-    nextFitting: 'Oct 24, 02:00 PM',
-    modeliste: 'Marco Valenti',
-    pieces: 6,
-    description: 'True 45-degree grain bias drape with zero hem puckering. Back features hand-rolled rouleau ties anchored by microscopic French seam finishes.',
-    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAAk63iKooBms-E_I__xCiPC3FeLXgIeMCT4l6Nx9CtY5Gd-P__2v8sr786C_tzcOpQVzqMAtTICjJCaUadCqspWiVOZLCJUDyV1Q2jUnJ53TtrDq5Ffv0hYXBfA-IdsAYZa73lKGRSsHkTgg_xc69StMxFi3TX7g519i_EM3L7gH0xqHua6IoY2sk371RBVTC7csA9nog5r10bZK6vXgHGFYac57wfwV-rtPcIPOUN1zK1JuUQMeJObw',
-  },
-  {
-    id: 'look-03',
-    number: '03',
-    patternNo: 'CR-207',
-    title: 'Tailored Wide-Leg Trousers',
-    category: 'Separates/Tailoring',
-    status: 'Sample Approved by Studio Director ✅',
-    statusType: 'approved',
-    fabric: 'Worsted Fine Flannel (Onyx)',
-    notions: 'Mother-of-Pearl Waist Fastener',
-    nextFitting: 'Fitting Passed (Ready)',
-    modeliste: 'Elena Rossi',
-    pieces: 8,
-    description: 'Double-forward front pleats, Hollywood waistband construction, internal curtain waistband with hand-stitched pick accents along slant pockets.',
-    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuApxYIHFd-Cl4zn5eTnZusOVkTkc3Vv5K4bdDPK5IMTr65DLAHXsjYs6ZxRubDT_6hXmJk6vtYbhd5ahMJBkIXZ197Zly_GzI3smcTtrW7HazJh9nAqo6eeh2x3JLXxQkz1IFcHeM7KRnGlsrIHe8wlUByyeEAQQJngVTlV9zsJ9zZuK60LVcONoEVlFWq1xvblydPcmFq6EuSK1C7D_wvOc4d-6boAgrsuBtzZVjlEaRsrEIAMzu4FcA',
-  },
-  {
-    id: 'look-04',
-    number: '04',
-    patternNo: 'CR-209',
-    title: 'Pleated Velvet Opera Cape',
-    category: 'Couture/Statement Outerwear',
-    status: 'Fitting Adjustment Needed ⚠️',
-    statusType: 'warning',
-    fabric: 'Silk-Rayon Velvet (Merlot)',
-    notions: 'Antiqued Brass Clasp & Chain',
-    nextFitting: 'Urgent: Tomorrow, 04:00 PM',
-    modeliste: 'Sarah Lindqvist',
-    pieces: 11,
-    description: 'Sunray pleated silk-velvet paneling with structured neck pedestal. Shoulder line requires 1.5cm forward grainline rotation to eliminate collar tension.',
-    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDYXiyur532gaNSCCnps3Ias-c0mDhQz2GPOcbpj7PaIa2WG1d9xKCj23w1Kl9q3jF7gWa8JZPUSkUAh7DxSA3ucWRLSfbiqxTGes-Cs1HQsl7WieZnBphtKk0SqCSXElCm-jQJd0kGfNTCooxHPauSAikMFIIZj82kKjsJflViapAdEnGdgV11ZadlrYUTUTeN9I44k3JOz8jBetGKHBqeb2clblb_Se2fSuo4G3EzM4qroTQ03nT2Mw',
-  },
-]
+const INITIAL_LOOKS_DATA: GarmentLook[] = []
 
 export default function ProjectDetail() {
   const navigate = useNavigate()
@@ -94,6 +29,9 @@ export default function ProjectDetail() {
   const designerName = profile?.display_name || profile?.full_name || 'Ariba'
 
   const projects = useAtelierStore((state) => state.projects)
+  const deadlines = useAtelierStore((state) => state.deadlines)
+  const fabrics = useAtelierStore((state) => state.fabrics)
+  const updateProject = useAtelierStore((state) => state.updateProject)
   const activeProject = projects.find((p) => p.id === id) || projects[0]
 
   const projectTitle = activeProject?.title || 'Ariba Haute Couture Collection'
@@ -103,13 +41,35 @@ export default function ProjectDetail() {
   const projectStage = activeProject?.stage || 'Sampling & Fitting Stage (75%)'
 
   const [looksList, setLooksList] = useState<GarmentLook[]>(INITIAL_LOOKS_DATA)
-  const [activeStage, setActiveStage] = useState<number>(6) // Stage 6: Sampling
+  const activeStage = activeProject?.stageNum || 6
   const [activeTab, setActiveTab] = useState<string>('garments')
   const [searchFilter, setSearchFilter] = useState<string>('')
 
   const [showAddLookModal, setShowAddLookModal] = useState<boolean>(false)
-  const [showAiAnalysisModal, setShowAiAnalysisModal] = useState<boolean>(false)
+  const [showPaletteModal, setShowPaletteModal] = useState<boolean>(false)
   const [toastMessage, setToastMessage] = useState<string | null>(null)
+
+  const handleSelectStage = (stageNum: number, stageName: string) => {
+    if (!activeProject) return
+    const percent = Math.round((stageNum / 9) * 100)
+    const stage = `${stageName} (Phase ${stageNum} of 9)`
+    updateProject(activeProject.id, {
+      stageNum,
+      stage,
+      percent,
+    })
+    showToast(`Milestone updated to Stage ${stageNum}: ${stageName} (${percent}%)`)
+  }
+
+  // Palette Editor state
+  const currentPalette = activeProject?.palette || [
+    { name: 'Haute Crimson', hex: '#800020' },
+    { name: 'Merlot Velvet', hex: '#5C0016' },
+    { name: 'Blush Satin', hex: '#C05070' },
+  ]
+  const [editingPalette, setEditingPalette] = useState<{ name: string; hex: string }[]>(currentPalette)
+  const [newColorHex, setNewColorHex] = useState('#800020')
+  const [newColorName, setNewColorName] = useState('')
 
   // New Look Form
   const [newLookTitle, setNewLookTitle] = useState('')
@@ -122,6 +82,25 @@ export default function ProjectDetail() {
   const showToast = (msg: string) => {
     setToastMessage(msg)
     setTimeout(() => setToastMessage(null), 3000)
+  }
+
+  const handleSavePalette = () => {
+    if (activeProject) {
+      updateProject(activeProject.id, { palette: editingPalette })
+      showToast('Collection palette saved!')
+    }
+    setShowPaletteModal(false)
+  }
+
+  const handleAddColorToPalette = () => {
+    if (!newColorHex) return
+    const name = newColorName.trim() || `Color ${editingPalette.length + 1}`
+    setEditingPalette([...editingPalette, { name, hex: newColorHex }])
+    setNewColorName('')
+  }
+
+  const handleRemoveColorFromPalette = (index: number) => {
+    setEditingPalette(editingPalette.filter((_, i) => i !== index))
   }
 
   const handleAddLook = (e: React.FormEvent) => {
@@ -184,7 +163,7 @@ export default function ProjectDetail() {
         </div>
       )}
 
-      {/* Breadcrumb & Meta Bar */}
+      {/* Breadcrumb */}
       <div className="flex flex-wrap items-center justify-between gap-space-xs text-body-sm font-body-sm">
         <div className="flex items-center gap-2">
           <button
@@ -195,22 +174,6 @@ export default function ProjectDetail() {
           </button>
           <span className="text-outline">/</span>
           <span className="text-on-surface font-semibold">{projectTitle}</span>
-          <span className="px-space-xs py-0.5 rounded bg-primary-container/40 text-primary font-label-sm text-label-sm font-bold">
-            {projectCode}
-          </span>
-        </div>
-
-        <div className="flex items-center gap-space-xs">
-          <span className="px-space-xs py-1 rounded-full bg-secondary-container/40 text-secondary font-label-sm text-label-sm font-semibold flex items-center gap-1">
-            <span className="w-2 h-2 rounded-full bg-secondary animate-pulse" />
-            Atelier Live Sync • Paris Hub
-          </span>
-          <button className="p-1 rounded text-outline hover:text-on-surface cursor-pointer" title="Bookmark">
-            <span className="material-symbols-outlined text-base">bookmark</span>
-          </button>
-          <button className="p-1 rounded text-outline hover:text-on-surface cursor-pointer" title="Options">
-            <span className="material-symbols-outlined text-base">more_vert</span>
-          </button>
         </div>
       </div>
 
@@ -224,48 +187,50 @@ export default function ProjectDetail() {
               <span className="px-space-xs py-0.5 rounded-full bg-primary-container/60 text-primary font-label-sm text-label-sm tracking-wider uppercase font-bold">
                 {projectCategory}
               </span>
-              <span className="px-space-xs py-0.5 rounded-full bg-secondary-container/40 text-secondary font-label-sm text-label-sm font-semibold">
-                {projectStage}
-              </span>
-              <span className="font-label-sm text-label-sm text-outline">Code: {projectCode}</span>
             </div>
 
             <h1 className="font-headline-hero text-headline-hero text-on-surface tracking-tight mt-1 font-bold">
               {projectTitle}
             </h1>
             <p className="font-body-lg text-body-lg text-on-surface-variant max-w-3xl">
-              {activeProject?.description || 'A bespoke architectural couture study merging sculpted velvet silhouettes with bias-draped silks, historic tailoring lines, and modern precision structure.'}
+              {activeProject?.description || 'Bespoke atelier collection created by Ariba.'}
             </p>
 
             {/* Meta Grid */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-space-md mt-space-xs pt-space-xs border-t border-outline-variant/20">
+            <div className="grid grid-cols-2 gap-space-md mt-space-xs pt-space-xs border-t border-outline-variant/20">
               <div>
                 <span className="font-label-sm text-label-sm text-outline block">Lead Designer</span>
                 <span className="font-title-sm text-title-sm text-on-surface font-semibold">{designerName}</span>
               </div>
               <div>
-                <span className="font-label-sm text-label-sm text-outline block">Target Delivery</span>
+                <span className="font-label-sm text-label-sm text-outline block">Deadline</span>
                 <span className="font-title-sm text-title-sm text-on-surface font-semibold">{projectTargetDate}</span>
-              </div>
-              <div>
-                <span className="font-label-sm text-label-sm text-outline block">Lineup Scope</span>
-                <span className="font-title-sm text-title-sm text-on-surface font-semibold">12 Looks Planned</span>
-              </div>
-              <div>
-                <span className="font-label-sm text-label-sm text-outline block">Atelier Phase</span>
-                <span className="font-title-sm text-title-sm text-primary font-bold">Toile Fitting #2</span>
               </div>
             </div>
 
             {/* Palette Swatch Row */}
             <div className="flex items-center gap-space-xs mt-space-xs">
               <span className="font-label-sm text-label-sm text-outline">Collection Palette:</span>
-              <div className="flex items-center gap-1.5">
-                <span className="w-6 h-6 rounded-full bg-[#5C0016] shadow-md border border-white/20" title="Deep Burgundy (#5C0016)" />
-                <span className="w-6 h-6 rounded-full bg-[#800020] shadow-md border border-white/20" title="Crimson Velvet (#800020)" />
-                <span className="w-6 h-6 rounded-full bg-[#A0002A] shadow-md border border-white/20" title="Rose Velvet (#A0002A)" />
-                <span className="w-6 h-6 rounded-full bg-[#8B4060] shadow-md border border-white/20" title="Dusty Mauve (#8B4060)" />
-                <span className="w-6 h-6 rounded-full bg-[#160B0F] shadow-md border border-white/20" title="Onyx Noir (#160B0F)" />
+              <div className="flex items-center gap-1.5 flex-wrap">
+                {(activeProject?.palette || currentPalette).map((p, idx) => (
+                  <span
+                    key={idx}
+                    className="w-6 h-6 rounded-full shadow-md border border-white/20 transition-transform hover:scale-110"
+                    style={{ backgroundColor: p.hex }}
+                    title={p.name}
+                  />
+                ))}
+                <button
+                  type="button"
+                  onClick={() => {
+                    setEditingPalette(activeProject?.palette || currentPalette)
+                    setShowPaletteModal(true)
+                  }}
+                  className="px-space-xs py-0.5 rounded-md bg-surface-container-high hover:bg-surface-container-highest text-primary font-label-sm text-label-sm font-semibold transition-all cursor-pointer flex items-center gap-1 border border-outline-variant/20 ml-2"
+                >
+                  <span className="material-symbols-outlined text-xs">palette</span>
+                  <span>Edit Palette</span>
+                </button>
               </div>
             </div>
           </div>
@@ -330,7 +295,7 @@ export default function ProjectDetail() {
             return (
               <div
                 key={stage.num}
-                onClick={() => setActiveStage(stage.num)}
+                onClick={() => handleSelectStage(stage.num, stage.name)}
                 className={`flex flex-col items-center p-space-xs rounded-lg border transition-all cursor-pointer ${
                   isCurrent
                     ? 'bg-primary-container text-on-primary border-primary shadow-[0_4px_16px_rgba(128,0,32,0.5)] font-bold'
@@ -354,7 +319,7 @@ export default function ProjectDetail() {
           {stagesList.map((stage) => (
             <button
               key={stage.num}
-              onClick={() => setActiveStage(stage.num)}
+              onClick={() => handleSelectStage(stage.num, stage.name)}
               className={`px-3 py-1 rounded-full text-xs whitespace-nowrap font-semibold cursor-pointer ${
                 activeStage === stage.num
                   ? 'bg-primary-container text-on-primary'
@@ -426,213 +391,294 @@ export default function ProjectDetail() {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-space-xl items-start">
         {/* Left 8 Columns: Garment / Look Cards */}
         <div className="lg:col-span-8 flex flex-col gap-space-md">
-          {filteredLooks.map((look) => (
-            <div
-              key={look.id}
-              className="rounded-xl bg-surface-container-low/90 backdrop-blur-2xl shadow-xl border border-outline-variant/20 p-space-lg flex flex-col gap-space-md hover:bg-surface-container-low transition-all"
-            >
-              <div className="flex flex-col sm:flex-row items-start gap-space-md">
-                <img
-                  alt={look.title}
-                  className="w-full sm:w-32 h-44 rounded-lg object-cover flex-shrink-0 shadow-lg border border-outline-variant/30"
-                  src={look.image}
-                />
+          {filteredLooks.length === 0 ? (
+            <div className="rounded-xl bg-surface-container-low/90 backdrop-blur-2xl shadow-xl border border-outline-variant/20 p-space-2xl flex flex-col items-center justify-center text-center gap-space-md">
+              <span className="material-symbols-outlined text-5xl text-outline">styler</span>
+              <h3 className="font-headline-sm text-headline-sm text-on-surface font-bold">
+                No Garment Looks Added Yet
+              </h3>
+              <p className="font-body-sm text-body-sm text-on-surface-variant max-w-md">
+                Build your haute couture lineup for {projectTitle}. Add garment looks with pattern specs, textile assignments, and fitting schedules.
+              </p>
+              <button
+                onClick={() => setShowAddLookModal(true)}
+                className="px-space-md py-space-xs rounded-lg bg-primary-container text-on-primary font-title-sm text-title-sm font-semibold shadow-lg hover:brightness-110 cursor-pointer"
+                type="button"
+              >
+                + Add Garment Look
+              </button>
+            </div>
+          ) : (
+            filteredLooks.map((look) => (
+              <div
+                key={look.id}
+                className="rounded-xl bg-surface-container-low/90 backdrop-blur-2xl shadow-xl border border-outline-variant/20 p-space-lg flex flex-col gap-space-md hover:bg-surface-container-low transition-all"
+              >
+                <div className="flex flex-col sm:flex-row items-start gap-space-md">
+                  <img
+                    alt={look.title}
+                    className="w-full sm:w-32 h-44 rounded-lg object-cover flex-shrink-0 shadow-lg border border-outline-variant/30"
+                    src={look.image}
+                  />
 
-                <div className="flex flex-col min-w-0 flex-1 gap-1">
-                  <div className="flex flex-wrap items-center justify-between gap-2">
-                    <div className="flex items-center gap-space-xs">
-                      <span className="font-headline-sm text-headline-sm text-primary font-bold">
-                        Look {look.number}
+                  <div className="flex flex-col min-w-0 flex-1 gap-1">
+                    <div className="flex flex-wrap items-center justify-between gap-2">
+                      <div className="flex items-center gap-space-xs">
+                        <span className="font-headline-sm text-headline-sm text-primary font-bold">
+                          Look {look.number}
+                        </span>
+                        <span className="font-body-sm text-body-sm text-outline">#{look.patternNo}</span>
+                        <span className="px-2 py-0.5 rounded bg-surface-container-highest text-on-surface-variant font-label-sm text-label-sm font-semibold">
+                          {look.category}
+                        </span>
+                      </div>
+
+                      <span
+                        className={`px-space-xs py-0.5 rounded font-label-sm text-label-sm font-bold ${
+                          look.statusType === 'approved'
+                            ? 'bg-primary-container/40 text-primary'
+                            : look.statusType === 'cutting'
+                            ? 'bg-secondary-container/40 text-secondary'
+                            : 'bg-error-container text-on-error'
+                        }`}
+                      >
+                        {look.status}
                       </span>
-                      <span className="font-body-sm text-body-sm text-outline">#{look.patternNo}</span>
-                      <span className="px-2 py-0.5 rounded bg-surface-container-highest text-on-surface-variant font-label-sm text-label-sm font-semibold">
-                        {look.category}
-                      </span>
                     </div>
 
-                    <span
-                      className={`px-space-xs py-0.5 rounded font-label-sm text-label-sm font-bold ${
-                        look.statusType === 'approved'
-                          ? 'bg-primary-container/40 text-primary'
-                          : look.statusType === 'cutting'
-                          ? 'bg-secondary-container/40 text-secondary'
-                          : 'bg-error-container text-on-error'
-                      }`}
-                    >
-                      {look.status}
-                    </span>
-                  </div>
+                    <h3 className="font-headline-sm text-headline-sm text-on-surface font-bold mt-0.5">
+                      {look.title}
+                    </h3>
 
-                  <h3 className="font-headline-sm text-headline-sm text-on-surface font-bold mt-0.5">
-                    {look.title}
-                  </h3>
+                    <p className="font-body-sm text-body-sm text-on-surface-variant line-clamp-2 mt-0.5">
+                      {look.description}
+                    </p>
 
-                  <p className="font-body-sm text-body-sm text-on-surface-variant line-clamp-2 mt-0.5">
-                    {look.description}
-                  </p>
-
-                  <div className="grid grid-cols-2 gap-space-xs mt-2 pt-space-xs border-t border-outline-variant/20 text-body-sm font-body-sm">
-                    <div>
-                      <span className="text-outline block text-[11px]">Primary Textile:</span>
-                      <span className="text-on-surface font-semibold">{look.fabric}</span>
+                    <div className="grid grid-cols-2 gap-space-xs mt-2 pt-space-xs border-t border-outline-variant/20 text-body-sm font-body-sm">
+                      <div>
+                        <span className="text-outline block text-[11px]">Primary Textile:</span>
+                        <span className="text-on-surface font-semibold">{look.fabric}</span>
+                      </div>
+                      <div>
+                        <span className="text-outline block text-[11px]">Hardware &amp; Notions:</span>
+                        <span className="text-on-surface font-semibold">{look.notions}</span>
+                      </div>
                     </div>
-                    <div>
-                      <span className="text-outline block text-[11px]">Hardware &amp; Notions:</span>
-                      <span className="text-on-surface font-semibold">{look.notions}</span>
-                    </div>
-                  </div>
 
-                  <div className="flex flex-wrap items-center justify-between gap-space-xs mt-2 pt-space-2xs text-label-sm font-label-sm text-outline">
-                    <span>Modéliste: <strong className="text-on-surface">{look.modeliste}</strong> ({look.pieces} pieces)</span>
-                    <span className="text-secondary font-semibold">Next Fitting: {look.nextFitting}</span>
+                    <div className="flex flex-wrap items-center justify-between gap-space-xs mt-2 pt-space-2xs text-label-sm font-label-sm text-outline">
+                      <span>Modéliste: <strong className="text-on-surface">{look.modeliste}</strong> ({look.pieces} pieces)</span>
+                      <span className="text-secondary font-semibold">Next Fitting: {look.nextFitting}</span>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))
+          )}
 
           <div className="text-center font-label-sm text-label-sm text-outline py-space-xs">
-            Showing {filteredLooks.length} of 12 Lineup Looks
+            Showing {filteredLooks.length} Garment Look{filteredLooks.length === 1 ? '' : 's'}
           </div>
         </div>
 
-        {/* Right 4 Columns: Right Rail Widgets */}
+        {/* Right 4 Columns: Dynamic Right Rail */}
         <div className="lg:col-span-4 flex flex-col gap-space-xl">
-          {/* Fitting Schedule (Milan Studio) */}
+          {/* Fitting Schedule & Production Deadlines */}
           <div className="rounded-xl bg-surface-container-low/90 backdrop-blur-2xl shadow-xl border border-outline-variant/20 p-space-lg flex flex-col gap-space-md">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-space-xs">
                 <span className="material-symbols-outlined text-primary text-xl">straighten</span>
                 <h3 className="font-headline-sm text-headline-sm text-on-surface font-bold">Fitting Schedule</h3>
               </div>
-              <span className="font-label-sm text-label-sm text-outline">Milan Studio</span>
+              <span className="font-label-sm text-label-sm text-outline">Live Deadlines</span>
             </div>
 
-            <div className="flex flex-col gap-space-sm">
-              <div className="p-space-xs rounded-lg bg-surface-container-high/60 backdrop-blur-md flex flex-col gap-0.5 border border-outline-variant/10">
-                <div className="flex items-center justify-between text-title-sm font-title-sm">
-                  <span className="text-on-surface font-bold">01 Peplum Jacket</span>
-                  <span className="text-primary font-bold">Tomorrow, 10:30 AM</span>
-                </div>
+            {deadlines.length === 0 ? (
+              <div className="p-space-md rounded-lg bg-surface-container-high/40 text-center flex flex-col items-center gap-2">
                 <span className="font-body-sm text-body-sm text-on-surface-variant">
-                  Model: Maya Lin (Size 36 FR) • Focus: Armhole depth &amp; peplum flare
+                  No active fitting deadlines set for this collection.
                 </span>
+                <button
+                  onClick={() => navigate('/notes')}
+                  className="px-space-sm py-1 rounded bg-surface-container-high hover:bg-surface-container-highest text-on-surface font-label-sm text-label-sm font-semibold cursor-pointer"
+                >
+                  View Notes &amp; Fittings
+                </button>
               </div>
-
-              <div className="p-space-xs rounded-lg bg-surface-container-high/60 backdrop-blur-md flex flex-col gap-0.5 border border-outline-variant/10">
-                <div className="flex items-center justify-between text-title-sm font-title-sm">
-                  <span className="text-on-surface font-bold">04 Velvet Opera Cape</span>
-                  <span className="text-error font-bold">Tomorrow, 04:00 PM</span>
-                </div>
-                <span className="font-body-sm text-body-sm text-on-surface-variant">
-                  Model: Maya Lin (Size 36 FR) • Focus: Collar stand tension release
-                </span>
+            ) : (
+              <div className="flex flex-col gap-space-sm">
+                {deadlines.slice(0, 3).map((dl) => (
+                  <div
+                    key={dl.id}
+                    className="p-space-xs rounded-lg bg-surface-container-high/60 backdrop-blur-md flex flex-col gap-0.5 border border-outline-variant/10"
+                  >
+                    <div className="flex items-center justify-between text-title-sm font-title-sm">
+                      <span className="text-on-surface font-bold truncate">{dl.title}</span>
+                      <span className="text-primary font-bold text-xs flex-shrink-0">{dl.daysLeft}d left</span>
+                    </div>
+                    <span className="font-body-sm text-body-sm text-on-surface-variant truncate">
+                      {dl.detail}
+                    </span>
+                  </div>
+                ))}
               </div>
-
-              <div className="p-space-xs rounded-lg bg-surface-container-high/60 backdrop-blur-md flex flex-col gap-0.5 border border-outline-variant/10">
-                <div className="flex items-center justify-between text-title-sm font-title-sm">
-                  <span className="text-on-surface font-bold">02 Silk Satin Gown</span>
-                  <span className="text-secondary font-bold">Oct 24, 02:00 PM</span>
-                </div>
-                <span className="font-body-sm text-body-sm text-on-surface-variant">
-                  Model: Camille D. (Size 34 FR) • Focus: Bias grain gravity drape
-                </span>
-              </div>
-            </div>
-
-            {/* Head Tailor's Dispatch Note */}
-            <div className="p-space-xs rounded-lg bg-surface-container-high/40 border border-outline-variant/20 flex flex-col gap-1">
-              <span className="font-label-sm text-label-sm text-secondary font-bold flex items-center gap-1">
-                <span className="material-symbols-outlined text-xs">format_quote</span> Head Tailor's Dispatch
-              </span>
-              <p className="font-body-sm text-[11px] text-on-surface-variant italic leading-relaxed">
-                "Silk velvet lot #802 arrived from Lyon. Steam press strictly on needleboard at 120°C max. Do not clamp seams without fleece cushion."
-              </p>
-            </div>
+            )}
           </div>
 
-          {/* Sample Production Budget */}
+          {/* Collection Overview & Metrics */}
           <div className="rounded-xl bg-surface-container-low/90 backdrop-blur-2xl shadow-xl border border-outline-variant/20 p-space-lg flex flex-col gap-space-md">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-space-xs">
-                <span className="material-symbols-outlined text-tertiary text-xl">payments</span>
-                <h3 className="font-headline-sm text-headline-sm text-on-surface font-bold">Sample Budget</h3>
-              </div>
-              <span className="font-label-sm text-label-sm text-outline">AW26 Allocation</span>
-            </div>
-
-            <div className="flex flex-col gap-1">
-              <div className="flex items-baseline justify-between">
-                <span className="font-headline-md text-headline-md text-on-surface font-bold">$14,250</span>
-                <span className="font-body-sm text-body-sm text-outline">/ $18,000 spent</span>
-              </div>
-              <span className="font-label-sm text-label-sm text-primary font-bold">79.1% Utilized</span>
-
-              <div className="w-full h-2 rounded-full bg-surface-container-highest overflow-hidden mt-1 flex">
-                <div className="h-full bg-primary-container" style={{ width: '42%' }} title="Fabrics & Linings" />
-                <div className="h-full bg-secondary-container" style={{ width: '21%' }} title="Modéliste & CAD" />
-                <div className="h-full bg-tertiary-container" style={{ width: '12%' }} title="Fit Models & Studio" />
-                <div className="h-full bg-surface-bright" style={{ width: '4.1%' }} title="Hardware & Notions" />
+                <span className="material-symbols-outlined text-tertiary text-xl">analytics</span>
+                <h3 className="font-headline-sm text-headline-sm text-on-surface font-bold">Collection Metrics</h3>
               </div>
             </div>
 
-            <div className="flex flex-col gap-space-2xs text-body-sm font-body-sm pt-space-xs border-t border-outline-variant/20">
-              <div className="flex justify-between">
-                <span className="text-outline">Fabrics &amp; Linings (38m)</span>
-                <span className="text-on-surface font-semibold">$6,840</span>
+            <div className="flex flex-col gap-space-xs text-body-sm font-body-sm">
+              <div className="flex justify-between items-center p-space-xs rounded bg-surface-container-high/40">
+                <span className="text-outline">Target Runway:</span>
+                <span className="text-on-surface font-semibold">{projectTargetDate}</span>
               </div>
-              <div className="flex justify-between">
-                <span className="text-outline">Modéliste &amp; CAD Toiles</span>
-                <span className="text-on-surface font-semibold">$4,620</span>
+              <div className="flex justify-between items-center p-space-xs rounded bg-surface-container-high/40">
+                <span className="text-outline">Garment Looks:</span>
+                <span className="text-on-surface font-semibold">{looksList.length} Created</span>
               </div>
-              <div className="flex justify-between">
-                <span className="text-outline">Fit Models &amp; Studio Time</span>
-                <span className="text-on-surface font-semibold">$1,850</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-outline">Hardware, Thread &amp; Notions</span>
-                <span className="text-on-surface font-semibold">$940</span>
+              <div className="flex justify-between items-center p-space-xs rounded bg-surface-container-high/40">
+                <span className="text-outline">Fabric Swatches:</span>
+                <span className="text-on-surface font-semibold">{fabrics.length} Swatches in Vault</span>
               </div>
             </div>
           </div>
 
-          {/* Gemini Vision v3.2 AI Silhouette Critique */}
-          <div className="relative overflow-hidden rounded-xl bg-gradient-to-br from-secondary-container/30 via-surface-container-low/90 to-surface-container-low p-space-lg shadow-xl backdrop-blur-2xl border border-outline-variant/20 flex flex-col gap-space-md">
-            <div className="flex items-center gap-space-xs">
-              <div className="w-7 h-7 rounded-full bg-primary-container flex items-center justify-center text-primary">
-                <span className="material-symbols-outlined text-sm">auto_awesome</span>
-              </div>
-              <span className="font-label-sm text-label-sm uppercase tracking-widest text-primary font-bold">
-                Gemini Vision v3.2
-              </span>
-            </div>
-
-            <h4 className="font-headline-sm text-headline-sm text-on-surface font-bold">
-              AI Silhouette Critique
-            </h4>
-
-            <div className="flex flex-wrap gap-1">
-              {['#Dramatic Romance', '#Neo-Gothic Tailoring', '#Hourglass Waistline', '#Asymmetric Origami'].map((tag) => (
-                <span key={tag} className="px-2 py-0.5 rounded bg-surface-container-high text-secondary font-label-sm text-[10px] font-semibold">
-                  {tag}
-                </span>
-              ))}
-            </div>
-
-            <p className="font-body-sm text-body-sm text-on-surface-variant italic leading-relaxed">
-              "High stylistic harmony across Looks 01–04. Look 04 velvet weight (420gsm) exceeds cape shoulder canvas tolerance by 14%; recommend inner twill stay tape to prevent sagging during runway movement."
-            </p>
-
-            <button
-              onClick={() => setShowAiAnalysisModal(true)}
-              className="text-primary hover:text-on-primary-fixed-variant font-label-md text-label-md font-semibold flex items-center gap-1 transition-colors cursor-pointer"
-              type="button"
-            >
-              Open Full AI Drapery Analysis <span className="material-symbols-outlined text-sm">chevron_right</span>
-            </button>
-          </div>
         </div>
       </div>
+
+      {/* Edit Collection Palette Modal */}
+      {showPaletteModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/80 backdrop-blur-md">
+          <div className="relative w-full max-w-lg rounded-xl bg-surface-container-low border border-outline-variant/30 p-space-lg shadow-2xl flex flex-col gap-space-md">
+            <div className="flex items-center justify-between border-b border-outline-variant/20 pb-space-xs">
+              <div className="flex items-center gap-space-xs">
+                <span className="material-symbols-outlined text-primary text-xl">palette</span>
+                <h3 className="font-headline-sm text-headline-sm text-on-surface font-bold">
+                  Edit Collection Palette
+                </h3>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowPaletteModal(false)}
+                className="text-outline hover:text-on-surface p-1 rounded"
+              >
+                <span className="material-symbols-outlined text-lg">close</span>
+              </button>
+            </div>
+
+            <div className="flex flex-col gap-space-md">
+              <span className="font-label-md text-label-md text-outline uppercase tracking-wider font-semibold">
+                Current Color Swatches ({editingPalette.length})
+              </span>
+
+              <div className="flex flex-wrap gap-2 max-h-48 overflow-y-auto p-space-xs rounded-lg bg-surface-container-high/40 border border-outline-variant/20">
+                {editingPalette.map((color, idx) => (
+                  <div
+                    key={idx}
+                    className="flex items-center gap-2 px-space-xs py-1 rounded-full bg-surface-container-high border border-white/20 shadow-sm"
+                  >
+                    <span
+                      className="w-5 h-5 rounded-full shadow-inner border border-white/40"
+                      style={{ backgroundColor: color.hex }}
+                    />
+                    <span className="font-title-sm text-xs text-on-surface font-semibold">{color.name}</span>
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveColorFromPalette(idx)}
+                      className="text-outline hover:text-error transition-colors p-0.5 rounded-full"
+                      title="Remove Color"
+                    >
+                      <span className="material-symbols-outlined text-sm">close</span>
+                    </button>
+                  </div>
+                ))}
+              </div>
+
+              {/* Add Custom Color Section */}
+              <div className="flex flex-col gap-space-xs pt-space-xs border-t border-outline-variant/20">
+                <span className="font-label-md text-label-md text-on-surface font-semibold">Add New Swatch</span>
+                <div className="flex items-center gap-space-xs">
+                  <input
+                    type="color"
+                    value={newColorHex}
+                    onChange={(e) => setNewColorHex(e.target.value)}
+                    className="w-10 h-10 rounded-lg cursor-pointer bg-transparent border border-outline-variant/30 p-0.5"
+                    title="Choose hex color"
+                  />
+                  <input
+                    type="text"
+                    placeholder="Color Name (e.g. Royal Emerald)"
+                    value={newColorName}
+                    onChange={(e) => setNewColorName(e.target.value)}
+                    className="flex-1 px-space-sm py-space-xs rounded-lg bg-surface-container-high text-on-surface font-body-sm text-body-sm border border-outline-variant/20 focus:outline-none"
+                  />
+                  <button
+                    type="button"
+                    onClick={handleAddColorToPalette}
+                    className="px-space-md py-space-xs rounded-lg bg-primary-container text-on-primary font-title-sm text-title-sm font-semibold hover:brightness-110"
+                  >
+                    + Add
+                  </button>
+                </div>
+              </div>
+
+              {/* Palette Presets */}
+              <div className="flex flex-col gap-space-xs">
+                <span className="font-label-sm text-label-sm text-outline font-semibold">Quick Swatch Presets:</span>
+                <div className="flex flex-wrap gap-1.5">
+                  {[
+                    { name: 'Onyx Noir', hex: '#160B0F' },
+                    { name: 'Haute Crimson', hex: '#800020' },
+                    { name: 'Merlot Velvet', hex: '#5C0016' },
+                    { name: 'Blush Satin', hex: '#C05070' },
+                    { name: 'Champagne Silk', hex: '#F7E7CE' },
+                    { name: 'Emerald Drape', hex: '#004B23' },
+                    { name: 'Sapphire Midnight', hex: '#0F2027' },
+                    { name: 'Dusty Rose', hex: '#8B4060' },
+                  ].map((preset) => (
+                    <button
+                      key={preset.hex}
+                      type="button"
+                      onClick={() => {
+                        if (!editingPalette.some((c) => c.hex === preset.hex)) {
+                          setEditingPalette([...editingPalette, preset])
+                        }
+                      }}
+                      className="px-2 py-1 rounded bg-surface-container-high hover:bg-surface-container-highest text-on-surface font-label-sm text-[11px] flex items-center gap-1.5 border border-outline-variant/10 cursor-pointer"
+                    >
+                      <span className="w-3 h-3 rounded-full" style={{ backgroundColor: preset.hex }} />
+                      <span>{preset.name}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <div className="flex items-center justify-end gap-space-xs pt-space-xs border-t border-outline-variant/20">
+              <button
+                type="button"
+                onClick={() => setShowPaletteModal(false)}
+                className="px-space-md py-space-xs rounded-lg bg-surface-container-high hover:bg-surface-container-highest text-on-surface font-title-sm text-title-sm"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={handleSavePalette}
+                className="px-space-md py-space-xs rounded-lg bg-primary-container text-on-primary font-title-sm text-title-sm font-semibold hover:brightness-110 shadow-lg"
+              >
+                Save Palette
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Add Garment Look Modal */}
       {showAddLookModal && (
@@ -738,58 +784,6 @@ export default function ProjectDetail() {
               </button>
             </div>
           </form>
-        </div>
-      )}
-
-      {/* AI Drapery Analysis Modal */}
-      {showAiAnalysisModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/80 backdrop-blur-md">
-          <div className="relative w-full max-w-xl rounded-xl bg-surface-container-low border border-outline-variant/30 p-space-lg shadow-2xl flex flex-col gap-space-md">
-            <div className="flex items-center justify-between border-b border-outline-variant/20 pb-space-xs">
-              <div className="flex items-center gap-space-xs">
-                <span className="material-symbols-outlined text-primary text-xl">auto_awesome</span>
-                <h3 className="font-headline-sm text-headline-sm text-on-surface font-bold">
-                  Gemini Vision Full Drapery Analysis
-                </h3>
-              </div>
-              <button type="button" onClick={() => setShowAiAnalysisModal(false)} className="text-outline hover:text-on-surface">
-                <span className="material-symbols-outlined text-lg">close</span>
-              </button>
-            </div>
-
-            <div className="flex flex-col gap-space-sm text-body-sm font-body-sm">
-              <div className="p-space-sm rounded-lg bg-surface-container-high/60 border border-outline-variant/20 flex flex-col gap-1">
-                <span className="font-title-sm text-title-sm text-primary font-bold">
-                  Cohesion Rating: 94/100
-                </span>
-                <p className="text-on-surface-variant leading-relaxed">
-                  High silhouette synergy between Look 01 (structured shoulders) and Look 02 (liquid bias drape). The collection aesthetic firmly balances rigorous architecture with gothic fluid romanticism.
-                </p>
-              </div>
-
-              <div className="flex flex-col gap-1">
-                <span className="font-title-sm text-title-sm text-on-surface font-bold">
-                  Tension &amp; Fabric Weight Warnings:
-                </span>
-                <p className="text-error font-semibold">
-                  • Look 04 Velvet Opera Cape (420 GSM) exceeds shoulder canvas tolerance by 14%. Insert inner twill stay tape.
-                </p>
-                <p className="text-secondary font-semibold">
-                  • Look 02 Bias Gown requires 45° grain alignment verification during cutting to prevent hem twist.
-                </p>
-              </div>
-            </div>
-
-            <div className="flex items-center justify-end pt-space-xs border-t border-outline-variant/20">
-              <button
-                type="button"
-                onClick={() => setShowAiAnalysisModal(false)}
-                className="px-space-md py-space-xs rounded-lg bg-primary-container text-on-primary font-title-sm text-title-sm font-semibold hover:brightness-110"
-              >
-                Done
-              </button>
-            </div>
-          </div>
         </div>
       )}
     </div>

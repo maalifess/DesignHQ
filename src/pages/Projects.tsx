@@ -5,6 +5,7 @@ import { useAtelierStore } from '@/store/useAtelierStore'
 export default function Projects() {
   const navigate = useNavigate()
   const projects = useAtelierStore((state) => state.projects)
+  const sketches = useAtelierStore((state) => state.sketches)
   const addProject = useAtelierStore((state) => state.addProject)
 
   const [searchQuery, setSearchQuery] = useState('')
@@ -12,12 +13,13 @@ export default function Projects() {
 
   // New Project Form state
   const [title, setTitle] = useState('')
-  const [category, setCategory] = useState('Couture Line')
-  const [season, setSeason] = useState('Autumn/Winter 2026')
-  const [targetDate, setTargetDate] = useState('Nov 18, 2026')
+  const [category, setCategory] = useState('Assignment')
+  const [season, setSeason] = useState('Fashion Design 101')
+  const [targetDate, setTargetDate] = useState('2026-11-18')
   const [stage, setStage] = useState('Sampling (Phase 6 of 9)')
   const [percent, setPercent] = useState(75)
   const [garmentsCount, setGarmentsCount] = useState(8)
+  const [description, setDescription] = useState('Bespoke atelier collection created by Ariba.')
 
   const filtered = projects.filter(
     (c) =>
@@ -47,11 +49,12 @@ export default function Projects() {
         { name: 'Vintage Mauve', hex: '#842130' },
       ],
       garmentsCount: Number(garmentsCount),
-      description: 'Bespoke atelier collection created by Ariba.',
+      description: description.trim() || 'Bespoke atelier collection created by Ariba.',
     })
 
     setShowModal(false)
     setTitle('')
+    setDescription('Bespoke atelier collection created by Ariba.')
   }
 
   return (
@@ -60,11 +63,8 @@ export default function Projects() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-space-md border-b border-outline-variant/20 pb-space-lg">
         <div>
           <h1 className="font-headline-hero text-headline-hero text-on-surface tracking-tight font-bold">
-            Couture Collections Registry
+            Collection Registry
           </h1>
-          <p className="font-body-lg text-body-lg text-on-surface-variant mt-1">
-            Active haute couture lines, runway presentation schedules, and production milestone progress saved by Ariba.
-          </p>
         </div>
 
         <button
@@ -128,18 +128,12 @@ export default function Projects() {
             >
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-space-xs">
                 <div>
-                  <div className="flex items-center gap-space-xs">
-                    <span className="px-space-xs py-0.5 rounded-md bg-secondary-container/50 text-secondary font-label-sm text-label-sm uppercase font-semibold">
-                      {item.category}
-                    </span>
-                    <span className="font-body-sm text-body-sm text-outline">Project Code: {item.code}</span>
-                  </div>
-                  <h3 className="font-headline-sm text-headline-sm text-on-surface mt-1 font-bold">
+                  <h3 className="font-headline-sm text-headline-sm text-on-surface font-bold">
                     {item.title}
                   </h3>
                 </div>
                 <div className="flex items-center gap-space-sm">
-                  <span className="font-body-sm text-body-sm text-outline">Target Runway / Jury:</span>
+                  <span className="font-body-sm text-body-sm text-outline">Deadline:</span>
                   <span className="font-title-sm text-title-sm text-on-surface font-semibold bg-surface-container-high px-space-xs py-1 rounded">
                     {item.targetDate}
                   </span>
@@ -162,9 +156,9 @@ export default function Projects() {
               </div>
 
               <div className="flex flex-wrap items-center justify-between gap-space-md pt-space-xs border-t border-outline-variant/20">
-                <div className="flex items-center gap-space-md">
+                <div className="flex flex-wrap items-center gap-space-md">
                   <div className="flex items-center gap-1.5">
-                    <span className="font-label-sm text-label-sm text-outline">Tonal Array:</span>
+                    <span className="font-label-sm text-label-sm text-outline">Collection Palette:</span>
                     <div className="flex items-center gap-1">
                       {item.palette.map((p, idx) => (
                         <span
@@ -176,9 +170,13 @@ export default function Projects() {
                       ))}
                     </div>
                   </div>
-                  <span className="font-body-sm text-body-sm text-outline">|</span>
+                  <span className="font-body-sm text-body-sm text-outline">•</span>
                   <span className="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-1">
-                    <span className="material-symbols-outlined text-sm text-primary">checkroom</span> {item.garmentsCount} Garments Tailored
+                    <span className="material-symbols-outlined text-sm text-primary">draw</span> {sketches.length} Sketches
+                  </span>
+                  <span className="font-body-sm text-body-sm text-outline">•</span>
+                  <span className="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-1">
+                    <span className="material-symbols-outlined text-sm text-secondary">dashboard</span> 0 Mood Boards
                   </span>
                 </div>
 
@@ -205,7 +203,7 @@ export default function Projects() {
           >
             <div className="flex items-center justify-between border-b border-outline-variant/20 pb-space-xs">
               <h3 className="font-headline-sm text-headline-sm text-on-surface font-bold">
-                New Couture Collection
+                New Collection
               </h3>
               <button type="button" onClick={() => setShowModal(false)} className="text-outline hover:text-on-surface">
                 <span className="material-symbols-outlined text-lg">close</span>
@@ -218,7 +216,7 @@ export default function Projects() {
                 <input
                   type="text"
                   required
-                  placeholder="e.g. Velvet Solstice AW27"
+                  placeholder="e.g. Velvet Solstice Collection"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                   className="w-full px-space-sm py-space-xs rounded-lg bg-surface-container-high text-on-surface border border-outline-variant/20 focus:outline-none"
@@ -232,51 +230,43 @@ export default function Projects() {
                   onChange={(e) => setCategory(e.target.value)}
                   className="w-full px-space-sm py-space-xs rounded-lg bg-surface-container-high text-on-surface border border-outline-variant/20"
                 >
-                  <option value="Couture Line">Couture Line</option>
-                  <option value="Resort Collection">Resort Collection</option>
-                  <option value="Competition Project">Competition Project</option>
-                  <option value="Atelier Assignment">Atelier Assignment</option>
+                  <option value="Assignment">Assignment</option>
+                  <option value="Project">Project</option>
+                  <option value="Mid Term">Mid Term</option>
+                  <option value="Final Term">Final Term</option>
                 </select>
               </div>
 
               <div className="flex flex-col gap-1">
-                <label className="text-outline font-semibold">Season</label>
+                <label className="text-outline font-semibold">Course</label>
                 <input
                   type="text"
+                  placeholder="e.g. Fashion Design 101"
                   value={season}
                   onChange={(e) => setSeason(e.target.value)}
                   className="w-full px-space-sm py-space-xs rounded-lg bg-surface-container-high text-on-surface border border-outline-variant/20"
                 />
               </div>
 
-              <div className="flex flex-col gap-1">
-                <label className="text-outline font-semibold">Target Runway / Jury Date</label>
+              <div className="flex flex-col gap-1 sm:col-span-2">
+                <label className="text-outline font-semibold">Deadline</label>
                 <input
-                  type="text"
+                  type="date"
                   value={targetDate}
                   onChange={(e) => setTargetDate(e.target.value)}
-                  className="w-full px-space-sm py-space-xs rounded-lg bg-surface-container-high text-on-surface border border-outline-variant/20"
+                  className="w-full px-space-sm py-space-xs rounded-lg bg-surface-container-high text-on-surface border border-outline-variant/20 cursor-pointer"
                 />
               </div>
 
-              <div className="flex flex-col gap-1">
-                <label className="text-outline font-semibold">Stage &amp; Progress (%)</label>
-                <div className="flex gap-2">
-                  <input
-                    type="text"
-                    value={stage}
-                    onChange={(e) => setStage(e.target.value)}
-                    className="w-full px-space-sm py-space-xs rounded-lg bg-surface-container-high text-on-surface border border-outline-variant/20"
-                  />
-                  <input
-                    type="number"
-                    min="0"
-                    max="100"
-                    value={percent}
-                    onChange={(e) => setPercent(Number(e.target.value))}
-                    className="w-20 px-space-xs py-space-xs rounded-lg bg-surface-container-high text-on-surface border border-outline-variant/20"
-                  />
-                </div>
+              <div className="flex flex-col gap-1 sm:col-span-2">
+                <label className="text-outline font-semibold">Description</label>
+                <textarea
+                  rows={3}
+                  placeholder="e.g. Bespoke atelier collection created by Ariba."
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  className="w-full p-space-sm rounded-lg bg-surface-container-high text-on-surface border border-outline-variant/20 focus:outline-none"
+                />
               </div>
             </div>
 

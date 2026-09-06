@@ -18,6 +18,9 @@ export default function Dashboard() {
   const deadlines = useAtelierStore((state) => state.deadlines)
   const addDeadline = useAtelierStore((state) => state.addDeadline)
 
+  const closestProject = projects.length > 0 ? projects[0] : null
+  const closestDeadline = deadlines.length > 0 ? [...deadlines].sort((a, b) => a.daysLeft - b.daysLeft)[0] : null
+
   // Modals
   const [showAuditModal, setShowAuditModal] = useState<boolean>(false)
   const [auditRunning, setAuditRunning] = useState<boolean>(false)
@@ -29,9 +32,10 @@ export default function Dashboard() {
 
   // New Project Form
   const [projTitle, setProjTitle] = useState('')
-  const [projCategory, setProjCategory] = useState('Couture Line')
-  const [projSeason, setProjSeason] = useState('Autumn/Winter 2026')
-  const [projTargetDate, setProjTargetDate] = useState('Nov 18, 2026')
+  const [projCategory, setProjCategory] = useState('Assignment')
+  const [projSeason, setProjSeason] = useState('Fashion Design 101')
+  const [projTargetDate, setProjTargetDate] = useState('2026-11-18')
+  const [projDesc, setProjDesc] = useState('Bespoke atelier collection created by Ariba.')
 
   // New Fabric Form
   const [fabName, setFabName] = useState('')
@@ -71,10 +75,11 @@ export default function Dashboard() {
         { name: 'Blush Satin', hex: '#C05070' },
       ],
       garmentsCount: 6,
-      description: 'New haute couture collection added by Ariba.',
+      description: projDesc.trim() || 'Bespoke atelier collection created by Ariba.',
     })
     setShowAddProjectModal(false)
     setProjTitle('')
+    setProjDesc('Bespoke atelier collection created by Ariba.')
   }
 
   const handleCreateFabric = (e: React.FormEvent) => {
@@ -119,35 +124,41 @@ export default function Dashboard() {
 
         <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-space-md">
           <div className="flex flex-col gap-space-2xs">
-            <div className="flex items-center gap-space-xs">
-              <span className="px-space-xs py-0.5 rounded-full bg-primary-container/60 text-primary font-label-sm text-label-sm tracking-wider uppercase">
-                Maison Direction
-              </span>
-              <span className="text-outline font-label-sm text-label-sm">•</span>
-              <span className="text-outline font-label-sm text-label-sm flex items-center gap-1">
-                <span className="material-symbols-outlined text-sm text-secondary">schedule</span>
-                Paris Fashion Week Runway Session
-              </span>
-            </div>
+            {closestProject ? (
+              <div className="flex items-center gap-space-xs">
+                <span className="px-space-xs py-0.5 rounded-full bg-primary-container/60 text-primary font-label-sm text-label-sm tracking-wider uppercase font-semibold">
+                  Closest Deadline
+                </span>
+                <span className="text-outline font-label-sm text-label-sm">•</span>
+                <span className="text-on-surface-variant font-label-sm text-label-sm flex items-center gap-1 font-medium">
+                  <span className="material-symbols-outlined text-sm text-secondary">schedule</span>
+                  <span className="font-semibold text-on-surface">{closestProject.title}</span> — Target Runway: {closestProject.targetDate}
+                </span>
+              </div>
+            ) : closestDeadline ? (
+              <div className="flex items-center gap-space-xs">
+                <span className="px-space-xs py-0.5 rounded-full bg-primary-container/60 text-primary font-label-sm text-label-sm tracking-wider uppercase font-semibold">
+                  Closest Deadline
+                </span>
+                <span className="text-outline font-label-sm text-label-sm">•</span>
+                <span className="text-on-surface-variant font-label-sm text-label-sm flex items-center gap-1 font-medium">
+                  <span className="material-symbols-outlined text-sm text-secondary">schedule</span>
+                  <span className="font-semibold text-on-surface">{closestDeadline.title}</span> ({closestDeadline.daysLeft} days left)
+                </span>
+              </div>
+            ) : (
+              <div className="flex items-center gap-space-xs">
+                <span className="px-space-xs py-0.5 rounded-full bg-primary-container/60 text-primary font-label-sm text-label-sm tracking-wider uppercase font-semibold">
+                  Atelier Dashboard
+                </span>
+              </div>
+            )}
             <h1 className="font-headline-hero text-headline-hero text-on-surface tracking-tight mt-1 font-bold">
               Welcome back, {designerName}
             </h1>
-            <p className="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">
-              Couture Atelier Workspace. Managing active haute couture projects, pattern drafting, and saved material swatches.
-            </p>
           </div>
 
           <div className="flex flex-wrap items-center gap-space-xs">
-            <div className="flex items-center gap-space-xs px-space-sm py-space-xs rounded-lg bg-surface-container-high/60 backdrop-blur-md">
-              <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-              <div className="flex flex-col">
-                <span className="font-label-sm text-label-sm text-outline">Active Collections</span>
-                <span className="font-title-sm text-title-sm text-on-surface font-semibold">
-                  {projects.length} Saved Line{projects.length === 1 ? '' : 's'}
-                </span>
-              </div>
-            </div>
-
             <button
               onClick={() => setShowAddProjectModal(true)}
               className="flex items-center gap-space-2xs px-space-md py-space-xs rounded-lg bg-primary-container text-on-primary font-title-sm text-title-sm shadow-lg hover:brightness-110 active:scale-95 transition-all cursor-pointer"
@@ -155,15 +166,6 @@ export default function Dashboard() {
             >
               <span className="material-symbols-outlined text-base">add</span>
               <span>New Collection</span>
-            </button>
-
-            <button
-              onClick={() => navigate('/sketchbook')}
-              className="flex items-center gap-space-2xs px-space-md py-space-xs rounded-lg bg-surface-container-high hover:bg-surface-container-highest text-on-surface font-title-sm text-title-sm transition-all cursor-pointer"
-              type="button"
-            >
-              <span className="material-symbols-outlined text-base">brush</span>
-              <span>Open Drafting Canvas</span>
             </button>
           </div>
         </div>
@@ -173,85 +175,53 @@ export default function Dashboard() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-space-md">
         <div
           onClick={() => navigate('/projects')}
-          className="relative overflow-hidden rounded-xl bg-surface-container-low/80 backdrop-blur-xl p-space-lg shadow-xl hover:-translate-y-0.5 transition-all cursor-pointer"
+          className="relative overflow-hidden rounded-xl bg-surface-container-low/80 backdrop-blur-xl p-space-lg shadow-xl hover:-translate-y-0.5 transition-all cursor-pointer flex flex-col justify-between"
         >
-          <div className="flex items-center justify-between mb-space-xs">
-            <div className="w-10 h-10 rounded-lg bg-primary-container/30 flex items-center justify-center text-primary">
-              <span className="material-symbols-outlined text-xl">styler</span>
-            </div>
-            <span className="font-label-sm text-label-sm px-space-xs py-0.5 rounded-full bg-secondary-container/40 text-secondary font-semibold flex items-center gap-0.5">
-              Saved State
-            </span>
+          <div className="w-10 h-10 rounded-lg bg-primary-container/30 flex items-center justify-center text-primary mb-space-xs">
+            <span className="material-symbols-outlined text-xl">styler</span>
           </div>
           <span className="font-label-md text-label-md text-outline uppercase tracking-wider block">Active Collections</span>
           <span className="font-headline-lg text-headline-lg text-on-surface my-space-2xs block font-bold">
             {projects.length} Saved
           </span>
-          <span className="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-1 truncate">
-            <span className="w-1.5 h-1.5 rounded-full bg-primary" /> Active Couture Lines
-          </span>
         </div>
 
         <div
           onClick={() => navigate('/sketchbook')}
-          className="relative overflow-hidden rounded-xl bg-surface-container-low/80 backdrop-blur-xl p-space-lg shadow-xl hover:-translate-y-0.5 transition-all cursor-pointer"
+          className="relative overflow-hidden rounded-xl bg-surface-container-low/80 backdrop-blur-xl p-space-lg shadow-xl hover:-translate-y-0.5 transition-all cursor-pointer flex flex-col justify-between"
         >
-          <div className="flex items-center justify-between mb-space-xs">
-            <div className="w-10 h-10 rounded-lg bg-secondary-container/40 flex items-center justify-center text-secondary">
-              <span className="material-symbols-outlined text-xl">palette</span>
-            </div>
-            <span className="font-label-sm text-label-sm px-space-xs py-0.5 rounded-full bg-surface-container-high text-primary font-semibold">
-              AI Vision Ready
-            </span>
+          <div className="w-10 h-10 rounded-lg bg-secondary-container/40 flex items-center justify-center text-secondary mb-space-xs">
+            <span className="material-symbols-outlined text-xl">palette</span>
           </div>
           <span className="font-label-md text-label-md text-outline uppercase tracking-wider block">Design Sketches</span>
           <span className="font-headline-lg text-headline-lg text-on-surface my-space-2xs block font-bold">
-            {sketches.length} Artworks
-          </span>
-          <span className="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-1 truncate">
-            <span className="material-symbols-outlined text-xs text-secondary">verified</span> Freehand Croquis Canvas
+            {sketches.length} Sketches
           </span>
         </div>
 
         <div
           onClick={() => navigate('/fabrics')}
-          className="relative overflow-hidden rounded-xl bg-surface-container-low/80 backdrop-blur-xl p-space-lg shadow-xl hover:-translate-y-0.5 transition-all cursor-pointer"
+          className="relative overflow-hidden rounded-xl bg-surface-container-low/80 backdrop-blur-xl p-space-lg shadow-xl hover:-translate-y-0.5 transition-all cursor-pointer flex flex-col justify-between"
         >
-          <div className="flex items-center justify-between mb-space-xs">
-            <div className="w-10 h-10 rounded-lg bg-tertiary-container/40 flex items-center justify-center text-tertiary">
-              <span className="material-symbols-outlined text-xl">texture</span>
-            </div>
-            <span className="font-label-sm text-label-sm px-space-xs py-0.5 rounded-full bg-surface-container-high text-on-surface font-semibold">
-              Vault
-            </span>
+          <div className="w-10 h-10 rounded-lg bg-tertiary-container/40 flex items-center justify-center text-tertiary mb-space-xs">
+            <span className="material-symbols-outlined text-xl">texture</span>
           </div>
-          <span className="font-label-md text-label-md text-outline uppercase tracking-wider block">Textile Swatches</span>
+          <span className="font-label-md text-label-md text-outline uppercase tracking-wider block">Saved Patterns</span>
           <span className="font-headline-lg text-headline-lg text-on-surface my-space-2xs block font-bold">
-            {fabrics.length} Swatches
-          </span>
-          <span className="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-1 truncate">
-            <span className="w-1.5 h-1.5 rounded-full bg-tertiary" /> Material Repository
+            {fabrics.length} Patterns
           </span>
         </div>
 
         <div
           onClick={() => navigate('/notes')}
-          className="relative overflow-hidden rounded-xl bg-surface-container-low/80 backdrop-blur-xl p-space-lg shadow-xl hover:-translate-y-0.5 transition-all cursor-pointer"
+          className="relative overflow-hidden rounded-xl bg-surface-container-low/80 backdrop-blur-xl p-space-lg shadow-xl hover:-translate-y-0.5 transition-all cursor-pointer flex flex-col justify-between"
         >
-          <div className="flex items-center justify-between mb-space-xs">
-            <div className="w-10 h-10 rounded-lg bg-primary-container/40 flex items-center justify-center text-primary">
-              <span className="material-symbols-outlined text-xl">event_upcoming</span>
-            </div>
-            <span className="font-label-sm text-label-sm px-space-xs py-0.5 rounded-full bg-primary-container text-on-primary font-bold">
-              Production
-            </span>
+          <div className="w-10 h-10 rounded-lg bg-primary-container/40 flex items-center justify-center text-primary mb-space-xs">
+            <span className="material-symbols-outlined text-xl">event_upcoming</span>
           </div>
           <span className="font-label-md text-label-md text-outline uppercase tracking-wider block">Upcoming Deadlines</span>
           <span className="font-headline-lg text-headline-lg text-on-surface my-space-2xs block font-bold">
             {deadlines.length} Items
-          </span>
-          <span className="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-1 truncate">
-            <span className="material-symbols-outlined text-xs">straighten</span> Atelier Schedule
           </span>
         </div>
       </div>
@@ -311,18 +281,12 @@ export default function Dashboard() {
                 >
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-space-xs">
                     <div>
-                      <div className="flex items-center gap-space-xs">
-                        <span className="px-space-xs py-0.5 rounded-md bg-secondary-container/50 text-secondary font-label-sm text-label-sm uppercase font-semibold">
-                          {proj.category}
-                        </span>
-                        <span className="font-body-sm text-body-sm text-outline">Code: {proj.code}</span>
-                      </div>
-                      <h3 className="font-headline-sm text-headline-sm text-on-surface mt-1 font-bold">
+                      <h3 className="font-headline-sm text-headline-sm text-on-surface font-bold">
                         {proj.title}
                       </h3>
                     </div>
                     <div className="flex items-center gap-space-sm">
-                      <span className="font-body-sm text-body-sm text-outline">Target Runway:</span>
+                      <span className="font-body-sm text-body-sm text-outline">Deadline:</span>
                       <span className="font-title-sm text-title-sm text-on-surface font-semibold bg-surface-container-high px-space-xs py-1 rounded">
                         {proj.targetDate}
                       </span>
@@ -346,22 +310,12 @@ export default function Dashboard() {
 
                   <div className="flex flex-wrap items-center justify-between gap-space-md pt-space-xs border-t border-outline-variant/20">
                     <div className="flex items-center gap-space-md">
-                      <div className="flex items-center gap-1.5">
-                        <span className="font-label-sm text-label-sm text-outline">Tonal Array:</span>
-                        <div className="flex items-center gap-1">
-                          {proj.palette.map((p, idx) => (
-                            <span
-                              key={idx}
-                              className="w-5 h-5 rounded-full shadow-sm border border-white/20"
-                              style={{ backgroundColor: p.hex }}
-                              title={p.name}
-                            />
-                          ))}
-                        </div>
-                      </div>
-                      <span className="font-body-sm text-body-sm text-outline">|</span>
                       <span className="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-1">
-                        <span className="material-symbols-outlined text-sm text-primary">checkroom</span> {proj.garmentsCount} Garments Tailored
+                        <span className="material-symbols-outlined text-sm text-primary">draw</span> {sketches.length} Sketches
+                      </span>
+                      <span className="font-body-sm text-body-sm text-outline">•</span>
+                      <span className="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-1">
+                        <span className="material-symbols-outlined text-sm text-secondary">dashboard</span> 0 Mood Boards
                       </span>
                     </div>
                     <div className="flex items-center gap-space-xs">
@@ -371,13 +325,6 @@ export default function Dashboard() {
                         type="button"
                       >
                         Fitting Notes
-                      </button>
-                      <button
-                        onClick={(e) => { e.stopPropagation(); navigate(`/projects/${proj.id}`) }}
-                        className="px-space-sm py-1.5 rounded-lg bg-secondary-container hover:bg-secondary-container/80 text-on-secondary-container font-label-md text-label-md font-semibold transition-colors cursor-pointer"
-                        type="button"
-                      >
-                        Tech Pack
                       </button>
                     </div>
                   </div>
@@ -468,170 +415,35 @@ export default function Dashboard() {
           </div>
         </div>
 
-        {/* Right 4 columns: Widgets */}
+        {/* Right 4 columns: Quick Notes Corner */}
         <div className="lg:col-span-4 flex flex-col gap-space-xl">
-          {/* Urgent Deadlines */}
           <div className="rounded-xl bg-surface-container-low/90 backdrop-blur-2xl shadow-xl border border-outline-variant/20 p-space-lg flex flex-col gap-space-md">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-space-xs">
-                <span className="material-symbols-outlined text-primary text-xl">timer</span>
-                <h3 className="font-headline-sm text-headline-sm text-on-surface font-bold">Urgent Deadlines</h3>
+                <span className="material-symbols-outlined text-primary text-xl">edit_note</span>
+                <h3 className="font-headline-sm text-headline-sm text-on-surface font-bold">Atelier Quick Notes</h3>
               </div>
               <button
-                onClick={() => setShowAddDeadlineModal(true)}
+                onClick={() => navigate('/notes')}
                 className="font-label-sm text-label-sm text-primary hover:underline font-semibold cursor-pointer"
               >
-                + Add Item
+                Full Log
               </button>
             </div>
 
-            {deadlines.length === 0 ? (
-              <div className="p-space-md rounded-lg bg-surface-container-high/40 text-center flex flex-col items-center gap-2">
-                <span className="font-body-sm text-body-sm text-on-surface-variant">
-                  No urgent fitting deadlines set for Ariba's atelier line.
-                </span>
-                <button
-                  onClick={() => setShowAddDeadlineModal(true)}
-                  className="px-space-sm py-1 rounded bg-surface-container-high hover:bg-surface-container-highest text-on-surface font-label-sm text-label-sm font-semibold cursor-pointer"
-                >
-                  + Add Fitting Deadline
-                </button>
-              </div>
-            ) : (
-              <div className="flex flex-col gap-space-sm">
-                {deadlines.map((dl) => (
-                  <div
-                    key={dl.id}
-                    className="p-space-sm rounded-lg bg-surface-container-high/60 backdrop-blur-md flex items-start gap-space-sm border border-outline-variant/10"
-                  >
-                    <span
-                      className={`px-space-xs py-1 rounded font-label-sm text-label-sm font-bold flex-shrink-0 ${
-                        dl.urgency === 'high'
-                          ? 'bg-error-container text-on-error'
-                          : dl.urgency === 'medium'
-                          ? 'bg-secondary-container text-on-secondary-container'
-                          : 'bg-surface-container-highest text-primary'
-                      }`}
-                    >
-                      {dl.daysLeft} Days
-                    </span>
-                    <div className="flex flex-col min-w-0">
-                      <span className="font-title-sm text-title-sm text-on-surface font-semibold truncate">
-                        {dl.title}
-                      </span>
-                      <span className="font-body-sm text-body-sm text-on-surface-variant">
-                        {dl.detail}
-                      </span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
+            <textarea
+              rows={6}
+              placeholder="Jot down quick fitting notes, pattern adjustments, or task reminders..."
+              className="w-full p-space-sm rounded-lg bg-surface-container-high/60 text-on-surface font-body-sm text-body-sm focus:outline-none focus:bg-surface-container-highest transition-all border border-outline-variant/20 resize-none"
+            />
 
             <button
               onClick={() => navigate('/notes')}
               className="w-full py-space-xs rounded-lg bg-surface-container-high hover:bg-surface-container-highest text-on-surface font-title-sm text-title-sm text-center transition-colors cursor-pointer"
               type="button"
             >
-              View Atelier Production Calendar
+              Open Fitting Notes &amp; Specifications
             </button>
-          </div>
-
-          {/* Fabric Quick Vault */}
-          <div className="rounded-xl bg-surface-container-low/90 backdrop-blur-2xl shadow-xl border border-outline-variant/20 p-space-lg flex flex-col gap-space-md">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-space-xs">
-                <span className="material-symbols-outlined text-tertiary text-xl">texture</span>
-                <h3 className="font-headline-sm text-headline-sm text-on-surface font-bold">Fabric Quick Vault</h3>
-              </div>
-              <button
-                onClick={() => navigate('/fabrics')}
-                className="font-label-sm text-label-sm text-tertiary hover:underline cursor-pointer"
-              >
-                Full Catalog
-              </button>
-            </div>
-
-            {fabrics.length === 0 ? (
-              <div className="p-space-md rounded-lg bg-surface-container-high/40 text-center flex flex-col items-center gap-2">
-                <span className="font-body-sm text-body-sm text-on-surface-variant">
-                  No textile swatches added to Ariba's vault.
-                </span>
-                <button
-                  onClick={() => setShowAddFabricModal(true)}
-                  className="px-space-sm py-1 rounded bg-surface-container-high hover:bg-surface-container-highest text-on-surface font-label-sm text-label-sm font-semibold cursor-pointer"
-                >
-                  + Add Swatch
-                </button>
-              </div>
-            ) : (
-              <div className="flex flex-col gap-space-sm">
-                {fabrics.slice(0, 3).map((fb) => (
-                  <div
-                    key={fb.id}
-                    onClick={() => navigate('/fabrics')}
-                    className="flex items-center gap-space-sm p-space-xs rounded-lg bg-surface-container-high/50 hover:bg-surface-container-high transition-colors cursor-pointer"
-                  >
-                    <img
-                      alt={fb.name}
-                      className="w-12 h-12 rounded-lg object-cover flex-shrink-0"
-                      src={fb.imageUrl}
-                    />
-                    <div className="flex flex-col min-w-0 flex-1">
-                      <span className="font-title-sm text-title-sm text-on-surface font-semibold truncate">
-                        {fb.name}
-                      </span>
-                      <span className="font-body-sm text-body-sm text-outline">{fb.weight} • {fb.origin}</span>
-                    </div>
-                    <span className="font-label-sm text-label-sm px-space-xs py-0.5 rounded bg-primary-container/40 text-primary font-bold">
-                      {fb.metersLeft}m
-                    </span>
-                  </div>
-                ))}
-              </div>
-            )}
-
-            <button
-              onClick={() => setShowAddFabricModal(true)}
-              className="flex items-center justify-center gap-space-2xs py-space-xs rounded-lg bg-surface-container-high hover:bg-surface-container-highest text-on-surface font-title-sm text-title-sm transition-colors cursor-pointer"
-              type="button"
-            >
-              <span className="material-symbols-outlined text-base">add_photo_alternate</span>
-              <span>Scan / Add Swatch</span>
-            </button>
-          </div>
-
-          {/* Gemini 2.0 Atelier Copilot Card */}
-          <div className="relative overflow-hidden rounded-xl bg-gradient-to-br from-secondary-container/30 via-surface-container-low/90 to-surface-container-low p-space-lg shadow-xl backdrop-blur-2xl border border-outline-variant/20">
-            <div className="absolute top-0 right-0 p-space-md opacity-20 pointer-events-none">
-              <span className="material-symbols-outlined text-6xl text-primary">auto_awesome</span>
-            </div>
-            <div className="flex items-center gap-space-xs mb-space-xs">
-              <div className="w-7 h-7 rounded-full bg-primary-container flex items-center justify-center text-primary">
-                <span className="material-symbols-outlined text-sm">neurology</span>
-              </div>
-              <span className="font-label-sm text-label-sm uppercase tracking-widest text-primary font-bold">
-                Gemini 2.0 Atelier Copilot
-              </span>
-            </div>
-            <h4 className="font-headline-sm text-headline-sm text-on-surface mb-space-2xs font-bold">
-              Silhouette &amp; Line Advisory
-            </h4>
-            <p className="font-body-sm text-body-sm text-on-surface-variant mb-space-md italic">
-              {projects.length > 0
-                ? `"Analyzing ${projects.length} collection line(s) for Ariba. Maintain dynamic rhythm between structured tailored suits and liquid bias-cut eveningwear."`
-                : `"Atelier Copilot initialized for Ariba. Ready to provide live grainline, drape tolerance, and seam allowance advisories as you save collections and sketchbook artworks."`}
-            </p>
-            <div className="flex items-center justify-between pt-space-xs border-t border-outline-variant/30">
-              <span className="font-label-sm text-label-sm text-outline">Accuracy Index: 98.4%</span>
-              <button
-                onClick={handleRunAudit}
-                className="text-primary hover:text-on-primary-fixed-variant font-label-md text-label-md font-semibold flex items-center gap-1 transition-colors cursor-pointer"
-                type="button"
-              >
-                Run Atelier Audit <span className="material-symbols-outlined text-sm">chevron_right</span>
-              </button>
-            </div>
           </div>
         </div>
       </div>
@@ -719,7 +531,7 @@ export default function Dashboard() {
           >
             <div className="flex items-center justify-between border-b border-outline-variant/20 pb-space-xs">
               <h3 className="font-headline-sm text-headline-sm text-on-surface font-bold">
-                New Couture Collection
+                New Collection
               </h3>
               <button type="button" onClick={() => setShowAddProjectModal(false)} className="text-outline hover:text-on-surface">
                 <span className="material-symbols-outlined text-lg">close</span>
@@ -732,7 +544,7 @@ export default function Dashboard() {
                 <input
                   type="text"
                   required
-                  placeholder="e.g. Velvet Solstice AW27"
+                  placeholder="e.g. Velvet Solstice Collection"
                   value={projTitle}
                   onChange={(e) => setProjTitle(e.target.value)}
                   className="w-full px-space-sm py-space-xs rounded-lg bg-surface-container-high text-on-surface border border-outline-variant/20 focus:outline-none"
@@ -746,17 +558,18 @@ export default function Dashboard() {
                   onChange={(e) => setProjCategory(e.target.value)}
                   className="w-full px-space-sm py-space-xs rounded-lg bg-surface-container-high text-on-surface border border-outline-variant/20"
                 >
-                  <option value="Couture Line">Couture Line</option>
-                  <option value="Resort Collection">Resort Collection</option>
-                  <option value="Competition Project">Competition Project</option>
-                  <option value="Atelier Assignment">Atelier Assignment</option>
+                  <option value="Assignment">Assignment</option>
+                  <option value="Project">Project</option>
+                  <option value="Mid Term">Mid Term</option>
+                  <option value="Final Term">Final Term</option>
                 </select>
               </div>
 
               <div className="flex flex-col gap-1">
-                <label className="text-outline font-semibold">Season</label>
+                <label className="text-outline font-semibold">Course</label>
                 <input
                   type="text"
+                  placeholder="e.g. Fashion Design 101"
                   value={projSeason}
                   onChange={(e) => setProjSeason(e.target.value)}
                   className="w-full px-space-sm py-space-xs rounded-lg bg-surface-container-high text-on-surface border border-outline-variant/20"
@@ -764,12 +577,23 @@ export default function Dashboard() {
               </div>
 
               <div className="flex flex-col gap-1 sm:col-span-2">
-                <label className="text-outline font-semibold">Target Runway Date</label>
+                <label className="text-outline font-semibold">Deadline</label>
                 <input
-                  type="text"
+                  type="date"
                   value={projTargetDate}
                   onChange={(e) => setProjTargetDate(e.target.value)}
-                  className="w-full px-space-sm py-space-xs rounded-lg bg-surface-container-high text-on-surface border border-outline-variant/20"
+                  className="w-full px-space-sm py-space-xs rounded-lg bg-surface-container-high text-on-surface border border-outline-variant/20 cursor-pointer"
+                />
+              </div>
+
+              <div className="flex flex-col gap-1 sm:col-span-2">
+                <label className="text-outline font-semibold">Description</label>
+                <textarea
+                  rows={3}
+                  placeholder="e.g. Bespoke atelier collection created by Ariba."
+                  value={projDesc}
+                  onChange={(e) => setProjDesc(e.target.value)}
+                  className="w-full p-space-sm rounded-lg bg-surface-container-high text-on-surface border border-outline-variant/20 focus:outline-none"
                 />
               </div>
             </div>
