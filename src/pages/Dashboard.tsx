@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '@/hooks/useAuth'
-import { useAtelierStore } from '@/store/useAtelierStore'
+import { useAtelierStore, safeString } from '@/store/useAtelierStore'
 
 export default function Dashboard() {
   const navigate = useNavigate()
@@ -541,10 +541,10 @@ export default function Dashboard() {
                       className="p-space-xs rounded bg-surface-container-high/40 hover:bg-surface-container-high border border-outline-variant/10 cursor-pointer transition-colors"
                     >
                       <div className="flex items-center justify-between">
-                        <span className="font-title-sm text-xs font-semibold text-on-surface truncate">{n.title}</span>
-                        <span className="font-label-sm text-[10px] text-primary bg-primary-container/30 px-1 rounded">{n.category}</span>
+                        <span className="font-title-sm text-xs font-semibold text-on-surface truncate">{safeString(n.title)}</span>
+                        <span className="font-label-sm text-[10px] text-primary bg-primary-container/30 px-1 rounded">{safeString(n.category)}</span>
                       </div>
-                      <p className="font-body-sm text-[11px] text-on-surface-variant line-clamp-1 mt-0.5">{n.content}</p>
+                      <p className="font-body-sm text-[11px] text-on-surface-variant line-clamp-1 mt-0.5">{safeString(n.content)}</p>
                     </div>
                   ))}
                 </div>

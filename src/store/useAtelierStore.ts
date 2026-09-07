@@ -13,6 +13,32 @@ function generateUUID(): string {
   })
 }
 
+function toValidUUIDOrNull(id?: string | null): string | null {
+  if (!id) return null
+  const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
+  return uuidRegex.test(id) ? id : null
+}
+
+export function safeString(val: any, fallback: string = ''): string {
+  if (val === null || val === undefined) return fallback
+  if (typeof val === 'string') return val
+  if (typeof val === 'number' || typeof val === 'boolean') return String(val)
+  if (typeof val === 'object') {
+    if (typeof val.content === 'string') return val.content
+    if (Array.isArray(val.content)) {
+      return val.content.map((c: any) => safeString(c)).filter(Boolean).join('\n')
+    }
+    if (typeof val.text === 'string') return val.text
+    if (typeof val.title === 'string') return val.title
+    try {
+      return JSON.stringify(val)
+    } catch {
+      return fallback
+    }
+  }
+  return fallback
+}
+
 export interface SavedProject {
   id: string
   code: string
@@ -157,6 +183,126 @@ interface AtelierState {
   deleteNote: (id: string) => void
 }
 
+function sanitizeNote(r: any): SavedNote {
+  return {
+    id: safeString(r.id, generateUUID()),
+    projectId: toValidUUIDOrNull(r.projectId || r.project_id) || undefined,
+    collectionId: toValidUUIDOrNull(r.collectionId || r.collection_id) || undefined,
+    importedFromId: toValidUUIDOrNull(r.importedFromId || r.imported_from_id) || undefined,
+    title: safeString(r.title, 'Fitting Note'),
+    category: safeString(r.category, 'Fitting Notes'),
+    content: safeString(r.content, ''),
+    date: safeString(r.date, 'Today'),
+    tag: safeString(r.tag, 'Fitting Spec'),
+    lookRef: safeString(r.lookRef || r.look_ref, ''),
+    createdAt: safeString(r.createdAt || r.created_at, new Date().toISOString()),
+  }
+}
+
+function sanitizeProject(r: any): SavedProject {
+  return {
+    id: safeString(r.id, generateUUID()),
+    code: safeString(r.code, '#CR-1001'),
+    title: safeString(r.title, 'Untitled Collection'),
+    category: safeString(r.category, 'Assignment'),
+    season: safeString(r.season, 'Fashion Design 101'),
+    targetDate: safeString(r.targetDate || r.target_date, '2026-11-18'),
+    stage: safeString(r.stage, 'Sampling (Phase 6 of 9)'),
+    stageNum: Number(r.stageNum ?? r.stage_num ?? 6),
+    percent: Number(r.percent ?? 75),
+    palette: Array.isArray(r.palette) ? r.palette : [],
+    garmentsCount: Number(r.garmentsCount ?? r.garments_count ?? 0),
+    description: safeString(r.description, ''),
+    createdAt: safeString(r.createdAt || r.created_at, new Date().toISOString()),
+  }
+}
+
+function sanitizeSketch(r: any): SavedSketch {
+  return {
+    id: safeString(r.id, generateUUID()),
+    projectId: toValidUUIDOrNull(r.projectId || r.project_id) || undefined,
+    importedFromId: toValidUUIDOrNull(r.importedFromId || r.imported_from_id) || undefined,
+    title: safeString(r.title, 'Untitled Sketch'),
+    collectionTitle: safeString(r.collectionTitle || r.collection_title, ''),
+    garmentType: safeString(r.garmentType || r.garment_type, 'Outerwear/Tailoring'),
+    fabricName: safeString(r.fabricName || r.fabric_name, 'Silk Velvet'),
+    imageUrl: safeString(r.imageUrl || r.image_url, ''),
+    score: Number(r.score ?? 95),
+    aiCritique: safeString(r.aiCritique || r.ai_critique, ''),
+    savedAt: safeString(r.savedAt || r.created_at, new Date().toISOString()),
+  }
+}
+
+function sanitizePattern(r: any): SavedPattern {
+  return {
+    id: safeString(r.id, generateUUID()),
+    projectId: toValidUUIDOrNull(r.projectId || r.project_id) || undefined,
+    importedFromId: toValidUUIDOrNull(r.importedFromId || r.imported_from_id) || undefined,
+    number: safeString(r.number, '01'),
+    patternNo: safeString(r.patternNo || r.pattern_no, 'PT-101'),
+    title: safeString(r.title, 'Untitled Pattern'),
+    category: safeString(r.category, 'Outerwear'),
+    status: safeString(r.status, 'Ready'),
+    statusType: (r.statusType || r.status_type || 'approved') as any,
+    fabric: safeString(r.fabric, ''),
+    notions: safeString(r.notions, ''),
+    nextFitting: safeString(r.nextFitting || r.next_fitting, ''),
+    modeliste: safeString(r.modeliste, 'Ariba'),
+    pieces: Number(r.pieces ?? 1),
+    description: safeString(r.description, ''),
+    measurements: safeString(r.measurements, ''),
+    image: safeString(r.image, ''),
+  }
+}
+
+function sanitizeFabric(r: any): SavedFabric {
+  return {
+    id: safeString(r.id, generateUUID()),
+    name: safeString(r.name, 'Textile Swatch'),
+    type: safeString(r.type, 'Silk Velvet'),
+    weight: safeString(r.weight, '320 GSM'),
+    origin: safeString(r.origin, 'Como, Italy'),
+    metersLeft: Number(r.metersLeft ?? r.meters_left ?? 25),
+    availability: (r.availability || 'In Stock') as any,
+    imageUrl: safeString(r.imageUrl || r.image_url, ''),
+    costPerMeter: Number(r.costPerMeter ?? r.cost_per_meter ?? 120),
+    supplier: safeString(r.supplier, 'Biella Textiles Milan'),
+  }
+}
+
+function sanitizeDeadline(r: any): SavedDeadline {
+  return {
+    id: safeString(r.id, generateUUID()),
+    title: safeString(r.title, 'Runway Deadline'),
+    detail: safeString(r.detail, ''),
+    daysLeft: Number(r.daysLeft ?? r.days_left ?? 3),
+    urgency: (r.urgency || 'medium') as any,
+    date: safeString(r.date, 'Upcoming'),
+  }
+}
+
+let realtimeSubscribed = false
+
+export const setupRealtimeSync = () => {
+  if (realtimeSubscribed) return
+  realtimeSubscribed = true
+
+  try {
+    supabase
+      .channel('atelier_realtime_sync')
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public' },
+        (_payload) => {
+          useAtelierStore.getState().fetchFromSupabase()
+        }
+      )
+      .subscribe()
+  } catch (err) {
+    console.warn('Realtime subscription error:', err)
+  }
+}
+
 export const useAtelierStore = create<AtelierState>()(
   persist(
     (set, get) => ({
@@ -181,107 +327,27 @@ export const useAtelierStore = create<AtelierState>()(
           ])
 
           if (pRes.data && pRes.data.length > 0) {
-            const mapped: SavedProject[] = pRes.data.map((r: any) => ({
-              id: r.id,
-              code: r.code || '#CR-1001',
-              title: r.title,
-              category: r.category || 'Assignment',
-              season: r.season || 'Fashion Design 101',
-              targetDate: r.target_date || '2026-11-18',
-              stage: r.stage || 'Sampling (Phase 6 of 9)',
-              stageNum: r.stage_num ?? 6,
-              percent: r.percent ?? 75,
-              palette: Array.isArray(r.palette) ? r.palette : [],
-              garmentsCount: r.garments_count ?? 0,
-              description: r.description || '',
-              createdAt: r.created_at || new Date().toISOString(),
-            }))
-            set({ projects: mapped })
+            set({ projects: pRes.data.map(sanitizeProject) })
           }
 
           if (nRes.data && nRes.data.length > 0) {
-            const mapped: SavedNote[] = nRes.data.map((r: any) => ({
-              id: r.id,
-              projectId: r.project_id || undefined,
-              collectionId: r.collection_id || undefined,
-              importedFromId: r.imported_from_id || undefined,
-              title: r.title || 'Fitting Note',
-              category: r.category || 'Fitting Notes',
-              content: r.content || '',
-              date: r.date || 'Today',
-              tag: r.tag || 'Fitting Spec',
-              lookRef: r.look_ref || undefined,
-              createdAt: r.created_at || new Date().toISOString(),
-            }))
-            set({ notes: mapped })
+            set({ notes: nRes.data.map(sanitizeNote) })
           }
 
           if (sRes.data && sRes.data.length > 0) {
-            const mapped: SavedSketch[] = sRes.data.map((r: any) => ({
-              id: r.id,
-              projectId: r.project_id || undefined,
-              importedFromId: r.imported_from_id || undefined,
-              title: r.title || 'Untitled Sketch',
-              collectionTitle: r.collection_title || undefined,
-              garmentType: r.garment_type || 'Outerwear/Tailoring',
-              fabricName: r.fabric_name || 'Silk Velvet',
-              imageUrl: r.image_url || '',
-              score: r.score || 95,
-              aiCritique: r.ai_critique || '',
-              savedAt: r.created_at || new Date().toISOString(),
-            }))
-            set({ sketches: mapped })
+            set({ sketches: sRes.data.map(sanitizeSketch) })
           }
 
           if (patRes.data && patRes.data.length > 0) {
-            const mapped: SavedPattern[] = patRes.data.map((r: any) => ({
-              id: r.id,
-              projectId: r.project_id || undefined,
-              importedFromId: r.imported_from_id || undefined,
-              number: r.number || '01',
-              patternNo: r.pattern_no || 'PT-101',
-              title: r.title || 'Untitled Pattern',
-              category: r.category || 'Outerwear',
-              status: r.status || 'Ready',
-              statusType: r.status_type || 'approved',
-              fabric: r.fabric || '',
-              notions: r.notions || '',
-              nextFitting: r.next_fitting || '',
-              modeliste: r.modeliste || 'Ariba',
-              pieces: r.pieces || 1,
-              description: r.description || '',
-              measurements: r.measurements || '',
-              image: r.image || '',
-            }))
-            set({ patterns: mapped })
+            set({ patterns: patRes.data.map(sanitizePattern) })
           }
 
           if (fRes.data && fRes.data.length > 0) {
-            const mapped: SavedFabric[] = fRes.data.map((r: any) => ({
-              id: r.id,
-              name: r.name,
-              type: r.type || 'Silk Velvet',
-              weight: r.weight || '320 GSM',
-              origin: r.origin || 'Como, Italy',
-              metersLeft: r.meters_left ?? 25,
-              availability: r.availability || 'In Stock',
-              imageUrl: r.image_url || '',
-              costPerMeter: r.cost_per_meter ?? 120,
-              supplier: r.supplier || 'Biella Textiles Milan',
-            }))
-            set({ fabrics: mapped })
+            set({ fabrics: fRes.data.map(sanitizeFabric) })
           }
 
           if (dRes.data && dRes.data.length > 0) {
-            const mapped: SavedDeadline[] = dRes.data.map((r: any) => ({
-              id: r.id,
-              title: r.title,
-              detail: r.detail || '',
-              daysLeft: r.days_left ?? 3,
-              urgency: r.urgency || 'medium',
-              date: r.date || 'Upcoming',
-            }))
-            set({ deadlines: mapped })
+            set({ deadlines: dRes.data.map(sanitizeDeadline) })
           }
         } catch (err) {
           console.error('Error syncing Supabase atelier data:', err)
@@ -290,14 +356,14 @@ export const useAtelierStore = create<AtelierState>()(
 
       addProject: (projectData) => {
         const id = generateUUID()
-        const newProject: SavedProject = {
+        const newProject: SavedProject = sanitizeProject({
           ...projectData,
           id,
           createdAt: new Date().toISOString(),
-        }
+        })
         set((state) => ({ projects: [newProject, ...state.projects] }))
 
-        supabase.from('projects').insert({
+        supabase.from('projects').upsert({
           id: newProject.id,
           code: newProject.code,
           title: newProject.title,
@@ -312,7 +378,7 @@ export const useAtelierStore = create<AtelierState>()(
           description: newProject.description,
           created_at: newProject.createdAt,
         }).then(({ error }) => {
-          if (error) console.error('Supabase addProject error:', error)
+          if (error) console.error('Supabase addProject error:', error.message)
         })
 
         return newProject
@@ -320,45 +386,51 @@ export const useAtelierStore = create<AtelierState>()(
 
       updateProject: (id, updates) => {
         set((state) => ({
-          projects: state.projects.map((p) => (p.id === id ? { ...p, ...updates } : p)),
+          projects: state.projects.map((p) => (p.id === id ? sanitizeProject({ ...p, ...updates }) : p)),
         }))
 
         const dbUpdates: any = {}
-        if (updates.title !== undefined) dbUpdates.title = updates.title
-        if (updates.category !== undefined) dbUpdates.category = updates.category
-        if (updates.season !== undefined) dbUpdates.season = updates.season
-        if (updates.targetDate !== undefined) dbUpdates.target_date = updates.targetDate
-        if (updates.stage !== undefined) dbUpdates.stage = updates.stage
+        if (updates.title !== undefined) dbUpdates.title = safeString(updates.title)
+        if (updates.category !== undefined) dbUpdates.category = safeString(updates.category)
+        if (updates.season !== undefined) dbUpdates.season = safeString(updates.season)
+        if (updates.targetDate !== undefined) dbUpdates.target_date = safeString(updates.targetDate)
+        if (updates.stage !== undefined) dbUpdates.stage = safeString(updates.stage)
         if (updates.stageNum !== undefined) dbUpdates.stage_num = updates.stageNum
         if (updates.percent !== undefined) dbUpdates.percent = updates.percent
         if (updates.palette !== undefined) dbUpdates.palette = updates.palette
-        if (updates.description !== undefined) dbUpdates.description = updates.description
+        if (updates.description !== undefined) dbUpdates.description = safeString(updates.description)
 
-        supabase.from('projects').update(dbUpdates).eq('id', id).then(({ error }) => {
-          if (error) console.error('Supabase updateProject error:', error)
-        })
+        const validId = toValidUUIDOrNull(id)
+        if (validId) {
+          supabase.from('projects').update(dbUpdates).eq('id', validId).then(({ error }) => {
+            if (error) console.error('Supabase updateProject error:', error.message)
+          })
+        }
       },
 
       deleteProject: (id) => {
         set((state) => ({ projects: state.projects.filter((p) => p.id !== id) }))
-        supabase.from('projects').delete().eq('id', id).then(({ error }) => {
-          if (error) console.error('Supabase deleteProject error:', error)
-        })
+        const validId = toValidUUIDOrNull(id)
+        if (validId) {
+          supabase.from('projects').delete().eq('id', validId).then(({ error }) => {
+            if (error) console.error('Supabase deleteProject error:', error.message)
+          })
+        }
       },
 
       addSketch: (sketchData) => {
         const id = generateUUID()
-        const newSketch: SavedSketch = {
+        const newSketch: SavedSketch = sanitizeSketch({
           ...sketchData,
           id,
           savedAt: new Date().toISOString(),
-        }
+        })
         set((state) => ({ sketches: [newSketch, ...state.sketches] }))
 
-        supabase.from('sketches').insert({
+        supabase.from('sketches').upsert({
           id: newSketch.id,
-          project_id: newSketch.projectId || null,
-          imported_from_id: newSketch.importedFromId || null,
+          project_id: toValidUUIDOrNull(newSketch.projectId),
+          imported_from_id: toValidUUIDOrNull(newSketch.importedFromId),
           title: newSketch.title,
           collection_title: newSketch.collectionTitle || null,
           garment_type: newSketch.garmentType,
@@ -368,7 +440,7 @@ export const useAtelierStore = create<AtelierState>()(
           score: newSketch.score || 95,
           created_at: newSketch.savedAt,
         }).then(({ error }) => {
-          if (error) console.error('Supabase addSketch error:', error)
+          if (error) console.error('Supabase addSketch error:', error.message)
         })
 
         return newSketch
@@ -376,35 +448,41 @@ export const useAtelierStore = create<AtelierState>()(
 
       updateSketch: (id, updates) => {
         set((state) => ({
-          sketches: state.sketches.map((s) => (s.id === id ? { ...s, ...updates } : s)),
+          sketches: state.sketches.map((s) => (s.id === id ? sanitizeSketch({ ...s, ...updates }) : s)),
         }))
 
         const dbUpdates: any = {}
-        if (updates.title !== undefined) dbUpdates.title = updates.title
-        if (updates.garmentType !== undefined) dbUpdates.garment_type = updates.garmentType
-        if (updates.fabricName !== undefined) dbUpdates.fabric_name = updates.fabricName
+        if (updates.title !== undefined) dbUpdates.title = safeString(updates.title)
+        if (updates.garmentType !== undefined) dbUpdates.garment_type = safeString(updates.garmentType)
+        if (updates.fabricName !== undefined) dbUpdates.fabric_name = safeString(updates.fabricName)
 
-        supabase.from('sketches').update(dbUpdates).eq('id', id).then(({ error }) => {
-          if (error) console.error('Supabase updateSketch error:', error)
-        })
+        const validId = toValidUUIDOrNull(id)
+        if (validId) {
+          supabase.from('sketches').update(dbUpdates).eq('id', validId).then(({ error }) => {
+            if (error) console.error('Supabase updateSketch error:', error.message)
+          })
+        }
       },
 
       deleteSketch: (id) => {
         set((state) => ({ sketches: state.sketches.filter((s) => s.id !== id) }))
-        supabase.from('sketches').delete().eq('id', id).then(({ error }) => {
-          if (error) console.error('Supabase deleteSketch error:', error)
-        })
+        const validId = toValidUUIDOrNull(id)
+        if (validId) {
+          supabase.from('sketches').delete().eq('id', validId).then(({ error }) => {
+            if (error) console.error('Supabase deleteSketch error:', error.message)
+          })
+        }
       },
 
       addFabric: (fabricData) => {
         const id = generateUUID()
-        const newFabric: SavedFabric = {
+        const newFabric: SavedFabric = sanitizeFabric({
           ...fabricData,
           id,
-        }
+        })
         set((state) => ({ fabrics: [newFabric, ...state.fabrics] }))
 
-        supabase.from('fabrics').insert({
+        supabase.from('fabrics').upsert({
           id: newFabric.id,
           name: newFabric.name,
           type: newFabric.type,
@@ -416,7 +494,7 @@ export const useAtelierStore = create<AtelierState>()(
           cost_per_meter: newFabric.costPerMeter,
           supplier: newFabric.supplier,
         }).then(({ error }) => {
-          if (error) console.error('Supabase addFabric error:', error)
+          if (error) console.error('Supabase addFabric error:', error.message)
         })
 
         return newFabric
@@ -424,20 +502,23 @@ export const useAtelierStore = create<AtelierState>()(
 
       deleteFabric: (id) => {
         set((state) => ({ fabrics: state.fabrics.filter((f) => f.id !== id) }))
-        supabase.from('fabrics').delete().eq('id', id).then(({ error }) => {
-          if (error) console.error('Supabase deleteFabric error:', error)
-        })
+        const validId = toValidUUIDOrNull(id)
+        if (validId) {
+          supabase.from('fabrics').delete().eq('id', validId).then(({ error }) => {
+            if (error) console.error('Supabase deleteFabric error:', error.message)
+          })
+        }
       },
 
       addDeadline: (deadlineData) => {
         const id = generateUUID()
-        const newDeadline: SavedDeadline = {
+        const newDeadline: SavedDeadline = sanitizeDeadline({
           ...deadlineData,
           id,
-        }
+        })
         set((state) => ({ deadlines: [newDeadline, ...state.deadlines] }))
 
-        supabase.from('deadlines').insert({
+        supabase.from('deadlines').upsert({
           id: newDeadline.id,
           title: newDeadline.title,
           detail: newDeadline.detail,
@@ -445,7 +526,7 @@ export const useAtelierStore = create<AtelierState>()(
           urgency: newDeadline.urgency,
           date: newDeadline.date,
         }).then(({ error }) => {
-          if (error) console.error('Supabase addDeadline error:', error)
+          if (error) console.error('Supabase addDeadline error:', error.message)
         })
 
         return newDeadline
@@ -453,20 +534,23 @@ export const useAtelierStore = create<AtelierState>()(
 
       deleteDeadline: (id) => {
         set((state) => ({ deadlines: state.deadlines.filter((d) => d.id !== id) }))
-        supabase.from('deadlines').delete().eq('id', id).then(({ error }) => {
-          if (error) console.error('Supabase deleteDeadline error:', error)
-        })
+        const validId = toValidUUIDOrNull(id)
+        if (validId) {
+          supabase.from('deadlines').delete().eq('id', validId).then(({ error }) => {
+            if (error) console.error('Supabase deleteDeadline error:', error.message)
+          })
+        }
       },
 
       addPattern: (patternData) => {
         const id = generateUUID()
-        const newPattern: SavedPattern = { ...patternData, id }
+        const newPattern: SavedPattern = sanitizePattern({ ...patternData, id })
         set((state) => ({ patterns: [newPattern, ...state.patterns] }))
 
-        supabase.from('patterns').insert({
+        supabase.from('patterns').upsert({
           id: newPattern.id,
-          project_id: newPattern.projectId || null,
-          imported_from_id: newPattern.importedFromId || null,
+          project_id: toValidUUIDOrNull(newPattern.projectId),
+          imported_from_id: toValidUUIDOrNull(newPattern.importedFromId),
           number: newPattern.number,
           pattern_no: newPattern.patternNo,
           title: newPattern.title,
@@ -482,7 +566,7 @@ export const useAtelierStore = create<AtelierState>()(
           measurements: newPattern.measurements || null,
           image: newPattern.image,
         }).then(({ error }) => {
-          if (error) console.error('Supabase addPattern error:', error)
+          if (error) console.error('Supabase addPattern error:', error.message)
         })
 
         return newPattern
@@ -490,26 +574,32 @@ export const useAtelierStore = create<AtelierState>()(
 
       updatePattern: (id, updates) => {
         set((state) => ({
-          patterns: state.patterns.map((p) => (p.id === id ? { ...p, ...updates } : p)),
+          patterns: state.patterns.map((p) => (p.id === id ? sanitizePattern({ ...p, ...updates }) : p)),
         }))
 
         const dbUpdates: any = {}
-        if (updates.title !== undefined) dbUpdates.title = updates.title
-        if (updates.category !== undefined) dbUpdates.category = updates.category
-        if (updates.description !== undefined) dbUpdates.description = updates.description
-        if (updates.measurements !== undefined) dbUpdates.measurements = updates.measurements
-        if (updates.image !== undefined) dbUpdates.image = updates.image
+        if (updates.title !== undefined) dbUpdates.title = safeString(updates.title)
+        if (updates.category !== undefined) dbUpdates.category = safeString(updates.category)
+        if (updates.description !== undefined) dbUpdates.description = safeString(updates.description)
+        if (updates.measurements !== undefined) dbUpdates.measurements = safeString(updates.measurements)
+        if (updates.image !== undefined) dbUpdates.image = safeString(updates.image)
 
-        supabase.from('patterns').update(dbUpdates).eq('id', id).then(({ error }) => {
-          if (error) console.error('Supabase updatePattern error:', error)
-        })
+        const validId = toValidUUIDOrNull(id)
+        if (validId) {
+          supabase.from('patterns').update(dbUpdates).eq('id', validId).then(({ error }) => {
+            if (error) console.error('Supabase updatePattern error:', error.message)
+          })
+        }
       },
 
       deletePattern: (id) => {
         set((state) => ({ patterns: state.patterns.filter((p) => p.id !== id) }))
-        supabase.from('patterns').delete().eq('id', id).then(({ error }) => {
-          if (error) console.error('Supabase deletePattern error:', error)
-        })
+        const validId = toValidUUIDOrNull(id)
+        if (validId) {
+          supabase.from('patterns').delete().eq('id', validId).then(({ error }) => {
+            if (error) console.error('Supabase deletePattern error:', error.message)
+          })
+        }
       },
 
       addMoodboard: (moodboardData) => {
@@ -536,18 +626,18 @@ export const useAtelierStore = create<AtelierState>()(
 
       addNote: (noteData) => {
         const id = generateUUID()
-        const newNote: SavedNote = {
+        const newNote: SavedNote = sanitizeNote({
           ...noteData,
           id,
           createdAt: noteData.createdAt || new Date().toISOString(),
-        }
+        })
         set((state) => ({ notes: [newNote, ...state.notes] }))
 
-        supabase.from('notes').insert({
+        supabase.from('notes').upsert({
           id: newNote.id,
-          project_id: newNote.projectId || null,
-          collection_id: newNote.collectionId || null,
-          imported_from_id: newNote.importedFromId || null,
+          project_id: toValidUUIDOrNull(newNote.projectId),
+          collection_id: toValidUUIDOrNull(newNote.collectionId),
+          imported_from_id: toValidUUIDOrNull(newNote.importedFromId),
           title: newNote.title,
           category: newNote.category || 'Fitting Notes',
           content: newNote.content,
@@ -556,7 +646,7 @@ export const useAtelierStore = create<AtelierState>()(
           look_ref: newNote.lookRef || null,
           created_at: newNote.createdAt,
         }).then(({ error }) => {
-          if (error) console.error('Supabase addNote error:', error)
+          if (error) console.error('Supabase addNote error:', error.message)
         })
 
         return newNote
@@ -564,32 +654,52 @@ export const useAtelierStore = create<AtelierState>()(
 
       updateNote: (id, updates) => {
         set((state) => ({
-          notes: state.notes.map((n) => (n.id === id ? { ...n, ...updates } : n)),
+          notes: state.notes.map((n) => (n.id === id ? sanitizeNote({ ...n, ...updates }) : n)),
         }))
 
         const dbUpdates: any = {}
-        if (updates.title !== undefined) dbUpdates.title = updates.title
-        if (updates.category !== undefined) dbUpdates.category = updates.category
-        if (updates.content !== undefined) dbUpdates.content = updates.content
-        if (updates.date !== undefined) dbUpdates.date = updates.date
-        if (updates.tag !== undefined) dbUpdates.tag = updates.tag
-        if (updates.lookRef !== undefined) dbUpdates.look_ref = updates.lookRef
-        if (updates.collectionId !== undefined) dbUpdates.collection_id = updates.collectionId
+        if (updates.title !== undefined) dbUpdates.title = safeString(updates.title)
+        if (updates.category !== undefined) dbUpdates.category = safeString(updates.category)
+        if (updates.content !== undefined) dbUpdates.content = safeString(updates.content)
+        if (updates.date !== undefined) dbUpdates.date = safeString(updates.date)
+        if (updates.tag !== undefined) dbUpdates.tag = safeString(updates.tag)
+        if (updates.lookRef !== undefined) dbUpdates.look_ref = safeString(updates.lookRef)
+        if (updates.collectionId !== undefined) dbUpdates.collection_id = toValidUUIDOrNull(updates.collectionId)
 
-        supabase.from('notes').update(dbUpdates).eq('id', id).then(({ error }) => {
-          if (error) console.error('Supabase updateNote error:', error)
-        })
+        const validId = toValidUUIDOrNull(id)
+        if (validId) {
+          supabase.from('notes').update(dbUpdates).eq('id', validId).then(({ error }) => {
+            if (error) console.error('Supabase updateNote error:', error.message)
+          })
+        }
       },
 
       deleteNote: (id) => {
         set((state) => ({ notes: state.notes.filter((n) => n.id !== id) }))
-        supabase.from('notes').delete().eq('id', id).then(({ error }) => {
-          if (error) console.error('Supabase deleteNote error:', error)
-        })
+        const validId = toValidUUIDOrNull(id)
+        if (validId) {
+          supabase.from('notes').delete().eq('id', validId).then(({ error }) => {
+            if (error) console.error('Supabase deleteNote error:', error.message)
+          })
+        }
       },
     }),
     {
       name: 'ariba_atelier_store',
+      // Sanitize stored data when loaded from localStorage
+      merge: (persistedState: any, currentState) => {
+        const p = persistedState || {}
+        return {
+          ...currentState,
+          ...p,
+          projects: Array.isArray(p.projects) ? p.projects.map(sanitizeProject) : currentState.projects,
+          sketches: Array.isArray(p.sketches) ? p.sketches.map(sanitizeSketch) : currentState.sketches,
+          fabrics: Array.isArray(p.fabrics) ? p.fabrics.map(sanitizeFabric) : currentState.fabrics,
+          deadlines: Array.isArray(p.deadlines) ? p.deadlines.map(sanitizeDeadline) : currentState.deadlines,
+          patterns: Array.isArray(p.patterns) ? p.patterns.map(sanitizePattern) : currentState.patterns,
+          notes: Array.isArray(p.notes) ? p.notes.map(sanitizeNote) : currentState.notes,
+        }
+      },
     }
   )
 )

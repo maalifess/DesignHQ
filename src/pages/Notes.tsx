@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { useAtelierStore, type SavedNote } from '@/store/useAtelierStore'
+import { useAtelierStore, safeString, type SavedNote } from '@/store/useAtelierStore'
 
 export default function Notes() {
   const notes = useAtelierStore((state) => state.notes)
@@ -182,11 +182,11 @@ export default function Notes() {
                     </div>
 
                     <h3 className="font-title-sm text-title-sm text-on-surface font-bold truncate mt-0.5 pr-6">
-                      {note.title}
+                      {safeString(note.title)}
                     </h3>
 
                     <p className="font-body-sm text-[12px] text-on-surface-variant line-clamp-2">
-                      {note.content}
+                      {safeString(note.content)}
                     </p>
 
                     <div className="flex items-center justify-between text-label-sm font-label-sm mt-1 pt-1 border-t border-outline-variant/20">
