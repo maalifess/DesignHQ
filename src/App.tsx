@@ -6,20 +6,20 @@ import { ToastContainer } from '@/components/ui/Toast'
 import { useAppStore } from '@/store/useAppStore'
 
 // ── Lazy-loaded pages ──────────────────────────────────────────────────────────
-const Dashboard        = lazy(() => import('@/pages/Dashboard'))
-const Projects         = lazy(() => import('@/pages/Projects'))
-const ProjectDetail    = lazy(() => import('@/pages/ProjectDetail'))
-const Patterns         = lazy(() => import('@/pages/Patterns'))
-const MoodBoards       = lazy(() => import('@/pages/MoodBoards'))
-const MoodBoardDetail  = lazy(() => import('@/pages/MoodBoardDetail'))
-const Sketchbook       = lazy(() => import('@/pages/Sketchbook'))
-const Fabrics          = lazy(() => import('@/pages/Fabrics'))
-const Notes            = lazy(() => import('@/pages/Notes'))
-const Portfolio        = lazy(() => import('@/pages/Portfolio'))
-const PortfolioPublic  = lazy(() => import('@/pages/PortfolioPublic'))
-const Settings         = lazy(() => import('@/pages/Settings'))
-const Login            = lazy(() => import('@/pages/Login'))
-const ForgotPassword   = lazy(() => import('@/pages/ForgotPassword'))
+const Dashboard = lazy(() => import('@/pages/Dashboard'))
+const Projects = lazy(() => import('@/pages/Projects'))
+const ProjectDetail = lazy(() => import('@/pages/ProjectDetail'))
+const Patterns = lazy(() => import('@/pages/Patterns'))
+const MoodBoards = lazy(() => import('@/pages/MoodBoards'))
+const MoodBoardDetail = lazy(() => import('@/pages/MoodBoardDetail'))
+const Sketchbook = lazy(() => import('@/pages/Sketchbook'))
+const Fabrics = lazy(() => import('@/pages/Fabrics'))
+const Notes = lazy(() => import('@/pages/Notes'))
+const Portfolio = lazy(() => import('@/pages/Portfolio'))
+const PortfolioPublic = lazy(() => import('@/pages/PortfolioPublic'))
+const Settings = lazy(() => import('@/pages/Settings'))
+const Login = lazy(() => import('@/pages/Login'))
+const ForgotPassword = lazy(() => import('@/pages/ForgotPassword'))
 
 // ── Loading fallback ───────────────────────────────────────────────────────────
 function PageLoader() {
