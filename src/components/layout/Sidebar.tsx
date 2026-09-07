@@ -25,9 +25,11 @@ export function Sidebar() {
       <div className="flex flex-col">
         {/* Logo Header */}
         <div className="h-topbar-height px-space-md flex items-center gap-space-xs bg-surface-container-low/40 border-b border-outline-variant/20">
-          <div className="w-8 h-8 rounded-lg bg-primary-container flex items-center justify-center text-on-primary font-bold shadow-[0_0_12px_rgba(128,0,32,0.6)] flex-shrink-0">
-            <span className="material-symbols-outlined text-lg">styler</span>
-          </div>
+          <img
+            src="/logo.png"
+            alt="Ariba's Atelier Logo"
+            className="w-8 h-8 rounded-lg object-cover shadow-[0_0_12px_rgba(128,0,32,0.6)] flex-shrink-0"
+          />
           {!sidebarCollapsed && (
             <span className="font-headline-sm text-headline-sm text-on-surface font-bold truncate tracking-tight">
               Ariba's Atelier

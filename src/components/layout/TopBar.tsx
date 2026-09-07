@@ -16,9 +16,11 @@ export function TopBar() {
     >
       {/* Mobile Branding (No sidebar toggle menu on mobile) */}
       <div className="flex md:hidden items-center gap-2">
-        <div className="w-8 h-8 rounded-lg bg-primary-container flex items-center justify-center text-on-primary font-bold shadow-[0_0_10px_rgba(128,0,32,0.5)] flex-shrink-0">
-          <span className="material-symbols-outlined text-lg">styler</span>
-        </div>
+        <img
+          src="/logo.png"
+          alt="Ariba's Atelier Logo"
+          className="w-8 h-8 rounded-lg object-cover shadow-[0_0_10px_rgba(128,0,32,0.5)] flex-shrink-0"
+        />
         <span className="font-headline-sm text-headline-sm text-on-surface font-bold text-base tracking-tight truncate">
           Ariba's Atelier
         </span>
