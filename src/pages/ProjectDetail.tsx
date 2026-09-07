@@ -1,26 +1,9 @@
 import React, { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useAuth } from '@/hooks/useAuth'
-import { useAtelierStore } from '@/store/useAtelierStore'
+import { useAtelierStore, type SavedPattern, type SavedSketch } from '@/store/useAtelierStore'
 
-interface GarmentLook {
-  id: string
-  number: string
-  patternNo: string
-  title: string
-  category: string
-  status: string
-  statusType: 'approved' | 'cutting' | 'warning'
-  fabric: string
-  notions: string
-  nextFitting: string
-  modeliste: string
-  pieces: number
-  description: string
-  image: string
-}
 
-const INITIAL_LOOKS_DATA: GarmentLook[] = []
 
 export default function ProjectDetail() {
   const navigate = useNavigate()
@@ -32,7 +15,28 @@ export default function ProjectDetail() {
   const deadlines = useAtelierStore((state) => state.deadlines)
   const fabrics = useAtelierStore((state) => state.fabrics)
   const updateProject = useAtelierStore((state) => state.updateProject)
+  
+  const sketchesStore = useAtelierStore((state) => state.sketches)
+  const patternsStore = useAtelierStore((state) => state.patterns)
+  const moodboardsStore = useAtelierStore((state) => state.moodboards)
+  const fittingLogsStore = useAtelierStore((state) => state.fittingLogs)
+  const notesStore = useAtelierStore((state) => state.notes)
+  
+  const addSketch = useAtelierStore((state) => state.addSketch)
+  const updateSketch = useAtelierStore((state) => state.updateSketch)
+  const deleteSketch = useAtelierStore((state) => state.deleteSketch)
+
+  const addPattern = useAtelierStore((state) => state.addPattern)
+  const updatePattern = useAtelierStore((state) => state.updatePattern)
+  const deletePattern = useAtelierStore((state) => state.deletePattern)
+
   const activeProject = projects.find((p) => p.id === id) || projects[0]
+
+  const projectSketches = sketchesStore.filter((s) => s.projectId === activeProject?.id)
+  const projectPatterns = patternsStore.filter((p) => p.projectId === activeProject?.id)
+  const projectMoodboards = moodboardsStore.filter((m) => m.projectId === activeProject?.id)
+  const projectFittingLogs = fittingLogsStore.filter((f) => f.projectId === activeProject?.id)
+  const projectNotes = notesStore.filter((n) => n.projectId === activeProject?.id)
 
   const projectTitle = activeProject?.title || 'Ariba Haute Couture Collection'
   const projectCode = activeProject?.code || '#CR-2680'
@@ -40,7 +44,6 @@ export default function ProjectDetail() {
   const projectTargetDate = activeProject?.targetDate || 'Nov 18, 2026'
   const projectStage = activeProject?.stage || 'Sampling & Fitting Stage (75%)'
 
-  const [looksList, setLooksList] = useState<GarmentLook[]>(INITIAL_LOOKS_DATA)
   const activeStage = activeProject?.stageNum || 6
   const [activeTab, setActiveTab] = useState<string>('garments')
   const [searchFilter, setSearchFilter] = useState<string>('')
@@ -73,11 +76,27 @@ export default function ProjectDetail() {
 
   // New Look Form
   const [newLookTitle, setNewLookTitle] = useState('')
-  const [newLookCategory, setNewLookCategory] = useState('Outerwear/Tailoring')
-  const [newLookFabric, setNewLookFabric] = useState('Silk Velvet')
-  const [newLookNotions, setNewLookNotions] = useState('Horn Buttons')
-  const [newLookModeliste, setNewLookModeliste] = useState('Ariba')
+  const [newLookCategory, setNewLookCategory] = useState('')
   const [newLookDesc, setNewLookDesc] = useState('')
+  const [newLookMeasurements, setNewLookMeasurements] = useState('')
+  const [newLookImage, setNewLookImage] = useState('')
+
+  // Edit Pattern Form State
+  const [editingPattern, setEditingPattern] = useState<SavedPattern | null>(null)
+  const [editTitle, setEditTitle] = useState('')
+  const [editCategory, setEditCategory] = useState('')
+  const [editDesc, setEditDesc] = useState('')
+  const [editMeasurements, setEditMeasurements] = useState('')
+  const [editImage, setEditImage] = useState('')
+
+  // Import Modal State
+  const [showImportModal, setShowImportModal] = useState<boolean>(false)
+  const [showImportSketchModal, setShowImportSketchModal] = useState<boolean>(false)
+
+  // Edit Sketch Form State
+  const [editingSketch, setEditingSketch] = useState<SavedSketch | null>(null)
+  const [editSketchTitle, setEditSketchTitle] = useState('')
+  const [editSketchGarmentType, setEditSketchGarmentType] = useState('')
 
   const showToast = (msg: string) => {
     setToastMessage(msg)
@@ -106,32 +125,114 @@ export default function ProjectDetail() {
   const handleAddLook = (e: React.FormEvent) => {
     e.preventDefault()
     if (!newLookTitle) return
-    const num = (looksList.length + 1).toString().padStart(2, '0')
-    const newLook: GarmentLook = {
-      id: `look-${num}`,
+    const num = (projectPatterns.length + 1).toString().padStart(2, '0')
+    const defaultImage = 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&q=80&w=800'
+    const newLook = {
+      projectId: activeProject?.id,
       number: num,
-      patternNo: `CR-2${Math.floor(Math.random() * 80 + 10)}`,
+      patternNo: `PT-${Math.floor(Math.random() * 800 + 100)}`,
       title: newLookTitle,
-      category: newLookCategory,
-      status: 'Initial Pattern Grading ✂️',
-      statusType: 'cutting',
-      fabric: newLookFabric,
-      notions: newLookNotions,
-      nextFitting: 'Next Fitting Scheduled',
-      modeliste: newLookModeliste,
-      pieces: 10,
-      description: newLookDesc || `New garment look created for ${projectTitle}.`,
-      image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAyo2wq7MnyGIJ38qxWJbPr7cExho3a8LO1Fr6-Q9FmFn60-EWbP8gGcQ1yAOlZbjXKFux4meJdhSeSn--RG49wSeaBb_NXqQq2Cc7WQf47JTqi3NCIPYGUSJKqkRmM0oum3STZaVc2-lRmXe8xmlDxgwZSOgopiXin14AftsPus2QJw6Ni2WbCypWBoLk9uhi0FPnukZlBF8ElgpDGXuazeLCvo7PvzcLoV2paUrOIBS7NO3mTgnMzUg',
+      category: newLookCategory.trim() || 'General',
+      status: 'Ready',
+      statusType: 'approved' as const,
+      fabric: '',
+      notions: '',
+      nextFitting: '',
+      modeliste: '',
+      pieces: 1,
+      description: newLookDesc || `New pattern created for ${projectTitle}.`,
+      measurements: newLookMeasurements.trim(),
+      image: newLookImage.trim() || defaultImage,
     }
 
-    setLooksList([...looksList, newLook])
+    addPattern(newLook)
     setShowAddLookModal(false)
     setNewLookTitle('')
+    setNewLookCategory('')
     setNewLookDesc('')
-    showToast(`Look ${num} (${newLookTitle}) added to ${projectTitle}!`)
+    setNewLookMeasurements('')
+    setNewLookImage('')
+    showToast(`Pattern (${newLookTitle}) added to ${projectTitle}!`)
   }
 
-  const filteredLooks = looksList.filter((look) => {
+  const handleImportPattern = (pat: SavedPattern) => {
+    addPattern({
+      projectId: activeProject?.id,
+      importedFromId: pat.id,
+      number: (projectPatterns.length + 1).toString().padStart(2, '0'),
+      patternNo: `PT-${Math.floor(Math.random() * 800 + 100)}`,
+      title: pat.title,
+      category: pat.category,
+      status: 'Ready',
+      statusType: 'approved',
+      fabric: pat.fabric || '',
+      notions: pat.notions || '',
+      nextFitting: '',
+      modeliste: '',
+      pieces: pat.pieces || 1,
+      description: pat.description,
+      measurements: pat.measurements,
+      image: pat.image,
+    })
+    showToast(`Imported "${pat.title}" into ${projectTitle}!`)
+    setShowImportModal(false)
+  }
+
+  const handleStartEdit = (pat: SavedPattern) => {
+    setEditingPattern(pat)
+    setEditTitle(pat.title)
+    setEditCategory(pat.category || '')
+    setEditDesc(pat.description || '')
+    setEditMeasurements(pat.measurements || '')
+    setEditImage(pat.image || '')
+  }
+
+  const handleSaveEdit = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!editingPattern) return
+    updatePattern(editingPattern.id, {
+      title: editTitle,
+      category: editCategory,
+      description: editDesc,
+      measurements: editMeasurements,
+      image: editImage,
+    })
+    showToast(`Updated "${editTitle}"`)
+    setEditingPattern(null)
+  }
+
+  const handleImportSketch = (sketch: SavedSketch) => {
+    addSketch({
+      projectId: activeProject?.id,
+      importedFromId: sketch.id,
+      title: sketch.title,
+      collectionTitle: projectTitle,
+      garmentType: sketch.garmentType || 'Outerwear/Tailoring',
+      fabricName: sketch.fabricName || 'Studio Canvas Spec',
+      imageUrl: sketch.imageUrl,
+    })
+    showToast(`Imported "${sketch.title}" into ${projectTitle}!`)
+    setShowImportSketchModal(false)
+  }
+
+  const handleStartEditSketch = (sketch: SavedSketch) => {
+    setEditingSketch(sketch)
+    setEditSketchTitle(sketch.title)
+    setEditSketchGarmentType(sketch.garmentType || '')
+  }
+
+  const handleSaveEditSketch = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!editingSketch) return
+    updateSketch(editingSketch.id, {
+      title: editSketchTitle,
+      garmentType: editSketchGarmentType,
+    })
+    showToast(`Updated "${editSketchTitle}"`)
+    setEditingSketch(null)
+  }
+
+  const filteredPatterns = projectPatterns.filter((look) => {
     if (!searchFilter) return true
     const q = searchFilter.toLowerCase()
     return (
@@ -339,11 +440,11 @@ export default function ProjectDetail() {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-space-md border-b border-outline-variant/20 pb-space-xs">
           <div className="flex items-center gap-space-2xs overflow-x-auto mobile-scroll-x">
             {[
-              { id: 'garments', label: `Garments & Tech Packs (${looksList.length})` },
-              { id: 'fabrics', label: 'Assigned Fabrics (8)' },
-              { id: 'moodboard', label: 'Mood Board Collage' },
-              { id: 'fitting', label: 'Fitting Log' },
-              { id: 'notes', label: 'Atelier Notes' },
+              { id: 'garments', label: `Patterns (${projectPatterns.length})` },
+              { id: 'fabrics', label: `Sketches (${projectSketches.length})` },
+              { id: 'moodboard', label: `Mood Boards (${projectMoodboards.length})` },
+              { id: 'fitting', label: `Fitting Logs (${projectFittingLogs.length})` },
+              { id: 'notes', label: `Notes (${projectNotes.length})` },
             ].map((tab) => (
               <button
                 key={tab.id}
@@ -389,95 +490,294 @@ export default function ProjectDetail() {
 
       {/* Main Grid: Garments List (Left 8) + Right Rail (Right 4) */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-space-xl items-start">
-        {/* Left 8 Columns: Garment / Look Cards */}
+        {/* Left 8 Columns: Main Tab Content */}
         <div className="lg:col-span-8 flex flex-col gap-space-md">
-          {filteredLooks.length === 0 ? (
+          {activeTab === 'garments' && (
+            <>
+              {filteredPatterns.length === 0 ? (
+                <div className="rounded-xl bg-surface-container-low/90 backdrop-blur-2xl shadow-xl border border-outline-variant/20 p-space-2xl flex flex-col items-center justify-center text-center gap-space-md">
+                  <span className="material-symbols-outlined text-5xl text-outline">styler</span>
+                  <h3 className="font-headline-sm text-headline-sm text-on-surface font-bold">
+                    No Patterns Added Yet
+                  </h3>
+                  <p className="font-body-sm text-body-sm text-on-surface-variant max-w-md">
+                    Add patterns with specs, textile assignments, and fitting guidelines.
+                  </p>
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => setShowImportModal(true)}
+                      className="px-space-md py-space-xs rounded-lg bg-surface-container-high hover:bg-surface-container-highest text-on-surface font-title-sm text-title-sm font-medium border border-outline-variant/20 cursor-pointer flex items-center gap-1.5"
+                      type="button"
+                    >
+                      <span className="material-symbols-outlined text-base">download</span>
+                      <span>Import from Library</span>
+                    </button>
+                    <button
+                      onClick={() => setShowAddLookModal(true)}
+                      className="px-space-md py-space-xs rounded-lg bg-primary-container text-on-primary font-title-sm text-title-sm font-semibold shadow-lg hover:brightness-110 cursor-pointer"
+                      type="button"
+                    >
+                      + Add Pattern
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <>
+                  <div className="flex flex-col gap-space-md">
+                    {filteredPatterns.map((look) => (
+                      <div
+                        key={look.id}
+                        className="rounded-xl bg-surface-container-low/90 backdrop-blur-2xl shadow-xl border border-outline-variant/20 p-space-lg flex flex-col gap-space-md hover:bg-surface-container-low transition-all"
+                      >
+                        <div className="flex flex-col sm:flex-row items-start gap-space-md">
+                          <img
+                            alt={look.title}
+                            className="w-full sm:w-32 h-44 rounded-lg object-cover flex-shrink-0 shadow-lg border border-outline-variant/30"
+                            src={look.image}
+                          />
+
+                          <div className="flex flex-col min-w-0 flex-1 gap-1">
+                            <div className="flex items-start justify-between gap-2">
+                              <div className="flex flex-wrap items-center gap-2">
+                                <h3 className="font-headline-sm text-headline-sm text-on-surface font-bold">
+                                  {look.title}
+                                </h3>
+                                {look.category && (
+                                  <span className="px-2 py-0.5 rounded bg-surface-container-highest text-on-surface-variant font-label-sm text-label-sm font-semibold">
+                                    {look.category}
+                                  </span>
+                                )}
+                              </div>
+
+                              <div className="flex items-center gap-1">
+                                <button
+                                  type="button"
+                                  onClick={() => handleStartEdit(look)}
+                                  className="text-outline hover:text-primary transition-colors p-1 cursor-pointer"
+                                  title="Edit Pattern & Measurements"
+                                >
+                                  <span className="material-symbols-outlined text-base">edit</span>
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={() => deletePattern(look.id)}
+                                  className="text-outline hover:text-error transition-colors p-1 cursor-pointer"
+                                  title="Delete Pattern"
+                                >
+                                  <span className="material-symbols-outlined text-base">delete</span>
+                                </button>
+                              </div>
+                            </div>
+
+                            <p className="font-body-sm text-body-sm text-on-surface-variant mt-1">
+                              {look.description}
+                            </p>
+
+                            {look.measurements && (
+                              <div className="mt-2 p-space-xs rounded-lg bg-surface-container-high/60 border border-outline-variant/15 text-xs text-on-surface-variant flex flex-col gap-0.5">
+                                <span className="font-semibold text-on-surface text-[11px] uppercase tracking-wider">
+                                  Measurements &amp; Specs:
+                                </span>
+                                <span className="whitespace-pre-line text-on-surface">{look.measurements}</span>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Bottom Action bar */}
+                  <div className="flex flex-wrap items-center justify-between gap-space-md pt-space-sm border-t border-outline-variant/20 mt-2">
+                    <div className="font-label-sm text-label-sm text-outline">
+                      Showing {filteredPatterns.length} Pattern{filteredPatterns.length === 1 ? '' : 's'}
+                    </div>
+
+                    <div className="flex items-center gap-space-xs">
+                      <button
+                        onClick={() => setShowImportModal(true)}
+                        className="px-space-md py-space-xs rounded-lg bg-surface-container-high hover:bg-surface-container-highest text-on-surface font-title-sm text-title-sm font-medium border border-outline-variant/20 cursor-pointer flex items-center gap-1.5"
+                        type="button"
+                      >
+                        <span className="material-symbols-outlined text-base">download</span>
+                        <span>Import from Library</span>
+                      </button>
+                      <button
+                        onClick={() => setShowAddLookModal(true)}
+                        className="px-space-md py-space-xs rounded-lg bg-primary-container text-on-primary font-title-sm text-title-sm font-semibold shadow-lg hover:brightness-110 cursor-pointer flex items-center gap-1.5"
+                        type="button"
+                      >
+                        <span className="material-symbols-outlined text-base">add</span>
+                        <span>+ Add Another Pattern</span>
+                      </button>
+                    </div>
+                  </div>
+                </>
+              )}
+            </>
+          )}
+
+          {activeTab === 'fabrics' && (
+            <>
+              {projectSketches.length === 0 ? (
+                <div className="rounded-xl bg-surface-container-low/90 backdrop-blur-2xl shadow-xl border border-outline-variant/20 p-space-2xl flex flex-col items-center justify-center text-center gap-space-md">
+                  <span className="material-symbols-outlined text-5xl text-outline">draw</span>
+                  <h3 className="font-headline-sm text-headline-sm text-on-surface font-bold">
+                    No Sketches Added Yet
+                  </h3>
+                  <p className="font-body-sm text-body-sm text-on-surface-variant max-w-md">
+                    Import existing sketches from your library or create new ones for {projectTitle}.
+                  </p>
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => setShowImportSketchModal(true)}
+                      className="px-space-md py-space-xs rounded-lg bg-surface-container-high hover:bg-surface-container-highest text-on-surface font-title-sm text-title-sm font-medium border border-outline-variant/20 cursor-pointer flex items-center gap-1.5"
+                      type="button"
+                    >
+                      <span className="material-symbols-outlined text-base">download</span>
+                      <span>Import from Library</span>
+                    </button>
+                    <button
+                      onClick={() => navigate('/sketchbook')}
+                      className="px-space-md py-space-xs rounded-lg bg-primary-container text-on-primary font-title-sm text-title-sm font-semibold shadow-lg hover:brightness-110 cursor-pointer flex items-center gap-1.5"
+                      type="button"
+                    >
+                      <span className="material-symbols-outlined text-base">add</span>
+                      <span>+ Add Sketch</span>
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-space-md">
+                    {projectSketches.map((sketch) => (
+                      <div
+                        key={sketch.id}
+                        className="rounded-xl bg-surface-container-low border border-outline-variant/30 overflow-hidden shadow-md group flex flex-col justify-between"
+                      >
+                        <div className="relative aspect-[3/4] bg-surface-container-high overflow-hidden">
+                          <img
+                            src={sketch.imageUrl}
+                            alt={sketch.title}
+                            className="w-full h-full object-contain p-2 group-hover:scale-105 transition-transform duration-500"
+                          />
+                        </div>
+                        <div className="p-space-sm flex flex-col gap-1">
+                          <div className="flex items-start justify-between gap-2">
+                            <h4 className="font-title-sm text-on-surface font-bold truncate">{sketch.title}</h4>
+                            <div className="flex items-center gap-1">
+                              <button
+                                type="button"
+                                onClick={() => handleStartEditSketch(sketch)}
+                                className="text-outline hover:text-primary transition-colors p-1 cursor-pointer"
+                                title="Edit Sketch Details"
+                              >
+                                <span className="material-symbols-outlined text-base">edit</span>
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => deleteSketch(sketch.id)}
+                                className="text-outline hover:text-error transition-colors p-1 cursor-pointer"
+                                title="Delete Sketch"
+                              >
+                                <span className="material-symbols-outlined text-base">delete</span>
+                              </button>
+                            </div>
+                          </div>
+                          {sketch.garmentType && (
+                            <span className="font-label-sm text-outline truncate">{sketch.garmentType}</span>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Bottom Action Bar */}
+                  <div className="flex flex-wrap items-center justify-between gap-space-md pt-space-sm border-t border-outline-variant/20 mt-2">
+                    <div className="font-label-sm text-label-sm text-outline">
+                      Showing {projectSketches.length} Sketch{projectSketches.length === 1 ? '' : 'es'}
+                    </div>
+
+                    <div className="flex items-center gap-space-xs">
+                      <button
+                        onClick={() => setShowImportSketchModal(true)}
+                        className="px-space-md py-space-xs rounded-lg bg-surface-container-high hover:bg-surface-container-highest text-on-surface font-title-sm text-title-sm font-medium border border-outline-variant/20 cursor-pointer flex items-center gap-1.5"
+                        type="button"
+                      >
+                        <span className="material-symbols-outlined text-base">download</span>
+                        <span>Import from Library</span>
+                      </button>
+                      <button
+                        onClick={() => navigate('/sketchbook')}
+                        className="px-space-md py-space-xs rounded-lg bg-primary-container text-on-primary font-title-sm text-title-sm font-semibold shadow-lg hover:brightness-110 cursor-pointer flex items-center gap-1.5"
+                        type="button"
+                      >
+                        <span className="material-symbols-outlined text-base">add</span>
+                        <span>+ Add Sketch</span>
+                      </button>
+                    </div>
+                  </div>
+                </>
+              )}
+            </>
+          )}
+
+          {activeTab === 'moodboard' && (
             <div className="rounded-xl bg-surface-container-low/90 backdrop-blur-2xl shadow-xl border border-outline-variant/20 p-space-2xl flex flex-col items-center justify-center text-center gap-space-md">
-              <span className="material-symbols-outlined text-5xl text-outline">styler</span>
+              <span className="material-symbols-outlined text-5xl text-outline">dashboard</span>
               <h3 className="font-headline-sm text-headline-sm text-on-surface font-bold">
-                No Garment Looks Added Yet
+                No Mood Board Collage Added Yet
               </h3>
               <p className="font-body-sm text-body-sm text-on-surface-variant max-w-md">
-                Build your haute couture lineup for {projectTitle}. Add garment looks with pattern specs, textile assignments, and fitting schedules.
+                Create a visual direction for {projectTitle}.
               </p>
               <button
-                onClick={() => setShowAddLookModal(true)}
+                onClick={() => navigate('/moodboards')}
                 className="px-space-md py-space-xs rounded-lg bg-primary-container text-on-primary font-title-sm text-title-sm font-semibold shadow-lg hover:brightness-110 cursor-pointer"
                 type="button"
               >
-                + Add Garment Look
+                + Create Mood Board
               </button>
             </div>
-          ) : (
-            filteredLooks.map((look) => (
-              <div
-                key={look.id}
-                className="rounded-xl bg-surface-container-low/90 backdrop-blur-2xl shadow-xl border border-outline-variant/20 p-space-lg flex flex-col gap-space-md hover:bg-surface-container-low transition-all"
-              >
-                <div className="flex flex-col sm:flex-row items-start gap-space-md">
-                  <img
-                    alt={look.title}
-                    className="w-full sm:w-32 h-44 rounded-lg object-cover flex-shrink-0 shadow-lg border border-outline-variant/30"
-                    src={look.image}
-                  />
-
-                  <div className="flex flex-col min-w-0 flex-1 gap-1">
-                    <div className="flex flex-wrap items-center justify-between gap-2">
-                      <div className="flex items-center gap-space-xs">
-                        <span className="font-headline-sm text-headline-sm text-primary font-bold">
-                          Look {look.number}
-                        </span>
-                        <span className="font-body-sm text-body-sm text-outline">#{look.patternNo}</span>
-                        <span className="px-2 py-0.5 rounded bg-surface-container-highest text-on-surface-variant font-label-sm text-label-sm font-semibold">
-                          {look.category}
-                        </span>
-                      </div>
-
-                      <span
-                        className={`px-space-xs py-0.5 rounded font-label-sm text-label-sm font-bold ${
-                          look.statusType === 'approved'
-                            ? 'bg-primary-container/40 text-primary'
-                            : look.statusType === 'cutting'
-                            ? 'bg-secondary-container/40 text-secondary'
-                            : 'bg-error-container text-on-error'
-                        }`}
-                      >
-                        {look.status}
-                      </span>
-                    </div>
-
-                    <h3 className="font-headline-sm text-headline-sm text-on-surface font-bold mt-0.5">
-                      {look.title}
-                    </h3>
-
-                    <p className="font-body-sm text-body-sm text-on-surface-variant line-clamp-2 mt-0.5">
-                      {look.description}
-                    </p>
-
-                    <div className="grid grid-cols-2 gap-space-xs mt-2 pt-space-xs border-t border-outline-variant/20 text-body-sm font-body-sm">
-                      <div>
-                        <span className="text-outline block text-[11px]">Primary Textile:</span>
-                        <span className="text-on-surface font-semibold">{look.fabric}</span>
-                      </div>
-                      <div>
-                        <span className="text-outline block text-[11px]">Hardware &amp; Notions:</span>
-                        <span className="text-on-surface font-semibold">{look.notions}</span>
-                      </div>
-                    </div>
-
-                    <div className="flex flex-wrap items-center justify-between gap-space-xs mt-2 pt-space-2xs text-label-sm font-label-sm text-outline">
-                      <span>Modéliste: <strong className="text-on-surface">{look.modeliste}</strong> ({look.pieces} pieces)</span>
-                      <span className="text-secondary font-semibold">Next Fitting: {look.nextFitting}</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))
           )}
 
-          <div className="text-center font-label-sm text-label-sm text-outline py-space-xs">
-            Showing {filteredLooks.length} Garment Look{filteredLooks.length === 1 ? '' : 's'}
-          </div>
+          {activeTab === 'fitting' && (
+            <div className="rounded-xl bg-surface-container-low/90 backdrop-blur-2xl shadow-xl border border-outline-variant/20 p-space-2xl flex flex-col items-center justify-center text-center gap-space-md">
+              <span className="material-symbols-outlined text-5xl text-outline">straighten</span>
+              <h3 className="font-headline-sm text-headline-sm text-on-surface font-bold">
+                No Fitting Logs Added Yet
+              </h3>
+              <p className="font-body-sm text-body-sm text-on-surface-variant max-w-md">
+                Schedule and manage fittings for {projectTitle}.
+              </p>
+              <button
+                onClick={() => {}}
+                className="px-space-md py-space-xs rounded-lg bg-primary-container text-on-primary font-title-sm text-title-sm font-semibold shadow-lg hover:brightness-110 cursor-pointer"
+                type="button"
+              >
+                + Add Fitting Log
+              </button>
+            </div>
+          )}
+
+          {activeTab === 'notes' && (
+            <div className="rounded-xl bg-surface-container-low/90 backdrop-blur-2xl shadow-xl border border-outline-variant/20 p-space-2xl flex flex-col items-center justify-center text-center gap-space-md">
+              <span className="material-symbols-outlined text-5xl text-outline">note_alt</span>
+              <h3 className="font-headline-sm text-headline-sm text-on-surface font-bold">
+                No Atelier Notes Added Yet
+              </h3>
+              <p className="font-body-sm text-body-sm text-on-surface-variant max-w-md">
+                Keep track of ideas and tasks for {projectTitle}.
+              </p>
+              <button
+                onClick={() => navigate('/notes')}
+                className="px-space-md py-space-xs rounded-lg bg-primary-container text-on-primary font-title-sm text-title-sm font-semibold shadow-lg hover:brightness-110 cursor-pointer"
+                type="button"
+              >
+                + Add Note
+              </button>
+            </div>
+          )}
         </div>
 
         {/* Right 4 Columns: Dynamic Right Rail */}
@@ -540,7 +840,7 @@ export default function ProjectDetail() {
               </div>
               <div className="flex justify-between items-center p-space-xs rounded bg-surface-container-high/40">
                 <span className="text-outline">Garment Looks:</span>
-                <span className="text-on-surface font-semibold">{looksList.length} Created</span>
+                <span className="text-on-surface font-semibold">{projectPatterns.length} Created</span>
               </div>
               <div className="flex justify-between items-center p-space-xs rounded bg-surface-container-high/40">
                 <span className="text-outline">Fabric Swatches:</span>
@@ -685,11 +985,11 @@ export default function ProjectDetail() {
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/80 backdrop-blur-md">
           <form
             onSubmit={handleAddLook}
-            className="relative w-full max-w-xl rounded-xl bg-surface-container-low border border-outline-variant/30 p-space-lg shadow-2xl flex flex-col gap-space-md"
+            className="relative w-full max-w-xl max-h-[90vh] overflow-y-auto rounded-xl bg-surface-container-low border border-outline-variant/30 p-space-lg shadow-2xl flex flex-col gap-space-md"
           >
             <div className="flex items-center justify-between border-b border-outline-variant/20 pb-space-xs">
               <h3 className="font-headline-sm text-headline-sm text-on-surface font-bold">
-                Add Garment Look
+                Add Pattern
               </h3>
               <button type="button" onClick={() => setShowAddLookModal(false)} className="text-outline hover:text-on-surface">
                 <span className="material-symbols-outlined text-lg">close</span>
@@ -698,7 +998,7 @@ export default function ProjectDetail() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-space-md text-body-sm font-body-sm">
               <div className="flex flex-col gap-1 sm:col-span-2">
-                <label className="text-outline font-semibold">Garment Title</label>
+                <label className="text-outline font-semibold">Pattern Title</label>
                 <input
                   type="text"
                   required
@@ -709,61 +1009,80 @@ export default function ProjectDetail() {
                 />
               </div>
 
-              <div className="flex flex-col gap-1">
+              <div className="flex flex-col gap-1 sm:col-span-2">
+                <label className="text-outline font-semibold">Pattern Image / Sketch</label>
+                <div className="flex flex-col sm:flex-row gap-2 items-center">
+                  <input
+                    type="url"
+                    placeholder="Paste image URL (e.g. https://...)"
+                    value={newLookImage}
+                    onChange={(e) => setNewLookImage(e.target.value)}
+                    className="flex-1 w-full px-space-sm py-space-xs rounded-lg bg-surface-container-high text-on-surface border border-outline-variant/20"
+                  />
+                  <label className="w-full sm:w-auto px-3 py-1.5 rounded-lg bg-surface-container-highest text-on-surface hover:bg-outline-variant/30 cursor-pointer text-center text-xs font-semibold whitespace-nowrap border border-outline-variant/20 flex items-center justify-center gap-1">
+                    <span className="material-symbols-outlined text-base">upload_file</span>
+                    <span>Upload File</span>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      className="hidden"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0]
+                        if (file) {
+                          const reader = new FileReader()
+                          reader.onloadend = () => {
+                            setNewLookImage(reader.result as string)
+                          }
+                          reader.readAsDataURL(file)
+                        }
+                      }}
+                    />
+                  </label>
+                </div>
+                {newLookImage && (
+                  <div className="mt-2 relative w-24 h-28 rounded-lg overflow-hidden border border-outline-variant/30 shadow-md">
+                    <img src={newLookImage} alt="Pattern Preview" className="w-full h-full object-cover" />
+                    <button
+                      type="button"
+                      onClick={() => setNewLookImage('')}
+                      className="absolute top-1 right-1 bg-background/80 text-on-surface rounded-full p-0.5 hover:bg-error/80 cursor-pointer"
+                    >
+                      <span className="material-symbols-outlined text-xs">close</span>
+                    </button>
+                  </div>
+                )}
+              </div>
+
+              <div className="flex flex-col gap-1 sm:col-span-2">
                 <label className="text-outline font-semibold">Category</label>
-                <select
+                <input
+                  type="text"
+                  placeholder="e.g. Outerwear, Eveningwear, Draping..."
                   value={newLookCategory}
                   onChange={(e) => setNewLookCategory(e.target.value)}
-                  className="w-full px-space-sm py-space-xs rounded-lg bg-surface-container-high text-on-surface border border-outline-variant/20"
-                >
-                  <option value="Outerwear/Tailoring">Outerwear/Tailoring</option>
-                  <option value="Eveningwear/Drape">Eveningwear/Drape</option>
-                  <option value="Separates/Tailoring">Separates/Tailoring</option>
-                  <option value="Couture/Statement Outerwear">Couture/Statement Outerwear</option>
-                </select>
-              </div>
-
-              <div className="flex flex-col gap-1">
-                <label className="text-outline font-semibold">Primary Fabric</label>
-                <input
-                  type="text"
-                  placeholder="Silk Velvet (380 GSM)"
-                  value={newLookFabric}
-                  onChange={(e) => setNewLookFabric(e.target.value)}
-                  className="w-full px-space-sm py-space-xs rounded-lg bg-surface-container-high text-on-surface border border-outline-variant/20"
-                />
-              </div>
-
-              <div className="flex flex-col gap-1">
-                <label className="text-outline font-semibold">Hardware &amp; Notions</label>
-                <input
-                  type="text"
-                  placeholder="Riri Zipper, Silk Gimp"
-                  value={newLookNotions}
-                  onChange={(e) => setNewLookNotions(e.target.value)}
-                  className="w-full px-space-sm py-space-xs rounded-lg bg-surface-container-high text-on-surface border border-outline-variant/20"
-                />
-              </div>
-
-              <div className="flex flex-col gap-1">
-                <label className="text-outline font-semibold">Lead Modéliste</label>
-                <input
-                  type="text"
-                  placeholder="Elena Rossi"
-                  value={newLookModeliste}
-                  onChange={(e) => setNewLookModeliste(e.target.value)}
                   className="w-full px-space-sm py-space-xs rounded-lg bg-surface-container-high text-on-surface border border-outline-variant/20"
                 />
               </div>
 
               <div className="flex flex-col gap-1 sm:col-span-2">
-                <label className="text-outline font-semibold">Design &amp; Draping Notes</label>
+                <label className="text-outline font-semibold">Measurements &amp; Fitting Specs</label>
+                <textarea
+                  rows={3}
+                  placeholder="e.g. Bust: 88cm, Waist: 68cm, Hips: 94cm, Seam Allowance: 1.5cm..."
+                  value={newLookMeasurements}
+                  onChange={(e) => setNewLookMeasurements(e.target.value)}
+                  className="w-full p-space-sm rounded-lg bg-surface-container-high text-on-surface border border-outline-variant/20 focus:outline-none text-body-sm"
+                />
+              </div>
+
+              <div className="flex flex-col gap-1 sm:col-span-2">
+                <label className="text-outline font-semibold">Description &amp; Construction Notes</label>
                 <textarea
                   rows={3}
                   placeholder="Describe silhouette grainlines, bias drape, and seam allowances..."
                   value={newLookDesc}
                   onChange={(e) => setNewLookDesc(e.target.value)}
-                  className="w-full p-space-sm rounded-lg bg-surface-container-high text-on-surface border border-outline-variant/20 focus:outline-none"
+                  className="w-full p-space-sm rounded-lg bg-surface-container-high text-on-surface border border-outline-variant/20 focus:outline-none text-body-sm"
                 />
               </div>
             </div>
@@ -772,15 +1091,391 @@ export default function ProjectDetail() {
               <button
                 type="button"
                 onClick={() => setShowAddLookModal(false)}
-                className="px-space-md py-space-xs rounded-lg bg-surface-container-high hover:bg-surface-container-highest text-on-surface font-title-sm text-title-sm"
+                className="px-space-md py-space-xs rounded-lg bg-surface-container-high hover:bg-surface-container-highest text-on-surface font-title-sm text-title-sm cursor-pointer"
               >
                 Cancel
               </button>
               <button
                 type="submit"
-                className="px-space-md py-space-xs rounded-lg bg-primary-container text-on-primary font-title-sm text-title-sm font-semibold hover:brightness-110"
+                className="px-space-md py-space-xs rounded-lg bg-primary-container text-on-primary font-title-sm text-title-sm font-semibold hover:brightness-110 cursor-pointer"
               >
-                Add Look
+                Add Pattern
+              </button>
+            </div>
+          </form>
+        </div>
+      )}
+
+      {/* Import Pattern from Library Modal */}
+      {showImportModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/80 backdrop-blur-md">
+          <div className="relative w-full max-w-xl max-h-[85vh] overflow-y-auto rounded-xl bg-surface-container-low border border-outline-variant/30 p-space-lg shadow-2xl flex flex-col gap-space-md">
+            <div className="flex items-center justify-between border-b border-outline-variant/20 pb-space-xs">
+              <div className="flex items-center gap-2">
+                <span className="material-symbols-outlined text-primary text-xl">download</span>
+                <h3 className="font-headline-sm text-headline-sm text-on-surface font-bold">
+                  Import Pattern from Library
+                </h3>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowImportModal(false)}
+                className="text-outline hover:text-on-surface"
+              >
+                <span className="material-symbols-outlined text-lg">close</span>
+              </button>
+            </div>
+
+            <p className="text-body-sm text-on-surface-variant">
+              Select any pattern from your global atelier library to import it into <strong>{projectTitle}</strong>:
+            </p>
+
+            {patternsStore.length === 0 ? (
+              <div className="text-center py-8 text-outline text-body-sm">
+                No patterns found in library. Create a new pattern first!
+              </div>
+            ) : (
+              <div className="flex flex-col gap-space-xs max-h-96 overflow-y-auto pr-1">
+                {patternsStore.map((pat) => {
+                  const isAlreadyInProject =
+                    pat.projectId === activeProject?.id ||
+                    projectPatterns.some(
+                      (p) =>
+                        p.id === pat.id ||
+                        p.importedFromId === pat.id ||
+                        (p.title && p.title.toLowerCase() === pat.title.toLowerCase())
+                    )
+                  return (
+                    <div
+                      key={pat.id}
+                      className="p-space-xs rounded-lg bg-surface-container-high/80 border border-outline-variant/20 flex items-center justify-between gap-space-md hover:bg-surface-container-highest transition-colors"
+                    >
+                      <div className="flex items-center gap-space-xs min-w-0">
+                        <img
+                          src={pat.image}
+                          alt={pat.title}
+                          className="w-12 h-14 rounded object-cover flex-shrink-0 shadow border border-outline-variant/20"
+                        />
+                        <div className="flex flex-col min-w-0">
+                          <span className="font-title-sm text-title-sm font-bold text-on-surface truncate">
+                            {pat.title}
+                          </span>
+                          <span className="text-xs text-outline truncate">
+                            {pat.category || 'General'}
+                          </span>
+                        </div>
+                      </div>
+
+                      {isAlreadyInProject ? (
+                        <span className="text-xs font-semibold px-2.5 py-1 bg-surface-container-highest text-outline rounded flex items-center gap-1">
+                          <span className="material-symbols-outlined text-sm text-primary">check_circle</span>
+                          Added
+                        </span>
+                      ) : (
+                        <button
+                          type="button"
+                          onClick={() => handleImportPattern(pat)}
+                          className="px-3 py-1 rounded bg-primary-container text-on-primary font-title-sm text-xs font-semibold hover:brightness-110 cursor-pointer whitespace-nowrap"
+                        >
+                          Import
+                        </button>
+                      )}
+                    </div>
+                  )
+                })}
+              </div>
+            )}
+
+            <div className="flex justify-end pt-space-xs border-t border-outline-variant/20">
+              <button
+                type="button"
+                onClick={() => setShowImportModal(false)}
+                className="px-space-md py-space-xs rounded-lg bg-surface-container-high hover:bg-surface-container-highest text-on-surface font-title-sm text-title-sm cursor-pointer"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      {/* Edit Pattern Modal */}
+      {editingPattern && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/80 backdrop-blur-md">
+          <form
+            onSubmit={handleSaveEdit}
+            className="relative w-full max-w-xl max-h-[90vh] overflow-y-auto rounded-xl bg-surface-container-low border border-outline-variant/30 p-space-lg shadow-2xl flex flex-col gap-space-md"
+          >
+            <div className="flex items-center justify-between border-b border-outline-variant/20 pb-space-xs">
+              <h3 className="font-headline-sm text-headline-sm text-on-surface font-bold">
+                Edit Pattern Specs
+              </h3>
+              <button
+                type="button"
+                onClick={() => setEditingPattern(null)}
+                className="text-outline hover:text-on-surface"
+              >
+                <span className="material-symbols-outlined text-lg">close</span>
+              </button>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-space-md text-body-sm font-body-sm">
+              <div className="flex flex-col gap-1 sm:col-span-2">
+                <label className="text-outline font-semibold">Pattern Title</label>
+                <input
+                  type="text"
+                  required
+                  value={editTitle}
+                  onChange={(e) => setEditTitle(e.target.value)}
+                  className="w-full px-space-sm py-space-xs rounded-lg bg-surface-container-high text-on-surface border border-outline-variant/20"
+                />
+              </div>
+
+              <div className="flex flex-col gap-1 sm:col-span-2">
+                <label className="text-outline font-semibold">Pattern Image / Sketch</label>
+                <div className="flex flex-col sm:flex-row gap-2 items-center">
+                  <input
+                    type="url"
+                    placeholder="Paste image URL (e.g. https://...)"
+                    value={editImage}
+                    onChange={(e) => setEditImage(e.target.value)}
+                    className="flex-1 w-full px-space-sm py-space-xs rounded-lg bg-surface-container-high text-on-surface border border-outline-variant/20"
+                  />
+                  <label className="w-full sm:w-auto px-3 py-1.5 rounded-lg bg-surface-container-highest text-on-surface hover:bg-outline-variant/30 cursor-pointer text-center text-xs font-semibold whitespace-nowrap border border-outline-variant/20 flex items-center justify-center gap-1">
+                    <span className="material-symbols-outlined text-base">upload_file</span>
+                    <span>Upload File</span>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      className="hidden"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0]
+                        if (file) {
+                          const reader = new FileReader()
+                          reader.onloadend = () => {
+                            setEditImage(reader.result as string)
+                          }
+                          reader.readAsDataURL(file)
+                        }
+                      }}
+                    />
+                  </label>
+                </div>
+                {editImage && (
+                  <div className="mt-2 relative w-24 h-28 rounded-lg overflow-hidden border border-outline-variant/30 shadow-md">
+                    <img src={editImage} alt="Pattern Preview" className="w-full h-full object-cover" />
+                    <button
+                      type="button"
+                      onClick={() => setEditImage('')}
+                      className="absolute top-1 right-1 bg-background/80 text-on-surface rounded-full p-0.5 hover:bg-error/80 cursor-pointer"
+                    >
+                      <span className="material-symbols-outlined text-xs">close</span>
+                    </button>
+                  </div>
+                )}
+              </div>
+
+              <div className="flex flex-col gap-1 sm:col-span-2">
+                <label className="text-outline font-semibold">Category</label>
+                <input
+                  type="text"
+                  placeholder="e.g. Outerwear, Eveningwear, Draping..."
+                  value={editCategory}
+                  onChange={(e) => setEditCategory(e.target.value)}
+                  className="w-full px-space-sm py-space-xs rounded-lg bg-surface-container-high text-on-surface border border-outline-variant/20"
+                />
+              </div>
+
+              <div className="flex flex-col gap-1 sm:col-span-2">
+                <label className="text-outline font-semibold">Measurements &amp; Fitting Specs</label>
+                <textarea
+                  rows={4}
+                  placeholder="e.g. Bust: 88cm, Waist: 68cm, Hips: 94cm, Seam Allowance: 1.5cm..."
+                  value={editMeasurements}
+                  onChange={(e) => setEditMeasurements(e.target.value)}
+                  className="w-full p-space-sm rounded-lg bg-surface-container-high text-on-surface border border-outline-variant/20 focus:outline-none text-body-sm"
+                />
+              </div>
+
+              <div className="flex flex-col gap-1 sm:col-span-2">
+                <label className="text-outline font-semibold">Description &amp; Construction Notes</label>
+                <textarea
+                  rows={3}
+                  placeholder="Describe grainlines, bias drape, facing details..."
+                  value={editDesc}
+                  onChange={(e) => setEditDesc(e.target.value)}
+                  className="w-full p-space-sm rounded-lg bg-surface-container-high text-on-surface border border-outline-variant/20 focus:outline-none text-body-sm"
+                />
+              </div>
+            </div>
+
+            <div className="flex items-center justify-end gap-space-xs pt-space-xs border-t border-outline-variant/20">
+              <button
+                type="button"
+                onClick={() => setEditingPattern(null)}
+                className="px-space-md py-space-xs rounded-lg bg-surface-container-high hover:bg-surface-container-highest text-on-surface font-title-sm text-title-sm cursor-pointer"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="px-space-md py-space-xs rounded-lg bg-primary-container text-on-primary font-title-sm text-title-sm font-semibold hover:brightness-110 cursor-pointer"
+              >
+                Save Changes
+              </button>
+            </div>
+          </form>
+        </div>
+      )}
+      {/* Import Sketch from Library Modal */}
+      {showImportSketchModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/80 backdrop-blur-md">
+          <div className="relative w-full max-w-xl max-h-[85vh] overflow-y-auto rounded-xl bg-surface-container-low border border-outline-variant/30 p-space-lg shadow-2xl flex flex-col gap-space-md">
+            <div className="flex items-center justify-between border-b border-outline-variant/20 pb-space-xs">
+              <div className="flex items-center gap-2">
+                <span className="material-symbols-outlined text-primary text-xl">draw</span>
+                <h3 className="font-headline-sm text-headline-sm text-on-surface font-bold">
+                  Import Sketch from Library
+                </h3>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowImportSketchModal(false)}
+                className="text-outline hover:text-on-surface"
+              >
+                <span className="material-symbols-outlined text-lg">close</span>
+              </button>
+            </div>
+
+            <p className="text-body-sm text-on-surface-variant">
+              Select any sketch from your global atelier sketchbook to import it into <strong>{projectTitle}</strong>:
+            </p>
+
+            {sketchesStore.length === 0 ? (
+              <div className="text-center py-8 text-outline text-body-sm">
+                No sketches found in library. Create a new sketch first!
+              </div>
+            ) : (
+              <div className="flex flex-col gap-space-xs max-h-96 overflow-y-auto pr-1">
+                {sketchesStore.map((sketch) => {
+                  const isAlreadyInProject =
+                    sketch.projectId === activeProject?.id ||
+                    projectSketches.some(
+                      (s) =>
+                        s.id === sketch.id ||
+                        s.importedFromId === sketch.id ||
+                        (s.title && s.title.toLowerCase() === sketch.title.toLowerCase())
+                    )
+                  return (
+                    <div
+                      key={sketch.id}
+                      className="p-space-xs rounded-lg bg-surface-container-high/80 border border-outline-variant/20 flex items-center justify-between gap-space-md hover:bg-surface-container-highest transition-colors"
+                    >
+                      <div className="flex items-center gap-space-xs min-w-0">
+                        <img
+                          src={sketch.imageUrl}
+                          alt={sketch.title}
+                          className="w-12 h-14 rounded object-cover flex-shrink-0 shadow border border-outline-variant/20"
+                        />
+                        <div className="flex flex-col min-w-0">
+                          <span className="font-title-sm text-title-sm font-bold text-on-surface truncate">
+                            {sketch.title}
+                          </span>
+                          <span className="text-xs text-outline truncate">
+                            {sketch.garmentType || 'Sketch'}
+                          </span>
+                        </div>
+                      </div>
+
+                      {isAlreadyInProject ? (
+                        <span className="text-xs font-semibold px-2.5 py-1 bg-surface-container-highest text-outline rounded flex items-center gap-1">
+                          <span className="material-symbols-outlined text-sm text-primary">check_circle</span>
+                          Added
+                        </span>
+                      ) : (
+                        <button
+                          type="button"
+                          onClick={() => handleImportSketch(sketch)}
+                          className="px-3 py-1 rounded bg-primary-container text-on-primary font-title-sm text-xs font-semibold hover:brightness-110 cursor-pointer whitespace-nowrap"
+                        >
+                          Import
+                        </button>
+                      )}
+                    </div>
+                  )
+                })}
+              </div>
+            )}
+
+            <div className="flex justify-end pt-space-xs border-t border-outline-variant/20">
+              <button
+                type="button"
+                onClick={() => setShowImportSketchModal(false)}
+                className="px-space-md py-space-xs rounded-lg bg-surface-container-high hover:bg-surface-container-highest text-on-surface font-title-sm text-title-sm cursor-pointer"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Edit Sketch Details Modal */}
+      {editingSketch && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/80 backdrop-blur-md">
+          <form
+            onSubmit={handleSaveEditSketch}
+            className="relative w-full max-w-md rounded-xl bg-surface-container-low border border-outline-variant/30 p-space-lg shadow-2xl flex flex-col gap-space-md"
+          >
+            <div className="flex items-center justify-between border-b border-outline-variant/20 pb-space-xs">
+              <h3 className="font-headline-sm text-headline-sm text-on-surface font-bold">
+                Edit Sketch Details
+              </h3>
+              <button
+                type="button"
+                onClick={() => setEditingSketch(null)}
+                className="text-outline hover:text-on-surface"
+              >
+                <span className="material-symbols-outlined text-lg">close</span>
+              </button>
+            </div>
+
+            <div className="flex flex-col gap-space-md text-body-sm">
+              <div className="flex flex-col gap-1">
+                <label className="text-outline font-semibold">Sketch Title</label>
+                <input
+                  type="text"
+                  required
+                  value={editSketchTitle}
+                  onChange={(e) => setEditSketchTitle(e.target.value)}
+                  className="w-full px-space-sm py-space-xs rounded-lg bg-surface-container-high text-on-surface border border-outline-variant/20"
+                />
+              </div>
+
+              <div className="flex flex-col gap-1">
+                <label className="text-outline font-semibold">Garment / Silhouette Type</label>
+                <input
+                  type="text"
+                  placeholder="e.g. Outerwear, Eveningwear, Draping..."
+                  value={editSketchGarmentType}
+                  onChange={(e) => setEditSketchGarmentType(e.target.value)}
+                  className="w-full px-space-sm py-space-xs rounded-lg bg-surface-container-high text-on-surface border border-outline-variant/20"
+                />
+              </div>
+            </div>
+
+            <div className="flex items-center justify-end gap-space-xs pt-space-xs border-t border-outline-variant/20">
+              <button
+                type="button"
+                onClick={() => setEditingSketch(null)}
+                className="px-space-md py-space-xs rounded-lg bg-surface-container-high hover:bg-surface-container-highest text-on-surface font-title-sm text-title-sm cursor-pointer"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="px-space-md py-space-xs rounded-lg bg-primary-container text-on-primary font-title-sm text-title-sm font-semibold hover:brightness-110 cursor-pointer"
+              >
+                Save Changes
               </button>
             </div>
           </form>

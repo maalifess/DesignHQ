@@ -19,13 +19,15 @@ export interface SavedProject {
 
 export interface SavedSketch {
   id: string
+  projectId?: string
+  importedFromId?: string
   title: string
   collectionTitle?: string
   garmentType: string
   fabricName: string
   imageUrl: string
-  score: number
-  aiCritique: string
+  score?: number
+  aiCritique?: string
   savedAt: string
 }
 
@@ -51,11 +53,57 @@ export interface SavedDeadline {
   date: string
 }
 
+export interface SavedPattern {
+  id: string
+  projectId?: string
+  importedFromId?: string
+  number: string
+  patternNo: string
+  title: string
+  category: string
+  status: string
+  statusType: 'approved' | 'cutting' | 'warning'
+  fabric: string
+  notions: string
+  nextFitting: string
+  modeliste: string
+  pieces: number
+  description: string
+  measurements?: string
+  image: string
+}
+
+export interface SavedMoodboard {
+  id: string
+  projectId?: string
+  title: string
+  imageUrl: string
+}
+
+export interface SavedFittingLog {
+  id: string
+  projectId?: string
+  title: string
+  date: string
+  notes: string
+}
+
+export interface SavedNote {
+  id: string
+  projectId?: string
+  title: string
+  content: string
+}
+
 interface AtelierState {
   projects: SavedProject[]
   sketches: SavedSketch[]
   fabrics: SavedFabric[]
   deadlines: SavedDeadline[]
+  patterns: SavedPattern[]
+  moodboards: SavedMoodboard[]
+  fittingLogs: SavedFittingLog[]
+  notes: SavedNote[]
 
   // Actions
   addProject: (project: Omit<SavedProject, 'id' | 'createdAt'>) => SavedProject
@@ -63,6 +111,7 @@ interface AtelierState {
   deleteProject: (id: string) => void
 
   addSketch: (sketch: Omit<SavedSketch, 'id' | 'savedAt'>) => SavedSketch
+  updateSketch: (id: string, updates: Partial<SavedSketch>) => void
   deleteSketch: (id: string) => void
 
   addFabric: (fabric: Omit<SavedFabric, 'id'>) => SavedFabric
@@ -70,6 +119,19 @@ interface AtelierState {
 
   addDeadline: (deadline: Omit<SavedDeadline, 'id'>) => SavedDeadline
   deleteDeadline: (id: string) => void
+
+  addPattern: (pattern: Omit<SavedPattern, 'id'>) => SavedPattern
+  updatePattern: (id: string, updates: Partial<SavedPattern>) => void
+  deletePattern: (id: string) => void
+
+  addMoodboard: (moodboard: Omit<SavedMoodboard, 'id'>) => SavedMoodboard
+  deleteMoodboard: (id: string) => void
+
+  addFittingLog: (fittingLog: Omit<SavedFittingLog, 'id'>) => SavedFittingLog
+  deleteFittingLog: (id: string) => void
+
+  addNote: (note: Omit<SavedNote, 'id'>) => SavedNote
+  deleteNote: (id: string) => void
 }
 
 export const useAtelierStore = create<AtelierState>()(
@@ -79,6 +141,10 @@ export const useAtelierStore = create<AtelierState>()(
       sketches: [],
       fabrics: [],
       deadlines: [],
+      patterns: [],
+      moodboards: [],
+      fittingLogs: [],
+      notes: [],
 
       addProject: (projectData) => {
         const id = 'proj-' + Date.now()
@@ -112,6 +178,12 @@ export const useAtelierStore = create<AtelierState>()(
         return newSketch
       },
 
+      updateSketch: (id, updates) => {
+        set((state) => ({
+          sketches: state.sketches.map((s) => (s.id === id ? { ...s, ...updates } : s)),
+        }))
+      },
+
       deleteSketch: (id) => {
         set((state) => ({ sketches: state.sketches.filter((s) => s.id !== id) }))
       },
@@ -142,6 +214,51 @@ export const useAtelierStore = create<AtelierState>()(
 
       deleteDeadline: (id) => {
         set((state) => ({ deadlines: state.deadlines.filter((d) => d.id !== id) }))
+      },
+
+      addPattern: (patternData) => {
+        const id = 'pattern-' + Date.now()
+        const newPattern: SavedPattern = { ...patternData, id }
+        set((state) => ({ patterns: [newPattern, ...state.patterns] }))
+        return newPattern
+      },
+      updatePattern: (id, updates) => {
+        set((state) => ({
+          patterns: state.patterns.map((p) => (p.id === id ? { ...p, ...updates } : p)),
+        }))
+      },
+      deletePattern: (id) => {
+        set((state) => ({ patterns: state.patterns.filter((p) => p.id !== id) }))
+      },
+
+      addMoodboard: (moodboardData) => {
+        const id = 'moodboard-' + Date.now()
+        const newMoodboard: SavedMoodboard = { ...moodboardData, id }
+        set((state) => ({ moodboards: [newMoodboard, ...state.moodboards] }))
+        return newMoodboard
+      },
+      deleteMoodboard: (id) => {
+        set((state) => ({ moodboards: state.moodboards.filter((m) => m.id !== id) }))
+      },
+
+      addFittingLog: (fittingLogData) => {
+        const id = 'fittingLog-' + Date.now()
+        const newFittingLog: SavedFittingLog = { ...fittingLogData, id }
+        set((state) => ({ fittingLogs: [newFittingLog, ...state.fittingLogs] }))
+        return newFittingLog
+      },
+      deleteFittingLog: (id) => {
+        set((state) => ({ fittingLogs: state.fittingLogs.filter((f) => f.id !== id) }))
+      },
+
+      addNote: (noteData) => {
+        const id = 'note-' + Date.now()
+        const newNote: SavedNote = { ...noteData, id }
+        set((state) => ({ notes: [newNote, ...state.notes] }))
+        return newNote
+      },
+      deleteNote: (id) => {
+        set((state) => ({ notes: state.notes.filter((n) => n.id !== id) }))
       },
     }),
     {

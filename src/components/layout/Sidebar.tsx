@@ -7,6 +7,7 @@ import { useAppStore } from '@/store/useAppStore'
 const navItems = [
   { icon: 'dashboard', label: 'Dashboard', to: '/' },
   { icon: 'styler', label: 'Collections', to: '/projects' },
+  { icon: 'content_cut', label: 'Patterns', to: '/patterns' },
   { icon: 'auto_awesome_motion', label: 'Mood Boards & AI', to: '/moodboards' },
   { icon: 'draw', label: 'Sketchbook', to: '/sketchbook' },
   { icon: 'texture', label: 'Fabric Swatches', to: '/fabrics' },

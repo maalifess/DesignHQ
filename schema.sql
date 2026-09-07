@@ -155,6 +155,41 @@ CREATE TABLE IF NOT EXISTS style_guides (
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
+-- ── Patterns (Garment Looks) ───────────────────────────────────
+CREATE TABLE IF NOT EXISTS patterns (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  project_id UUID REFERENCES projects(id) ON DELETE CASCADE,
+  user_id UUID REFERENCES profiles(id) ON DELETE CASCADE,
+  title TEXT NOT NULL,
+  pattern_no TEXT,
+  category TEXT,
+  status TEXT,
+  status_type TEXT,
+  fabric TEXT,
+  notions TEXT,
+  next_fitting TEXT,
+  modeliste TEXT,
+  pieces INT DEFAULT 1,
+  description TEXT,
+  image_url TEXT,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- ── Fitting Logs ──────────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS fitting_logs (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  project_id UUID REFERENCES projects(id) ON DELETE CASCADE,
+  user_id UUID REFERENCES profiles(id) ON DELETE CASCADE,
+  pattern_id UUID REFERENCES patterns(id) ON DELETE SET NULL,
+  title TEXT NOT NULL,
+  date TIMESTAMPTZ,
+  notes TEXT,
+  model_name TEXT,
+  status TEXT DEFAULT 'scheduled',
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
 -- ============================================================
 -- ROW LEVEL SECURITY
 -- ============================================================
@@ -168,6 +203,8 @@ ALTER TABLE fabrics          ENABLE ROW LEVEL SECURITY;
 ALTER TABLE notes            ENABLE ROW LEVEL SECURITY;
 ALTER TABLE color_palettes   ENABLE ROW LEVEL SECURITY;
 ALTER TABLE style_guides     ENABLE ROW LEVEL SECURITY;
+ALTER TABLE patterns         ENABLE ROW LEVEL SECURITY;
+ALTER TABLE fitting_logs     ENABLE ROW LEVEL SECURITY;
 
 -- Profiles policy
 CREATE POLICY "Users can manage their own profile"
@@ -206,6 +243,14 @@ CREATE POLICY "Users can manage their own color palettes"
 CREATE POLICY "Users can manage their own style guides"
   ON style_guides FOR ALL USING (auth.uid() = user_id);
 
+-- Patterns policy
+CREATE POLICY "Users can manage their own patterns"
+  ON patterns FOR ALL USING (auth.uid() = user_id);
+
+-- Fitting logs policy
+CREATE POLICY "Users can manage their own fitting logs"
+  ON fitting_logs FOR ALL USING (auth.uid() = user_id);
+
 -- Public portfolio read policy
 CREATE POLICY "Anyone can view portfolio-ready projects"
   ON projects FOR SELECT USING (portfolio_ready = true);
@@ -232,3 +277,5 @@ CREATE INDEX IF NOT EXISTS idx_mood_boards_user_id ON mood_boards(user_id);
 CREATE INDEX IF NOT EXISTS idx_fabrics_user_id ON fabrics(user_id);
 CREATE INDEX IF NOT EXISTS idx_notes_user_id ON notes(user_id);
 CREATE INDEX IF NOT EXISTS idx_notes_pinned ON notes(pinned);
+CREATE INDEX IF NOT EXISTS idx_patterns_project_id ON patterns(project_id);
+CREATE INDEX IF NOT EXISTS idx_fitting_logs_project_id ON fitting_logs(project_id);

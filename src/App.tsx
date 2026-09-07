@@ -9,6 +9,7 @@ import { useAppStore } from '@/store/useAppStore'
 const Dashboard        = lazy(() => import('@/pages/Dashboard'))
 const Projects         = lazy(() => import('@/pages/Projects'))
 const ProjectDetail    = lazy(() => import('@/pages/ProjectDetail'))
+const Patterns         = lazy(() => import('@/pages/Patterns'))
 const MoodBoards       = lazy(() => import('@/pages/MoodBoards'))
 const MoodBoardDetail  = lazy(() => import('@/pages/MoodBoardDetail'))
 const Sketchbook       = lazy(() => import('@/pages/Sketchbook'))
@@ -97,6 +98,11 @@ function AppRoutes() {
         <Route path="/projects/:id" element={
           <ProtectedRoute>
             <Layout><ProjectDetail /></Layout>
+          </ProtectedRoute>
+        } />
+        <Route path="/patterns" element={
+          <ProtectedRoute>
+            <Layout><Patterns /></Layout>
           </ProtectedRoute>
         } />
         <Route path="/moodboards" element={
