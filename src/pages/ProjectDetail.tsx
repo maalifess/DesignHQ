@@ -1013,8 +1013,8 @@ export default function ProjectDetail() {
 
       {/* Edit Collection Palette Modal */}
       {showPaletteModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/80 backdrop-blur-md">
-          <div className="relative w-full max-w-lg rounded-xl bg-surface-container-low border border-outline-variant/30 p-space-lg shadow-2xl flex flex-col gap-space-md">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-background/80 backdrop-blur-md">
+          <div className="relative w-full max-w-[95vw] sm:max-w-lg max-h-[88vh] overflow-y-auto rounded-2xl bg-surface-container-low border border-outline-variant/30 p-4 sm:p-6 shadow-2xl flex flex-col gap-3 sm:gap-4">
             <div className="flex items-center justify-between border-b border-outline-variant/20 pb-space-xs">
               <div className="flex items-center gap-space-xs">
                 <span className="material-symbols-outlined text-primary text-xl">palette</span>
@@ -1141,10 +1141,10 @@ export default function ProjectDetail() {
 
       {/* Add Garment Look Modal */}
       {showAddLookModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/80 backdrop-blur-md">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-background/80 backdrop-blur-md">
           <form
             onSubmit={handleAddLook}
-            className="relative w-full max-w-xl max-h-[90vh] overflow-y-auto rounded-xl bg-surface-container-low border border-outline-variant/30 p-space-lg shadow-2xl flex flex-col gap-space-md"
+            className="relative w-full max-w-[95vw] sm:max-w-xl max-h-[88vh] overflow-y-auto rounded-2xl bg-surface-container-low border border-outline-variant/30 p-4 sm:p-6 shadow-2xl flex flex-col gap-3 sm:gap-4"
           >
             <div className="flex items-center justify-between border-b border-outline-variant/20 pb-space-xs">
               <h3 className="font-headline-sm text-headline-sm text-on-surface font-bold">
@@ -1267,8 +1267,8 @@ export default function ProjectDetail() {
 
       {/* Import Pattern from Library Modal */}
       {showImportModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/80 backdrop-blur-md">
-          <div className="relative w-full max-w-xl max-h-[85vh] overflow-y-auto rounded-xl bg-surface-container-low border border-outline-variant/30 p-space-lg shadow-2xl flex flex-col gap-space-md">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-background/80 backdrop-blur-md">
+          <div className="relative w-full max-w-[95vw] sm:max-w-xl max-h-[88vh] overflow-y-auto rounded-2xl bg-surface-container-low border border-outline-variant/30 p-4 sm:p-6 shadow-2xl flex flex-col gap-3 sm:gap-4">
             <div className="flex items-center justify-between border-b border-outline-variant/20 pb-space-xs">
               <div className="flex items-center gap-2">
                 <span className="material-symbols-outlined text-primary text-xl">download</span>
@@ -1359,10 +1359,10 @@ export default function ProjectDetail() {
       )}
       {/* Edit Pattern Modal */}
       {editingPattern && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/80 backdrop-blur-md">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-background/80 backdrop-blur-md">
           <form
             onSubmit={handleSaveEdit}
-            className="relative w-full max-w-xl max-h-[90vh] overflow-y-auto rounded-xl bg-surface-container-low border border-outline-variant/30 p-space-lg shadow-2xl flex flex-col gap-space-md"
+            className="relative w-full max-w-[95vw] sm:max-w-xl max-h-[88vh] overflow-y-auto rounded-2xl bg-surface-container-low border border-outline-variant/30 p-4 sm:p-6 shadow-2xl flex flex-col gap-3 sm:gap-4"
           >
             <div className="flex items-center justify-between border-b border-outline-variant/20 pb-space-xs">
               <h3 className="font-headline-sm text-headline-sm text-on-surface font-bold">
@@ -1487,8 +1487,8 @@ export default function ProjectDetail() {
       )}
       {/* Import Sketch from Library Modal */}
       {showImportSketchModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/80 backdrop-blur-md">
-          <div className="relative w-full max-w-xl max-h-[85vh] overflow-y-auto rounded-xl bg-surface-container-low border border-outline-variant/30 p-space-lg shadow-2xl flex flex-col gap-space-md">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-background/80 backdrop-blur-md">
+          <div className="relative w-full max-w-[95vw] sm:max-w-xl max-h-[88vh] overflow-y-auto rounded-2xl bg-surface-container-low border border-outline-variant/30 p-4 sm:p-6 shadow-2xl flex flex-col gap-3 sm:gap-4">
             <div className="flex items-center justify-between border-b border-outline-variant/20 pb-space-xs">
               <div className="flex items-center gap-2">
                 <span className="material-symbols-outlined text-primary text-xl">draw</span>
@@ -1580,10 +1580,10 @@ export default function ProjectDetail() {
 
       {/* Edit Sketch Details Modal */}
       {editingSketch && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/80 backdrop-blur-md">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-background/80 backdrop-blur-md">
           <form
             onSubmit={handleSaveEditSketch}
-            className="relative w-full max-w-md rounded-xl bg-surface-container-low border border-outline-variant/30 p-space-lg shadow-2xl flex flex-col gap-space-md"
+            className="relative w-full max-w-[95vw] sm:max-w-md max-h-[88vh] overflow-y-auto rounded-2xl bg-surface-container-low border border-outline-variant/30 p-4 sm:p-6 shadow-2xl flex flex-col gap-3 sm:gap-4"
           >
             <div className="flex items-center justify-between border-b border-outline-variant/20 pb-space-xs">
               <h3 className="font-headline-sm text-headline-sm text-on-surface font-bold">
@@ -1643,8 +1643,8 @@ export default function ProjectDetail() {
 
       {/* Import Fitting Note from Library Modal */}
       {showImportNoteModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/80 backdrop-blur-md">
-          <div className="relative w-full max-w-xl rounded-xl bg-surface-container-low border border-outline-variant/30 p-space-lg shadow-2xl flex flex-col gap-space-md">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-background/80 backdrop-blur-md">
+          <div className="relative w-full max-w-[95vw] sm:max-w-xl max-h-[88vh] overflow-y-auto rounded-2xl bg-surface-container-low border border-outline-variant/30 p-4 sm:p-6 shadow-2xl flex flex-col gap-3 sm:gap-4">
             <div className="flex items-center justify-between border-b border-outline-variant/20 pb-space-xs">
               <div className="flex items-center gap-space-xs">
                 <span className="material-symbols-outlined text-primary text-xl">download</span>
@@ -1733,10 +1733,10 @@ export default function ProjectDetail() {
 
       {/* Add or Edit Note Modal */}
       {(showAddNoteModal || editingNote) && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/80 backdrop-blur-md">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-background/80 backdrop-blur-md">
           <form
             onSubmit={editingNote ? handleSaveEditNote : handleCreateCollectionNote}
-            className="relative w-full max-w-xl rounded-xl bg-surface-container-low border border-outline-variant/30 p-space-lg shadow-2xl flex flex-col gap-space-md"
+            className="relative w-full max-w-[95vw] sm:max-w-xl max-h-[88vh] overflow-y-auto rounded-2xl bg-surface-container-low border border-outline-variant/30 p-4 sm:p-6 shadow-2xl flex flex-col gap-3 sm:gap-4"
           >
             <div className="flex items-center justify-between border-b border-outline-variant/20 pb-space-xs">
               <h3 className="font-headline-sm text-headline-sm text-on-surface font-bold">

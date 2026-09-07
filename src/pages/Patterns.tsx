@@ -248,10 +248,10 @@ export default function Patterns() {
 
       {/* Add Pattern Modal */}
       {showAddModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/80 backdrop-blur-md">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-background/80 backdrop-blur-md">
           <form
             onSubmit={handleCreatePattern}
-            className="relative w-full max-w-xl max-h-[90vh] overflow-y-auto rounded-xl bg-surface-container-low border border-outline-variant/30 p-space-lg shadow-2xl flex flex-col gap-space-md"
+            className="relative w-full max-w-[95vw] sm:max-w-xl max-h-[88vh] overflow-y-auto rounded-2xl bg-surface-container-low border border-outline-variant/30 p-4 sm:p-6 shadow-2xl flex flex-col gap-3 sm:gap-4"
           >
             <div className="flex items-center justify-between border-b border-outline-variant/20 pb-space-xs">
               <h3 className="font-headline-sm text-headline-sm text-on-surface font-bold">
@@ -393,10 +393,10 @@ export default function Patterns() {
       )}
       {/* Edit Pattern Modal */}
       {editingPattern && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/80 backdrop-blur-md">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-background/80 backdrop-blur-md">
           <form
             onSubmit={handleSaveEdit}
-            className="relative w-full max-w-xl max-h-[90vh] overflow-y-auto rounded-xl bg-surface-container-low border border-outline-variant/30 p-space-lg shadow-2xl flex flex-col gap-space-md"
+            className="relative w-full max-w-[95vw] sm:max-w-xl max-h-[88vh] overflow-y-auto rounded-2xl bg-surface-container-low border border-outline-variant/30 p-4 sm:p-6 shadow-2xl flex flex-col gap-3 sm:gap-4"
           >
             <div className="flex items-center justify-between border-b border-outline-variant/20 pb-space-xs">
               <h3 className="font-headline-sm text-headline-sm text-on-surface font-bold">

@@ -86,10 +86,24 @@ export default function Sketchbook() {
       setBgImageElement(null)
       return
     }
+    let isMounted = true
     const img = new Image()
     img.crossOrigin = 'anonymous'
-    img.onload = () => setBgImageElement(img)
+    img.onload = () => {
+      if (isMounted) setBgImageElement(img)
+    }
+    img.onerror = () => {
+      // Fallback without crossOrigin attribute if anonymous CORS check fails
+      const fallbackImg = new Image()
+      fallbackImg.onload = () => {
+        if (isMounted) setBgImageElement(fallbackImg)
+      }
+      fallbackImg.src = bgImageUrl
+    }
     img.src = bgImageUrl
+    return () => {
+      isMounted = false
+    }
   }, [bgImageUrl])
 
   // Redraw Canvas (Background Image + Strokes + Measurements)
@@ -698,8 +712,17 @@ export default function Sketchbook() {
           {/* Interactive Canvas Board */}
           <div
             ref={containerRef}
-            className="relative w-full h-[640px] rounded-xl overflow-hidden bg-surface-container-lowest border border-outline-variant/30 shadow-2xl touch-none select-none dot-grid-bg"
+            className="relative w-full h-[440px] sm:h-[580px] md:h-[640px] rounded-xl overflow-hidden bg-surface-container-lowest border border-outline-variant/30 shadow-2xl touch-none select-none dot-grid-bg"
           >
+            {/* Visual Pattern Image Layer (Guarantees visible rendering on mobile even if canvas CORS is restricted) */}
+            {bgImageUrl && (
+              <img
+                src={bgImageUrl}
+                alt="Pattern backdrop"
+                className="absolute inset-0 w-full h-full object-contain pointer-events-none opacity-85 z-0"
+              />
+            )}
+
             {/* HTML5 High-DPI Canvas */}
             <canvas
               ref={canvasRef}
@@ -843,32 +866,32 @@ export default function Sketchbook() {
 
       {/* Pattern Image Picker Modal */}
       {showPatternPickerModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/80 backdrop-blur-md">
-          <div className="relative w-full max-w-xl max-h-[85vh] overflow-y-auto rounded-xl bg-surface-container-low border border-outline-variant/30 p-space-lg shadow-2xl flex flex-col gap-space-md">
-            <div className="flex items-center justify-between border-b border-outline-variant/20 pb-space-xs">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-background/80 backdrop-blur-md">
+          <div className="relative w-full max-w-[95vw] sm:max-w-xl max-h-[88vh] overflow-y-auto rounded-2xl bg-surface-container-low border border-outline-variant/30 p-4 sm:p-6 shadow-2xl flex flex-col gap-3 sm:gap-4">
+            <div className="flex items-center justify-between border-b border-outline-variant/20 pb-2 sm:pb-3">
               <div className="flex items-center gap-2">
                 <span className="material-symbols-outlined text-primary text-xl">content_cut</span>
-                <h3 className="font-headline-sm text-headline-sm text-on-surface font-bold">
+                <h3 className="font-headline-sm text-base sm:text-headline-sm text-on-surface font-bold">
                   Import Pattern Image onto Canvas
                 </h3>
               </div>
               <button
                 type="button"
                 onClick={() => setShowPatternPickerModal(false)}
-                className="text-outline hover:text-on-surface"
+                className="text-outline hover:text-on-surface p-1"
               >
                 <span className="material-symbols-outlined text-lg">close</span>
               </button>
             </div>
 
-            <p className="text-body-sm text-on-surface-variant">
+            <p className="text-xs sm:text-body-sm text-on-surface-variant">
               Select a pattern image from your library or upload an image file to place onto the canvas for sketching and annotating:
             </p>
 
             {/* Upload Custom File Option */}
-            <div className="p-space-sm rounded-lg bg-surface-container-high/60 border border-outline-variant/20 flex items-center justify-between gap-space-md">
-              <span className="text-body-sm text-on-surface font-semibold">Upload Image File</span>
-              <label className="px-space-md py-space-xs rounded-lg bg-primary-container text-on-primary font-title-sm text-xs font-semibold cursor-pointer hover:brightness-110">
+            <div className="p-3 rounded-xl bg-surface-container-high/60 border border-outline-variant/20 flex flex-row items-center justify-between gap-2">
+              <span className="text-xs sm:text-body-sm text-on-surface font-semibold truncate">Upload Image File</span>
+              <label className="px-3 py-1.5 rounded-lg bg-primary-container text-on-primary font-title-sm text-xs font-semibold cursor-pointer hover:brightness-110 flex-shrink-0">
                 <span>Browse File</span>
                 <input
                   type="file"
@@ -890,7 +913,7 @@ export default function Sketchbook() {
               </label>
             </div>
 
-            <span className="text-xs text-outline font-semibold uppercase tracking-wider">
+            <span className="text-[11px] sm:text-xs text-outline font-semibold uppercase tracking-wider">
               Or Select From Atelier Patterns:
             </span>
 
@@ -899,7 +922,7 @@ export default function Sketchbook() {
                 No patterns found in library.
               </div>
             ) : (
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-space-xs max-h-72 overflow-y-auto pr-1">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 max-h-64 sm:max-h-72 overflow-y-auto pr-1">
                 {patterns.map((pat) => (
                   <button
                     key={pat.id}
@@ -909,14 +932,14 @@ export default function Sketchbook() {
                       setShowPatternPickerModal(false)
                       showToast(`Loaded "${pat.title}" onto canvas!`)
                     }}
-                    className="p-space-2xs rounded-lg bg-surface-container-high hover:bg-surface-container-highest border border-outline-variant/20 flex flex-col items-center gap-1 cursor-pointer transition-colors text-left"
+                    className="p-1.5 rounded-xl bg-surface-container-high hover:bg-surface-container-highest border border-outline-variant/20 flex flex-col items-center gap-1 cursor-pointer transition-colors text-left min-w-0"
                   >
                     <img
                       src={pat.image}
                       alt={pat.title}
-                      className="w-full h-28 object-cover rounded shadow-sm border border-outline-variant/20"
+                      className="w-full h-24 sm:h-28 object-cover rounded-lg shadow-sm border border-outline-variant/20 max-w-full"
                     />
-                    <span className="font-title-sm text-[11px] font-bold text-on-surface truncate w-full px-1">
+                    <span className="font-title-sm text-[11px] font-bold text-on-surface truncate w-full px-0.5">
                       {pat.title}
                     </span>
                   </button>
@@ -924,11 +947,11 @@ export default function Sketchbook() {
               </div>
             )}
 
-            <div className="flex justify-end pt-space-xs border-t border-outline-variant/20">
+            <div className="flex justify-end pt-2 border-t border-outline-variant/20">
               <button
                 type="button"
                 onClick={() => setShowPatternPickerModal(false)}
-                className="px-space-md py-space-xs rounded-lg bg-surface-container-high hover:bg-surface-container-highest text-on-surface font-title-sm text-title-sm cursor-pointer"
+                className="px-4 py-1.5 rounded-lg bg-surface-container-high hover:bg-surface-container-highest text-on-surface font-title-sm text-xs sm:text-title-sm cursor-pointer"
               >
                 Close
               </button>
@@ -938,8 +961,8 @@ export default function Sketchbook() {
       )}
       {/* Manual Measurement Label Modal */}
       {pendingMeasurement && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/80 backdrop-blur-md">
-          <div className="relative w-full max-w-md rounded-xl bg-surface-container-low border border-outline-variant/30 p-space-lg shadow-2xl flex flex-col gap-space-md">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-background/80 backdrop-blur-md">
+          <div className="relative w-full max-w-[95vw] sm:max-w-md max-h-[88vh] overflow-y-auto rounded-2xl bg-surface-container-low border border-outline-variant/30 p-4 sm:p-6 shadow-2xl flex flex-col gap-3 sm:gap-4">
             <div className="flex items-center justify-between border-b border-outline-variant/20 pb-space-xs">
               <div className="flex items-center gap-2">
                 <span className="material-symbols-outlined text-primary text-xl">straighten</span>
