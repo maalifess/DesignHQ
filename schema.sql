@@ -1,10 +1,24 @@
 -- ============================================================
--- Ariba's Atelier — Complete Supabase Schema & Cache Reload Fix
+-- Ariba's Atelier — Complete Supabase Schema, Constraint Drop & Cache Reload
 -- Copy and paste this script directly into your Supabase SQL Editor
 -- (Dashboard -> SQL Editor -> New Query -> Run)
 -- ============================================================
 
--- ── 1. Profiles Table ───────────────────────────────────────
+-- ── 1. Drop Legacy Check Constraints & Foreign Keys ──────────
+ALTER TABLE IF EXISTS projects DROP CONSTRAINT IF EXISTS projects_category_check;
+ALTER TABLE IF EXISTS projects DROP CONSTRAINT IF EXISTS projects_stage_check;
+ALTER TABLE IF EXISTS sketches DROP CONSTRAINT IF EXISTS sketches_garment_type_check;
+ALTER TABLE IF EXISTS sketches DROP CONSTRAINT IF EXISTS sketches_project_id_fkey;
+ALTER TABLE IF EXISTS patterns DROP CONSTRAINT IF EXISTS patterns_category_check;
+ALTER TABLE IF EXISTS patterns DROP CONSTRAINT IF EXISTS patterns_project_id_fkey;
+ALTER TABLE IF EXISTS fabrics DROP CONSTRAINT IF EXISTS fabrics_availability_check;
+ALTER TABLE IF EXISTS notes DROP CONSTRAINT IF EXISTS notes_category_check;
+ALTER TABLE IF EXISTS notes DROP CONSTRAINT IF EXISTS notes_project_id_fkey;
+ALTER TABLE IF EXISTS notes DROP CONSTRAINT IF EXISTS notes_collection_id_fkey;
+ALTER TABLE IF EXISTS deadlines DROP CONSTRAINT IF EXISTS deadlines_urgency_check;
+ALTER TABLE IF EXISTS deadlines DROP CONSTRAINT IF EXISTS deadlines_project_id_fkey;
+
+-- ── 2. Profiles Table ───────────────────────────────────────
 CREATE TABLE IF NOT EXISTS profiles (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   full_name TEXT DEFAULT 'Ariba',
@@ -21,7 +35,7 @@ ALTER TABLE profiles ADD COLUMN IF NOT EXISTS university TEXT DEFAULT 'Royal Col
 ALTER TABLE profiles ADD COLUMN IF NOT EXISTS bio TEXT DEFAULT 'Lead Couture Modéliste & Fashion Designer';
 ALTER TABLE profiles ADD COLUMN IF NOT EXISTS avatar_url TEXT;
 
--- ── 2. Collections / Projects Table ─────────────────────────
+-- ── 3. Collections / Projects Table ─────────────────────────
 CREATE TABLE IF NOT EXISTS projects (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID,
@@ -52,11 +66,11 @@ ALTER TABLE projects ADD COLUMN IF NOT EXISTS palette JSONB DEFAULT '[{"name":"H
 ALTER TABLE projects ADD COLUMN IF NOT EXISTS garments_count INT DEFAULT 0;
 ALTER TABLE projects ADD COLUMN IF NOT EXISTS description TEXT DEFAULT 'Bespoke atelier collection created by Ariba.';
 
--- ── 3. Sketches Table ───────────────────────────────────────
+-- ── 4. Sketches Table ───────────────────────────────────────
 CREATE TABLE IF NOT EXISTS sketches (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID,
-  project_id UUID REFERENCES projects(id) ON DELETE SET NULL,
+  project_id UUID,
   imported_from_id UUID,
   title TEXT NOT NULL DEFAULT 'Untitled Sketch',
   collection_title TEXT,
@@ -69,7 +83,7 @@ CREATE TABLE IF NOT EXISTS sketches (
 );
 
 ALTER TABLE sketches ADD COLUMN IF NOT EXISTS user_id UUID;
-ALTER TABLE sketches ADD COLUMN IF NOT EXISTS project_id UUID REFERENCES projects(id) ON DELETE SET NULL;
+ALTER TABLE sketches ADD COLUMN IF NOT EXISTS project_id UUID;
 ALTER TABLE sketches ADD COLUMN IF NOT EXISTS imported_from_id UUID;
 ALTER TABLE sketches ADD COLUMN IF NOT EXISTS collection_title TEXT;
 ALTER TABLE sketches ADD COLUMN IF NOT EXISTS garment_type TEXT DEFAULT 'Outerwear/Tailoring';
@@ -78,11 +92,11 @@ ALTER TABLE sketches ADD COLUMN IF NOT EXISTS image_url TEXT;
 ALTER TABLE sketches ADD COLUMN IF NOT EXISTS ai_critique TEXT DEFAULT 'Excellent tension along shoulder seam line.';
 ALTER TABLE sketches ADD COLUMN IF NOT EXISTS score INT DEFAULT 95;
 
--- ── 4. Patterns & Specs Table ────────────────────────────────
+-- ── 5. Patterns & Specs Table ────────────────────────────────
 CREATE TABLE IF NOT EXISTS patterns (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID,
-  project_id UUID REFERENCES projects(id) ON DELETE CASCADE,
+  project_id UUID,
   imported_from_id UUID,
   number TEXT DEFAULT '01',
   pattern_no TEXT DEFAULT 'PT-101',
@@ -103,7 +117,7 @@ CREATE TABLE IF NOT EXISTS patterns (
 );
 
 ALTER TABLE patterns ADD COLUMN IF NOT EXISTS user_id UUID;
-ALTER TABLE patterns ADD COLUMN IF NOT EXISTS project_id UUID REFERENCES projects(id) ON DELETE CASCADE;
+ALTER TABLE patterns ADD COLUMN IF NOT EXISTS project_id UUID;
 ALTER TABLE patterns ADD COLUMN IF NOT EXISTS imported_from_id UUID;
 ALTER TABLE patterns ADD COLUMN IF NOT EXISTS number TEXT DEFAULT '01';
 ALTER TABLE patterns ADD COLUMN IF NOT EXISTS pattern_no TEXT DEFAULT 'PT-101';
@@ -119,7 +133,7 @@ ALTER TABLE patterns ADD COLUMN IF NOT EXISTS description TEXT;
 ALTER TABLE patterns ADD COLUMN IF NOT EXISTS measurements TEXT;
 ALTER TABLE patterns ADD COLUMN IF NOT EXISTS image TEXT;
 
--- ── 5. Textile Swatches & Fabrics Vault Table ───────────────
+-- ── 6. Textile Swatches & Fabrics Vault Table ───────────────
 CREATE TABLE IF NOT EXISTS fabrics (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID,
@@ -145,12 +159,12 @@ ALTER TABLE fabrics ADD COLUMN IF NOT EXISTS image_url TEXT;
 ALTER TABLE fabrics ADD COLUMN IF NOT EXISTS cost_per_meter NUMERIC DEFAULT 120;
 ALTER TABLE fabrics ADD COLUMN IF NOT EXISTS supplier TEXT DEFAULT 'Biella Textiles Milan';
 
--- ── 6. Atelier Notes & Fitting Specifications Table ─────────
+-- ── 7. Atelier Notes & Fitting Specifications Table ─────────
 CREATE TABLE IF NOT EXISTS notes (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID,
-  project_id UUID REFERENCES projects(id) ON DELETE SET NULL,
-  collection_id UUID REFERENCES projects(id) ON DELETE SET NULL,
+  project_id UUID,
+  collection_id UUID,
   imported_from_id UUID,
   title TEXT NOT NULL DEFAULT 'Fitting Note',
   category TEXT DEFAULT 'Fitting Notes',
@@ -163,8 +177,8 @@ CREATE TABLE IF NOT EXISTS notes (
 );
 
 ALTER TABLE notes ADD COLUMN IF NOT EXISTS user_id UUID;
-ALTER TABLE notes ADD COLUMN IF NOT EXISTS project_id UUID REFERENCES projects(id) ON DELETE SET NULL;
-ALTER TABLE notes ADD COLUMN IF NOT EXISTS collection_id UUID REFERENCES projects(id) ON DELETE SET NULL;
+ALTER TABLE notes ADD COLUMN IF NOT EXISTS project_id UUID;
+ALTER TABLE notes ADD COLUMN IF NOT EXISTS collection_id UUID;
 ALTER TABLE notes ADD COLUMN IF NOT EXISTS imported_from_id UUID;
 ALTER TABLE notes ADD COLUMN IF NOT EXISTS title TEXT DEFAULT 'Fitting Note';
 ALTER TABLE notes ADD COLUMN IF NOT EXISTS category TEXT DEFAULT 'Fitting Notes';
@@ -173,11 +187,11 @@ ALTER TABLE notes ADD COLUMN IF NOT EXISTS date TEXT DEFAULT 'Today';
 ALTER TABLE notes ADD COLUMN IF NOT EXISTS tag TEXT DEFAULT 'Fitting Spec';
 ALTER TABLE notes ADD COLUMN IF NOT EXISTS look_ref TEXT;
 
--- ── 7. Atelier Production Deadlines Table ────────────────────
+-- ── 8. Atelier Production Deadlines Table ────────────────────
 CREATE TABLE IF NOT EXISTS deadlines (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID,
-  project_id UUID REFERENCES projects(id) ON DELETE CASCADE,
+  project_id UUID,
   title TEXT NOT NULL,
   detail TEXT,
   days_left INT DEFAULT 3,
@@ -187,7 +201,7 @@ CREATE TABLE IF NOT EXISTS deadlines (
 );
 
 ALTER TABLE deadlines ADD COLUMN IF NOT EXISTS user_id UUID;
-ALTER TABLE deadlines ADD COLUMN IF NOT EXISTS project_id UUID REFERENCES projects(id) ON DELETE CASCADE;
+ALTER TABLE deadlines ADD COLUMN IF NOT EXISTS project_id UUID;
 ALTER TABLE deadlines ADD COLUMN IF NOT EXISTS detail TEXT;
 ALTER TABLE deadlines ADD COLUMN IF NOT EXISTS days_left INT DEFAULT 3;
 ALTER TABLE deadlines ADD COLUMN IF NOT EXISTS urgency TEXT DEFAULT 'medium';
