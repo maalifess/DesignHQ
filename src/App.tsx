@@ -62,12 +62,21 @@ function GuestRoute({ children }: { children: React.ReactNode }) {
   return <>{children}</>
 }
 
-// ── Dark mode initializer ──────────────────────────────────────────────────────
-function DarkModeInit() {
+import { useAtelierStore } from '@/store/useAtelierStore'
+
+// ── Supabase & Dark mode initializer ──────────────────────────────────────────
+function AtelierAppInit() {
   const { darkMode } = useAppStore()
+  const fetchFromSupabase = useAtelierStore((state) => state.fetchFromSupabase)
+
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', darkMode ? 'dark' : 'light')
   }, [darkMode])
+
+  useEffect(() => {
+    fetchFromSupabase()
+  }, [fetchFromSupabase])
+
   return null
 }
 
@@ -152,7 +161,7 @@ export default function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
-        <DarkModeInit />
+        <AtelierAppInit />
         <AppRoutes />
         <ToastContainer />
       </AuthProvider>
