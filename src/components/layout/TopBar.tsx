@@ -3,31 +3,25 @@ import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useAppStore } from '@/store/useAppStore'
 
-interface TopBarProps {
-  onOpenMobile?: () => void
-}
-
-export function TopBar({ onOpenMobile }: TopBarProps) {
+export function TopBar() {
   const { sidebarCollapsed, darkMode, toggleDarkMode } = useAppStore()
   const [searchQuery, setSearchQuery] = useState('')
   const navigate = useNavigate()
 
   return (
     <header
-      className={`fixed top-0 right-0 h-topbar-height z-40 bg-surface-container-lowest/90 backdrop-blur-2xl px-gutter-desktop flex items-center justify-between shadow-[0_8px_32px_0_rgba(0,0,0,0.45)] transition-all duration-300 ${
+      className={`fixed top-0 right-0 left-0 md:${
         sidebarCollapsed ? 'left-sidebar-collapsed' : 'left-sidebar-width'
-      }`}
+      } h-topbar-height z-40 bg-surface-container-lowest/90 backdrop-blur-2xl px-4 md:px-gutter-desktop flex items-center justify-between shadow-[0_8px_32px_0_rgba(0,0,0,0.45)] transition-all duration-300`}
     >
-      {/* Mobile Menu Button */}
-      <div className="flex md:hidden items-center gap-space-xs">
-        <button
-          onClick={onOpenMobile}
-          className="p-space-xs text-on-surface-variant hover:text-on-surface"
-          aria-label="Open navigation menu"
-        >
-          <span className="material-symbols-outlined">menu</span>
-        </button>
-        <span className="font-headline-sm text-headline-sm text-on-surface">DesignHQ</span>
+      {/* Mobile Branding (No sidebar toggle menu on mobile) */}
+      <div className="flex md:hidden items-center gap-2">
+        <div className="w-8 h-8 rounded-lg bg-primary-container flex items-center justify-center text-on-primary font-bold shadow-[0_0_10px_rgba(128,0,32,0.5)] flex-shrink-0">
+          <span className="material-symbols-outlined text-lg">styler</span>
+        </div>
+        <span className="font-headline-sm text-headline-sm text-on-surface font-bold text-base tracking-tight truncate">
+          Ariba's Atelier
+        </span>
       </div>
 
       {/* Global Search Bar (Desktop) */}
@@ -50,7 +44,7 @@ export function TopBar({ onOpenMobile }: TopBarProps) {
       </div>
 
       {/* Right Action Controls */}
-      <div className="flex items-center gap-space-md">
+      <div className="flex items-center gap-2 md:gap-space-md">
         {/* Animated Single Theme Toggle Button */}
         <motion.button
           type="button"
@@ -87,7 +81,7 @@ export function TopBar({ onOpenMobile }: TopBarProps) {
               transition={{ duration: 0.2, ease: 'easeOut' }}
               className="flex items-center gap-1.5 text-xs font-semibold"
             >
-              <span>{darkMode ? 'Dark' : 'Light'}</span>
+              <span className="hidden sm:inline">{darkMode ? 'Dark' : 'Light'}</span>
               <span className={`text-[10px] uppercase px-1.5 py-0.2 rounded-full font-bold tracking-wider ${
                 darkMode 
                   ? 'bg-secondary-container/60 text-secondary' 
@@ -100,21 +94,17 @@ export function TopBar({ onOpenMobile }: TopBarProps) {
         </motion.button>
 
         {/* Primary CTA: New Collection */}
-        <button
+        <motion.button
           type="button"
           onClick={() => navigate('/projects')}
-          className="flex items-center gap-space-xs px-space-md py-space-xs rounded-lg bg-primary-container text-on-primary font-title-sm text-title-sm hover:brightness-110 active:scale-95 transition-all shadow-[0_4px_20px_rgba(128,0,32,0.45)]"
+          whileHover={{ scale: 1.04 }}
+          whileTap={{ scale: 0.96 }}
+          className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-primary-container text-on-primary font-title-sm text-xs md:text-title-sm hover:brightness-110 transition-all shadow-[0_4px_20px_rgba(128,0,32,0.45)] cursor-pointer"
         >
           <span className="material-symbols-outlined text-base">add</span>
           <span className="font-semibold hidden sm:inline">New Collection</span>
-        </button>
-
-        {/* User Profile Avatar */}
-        <div className="w-8 h-8 rounded-full bg-primary-container text-on-primary flex items-center justify-center font-bold text-xs shadow-[0_0_8px_rgba(255,179,181,0.3)]">
-          AR
-        </div>
+        </motion.button>
       </div>
     </header>
   )
 }
-

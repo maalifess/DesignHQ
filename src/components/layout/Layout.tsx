@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
-import { motion } from 'framer-motion'
+import React from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { useLocation } from 'react-router-dom'
 import { Sidebar } from './Sidebar'
 import { TopBar } from './TopBar'
 import { BottomNav } from './BottomNav'
@@ -11,19 +12,16 @@ interface LayoutProps {
 
 export function Layout({ children }: LayoutProps) {
   const { sidebarCollapsed } = useAppStore()
-  const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false)
+  const location = useLocation()
   const sidebarW = sidebarCollapsed ? 'var(--sidebar-collapsed)' : 'var(--sidebar-width)'
 
   return (
     <div style={{ display: 'flex', minHeight: '100vh', background: 'var(--bg-base)' }}>
-      {/* Sidebar (Desktop Rail & Mobile Drawer) */}
-      <Sidebar
-        mobileOpen={mobileDrawerOpen}
-        onCloseMobile={() => setMobileDrawerOpen(false)}
-      />
+      {/* Sidebar (Desktop Rail Only) */}
+      <Sidebar />
 
       {/* Top Header */}
-      <TopBar onOpenMobile={() => setMobileDrawerOpen(true)} />
+      <TopBar />
 
       {/* Main Page Canvas Container */}
       <main
@@ -57,16 +55,20 @@ export function Layout({ children }: LayoutProps) {
           }
         `}</style>
 
-        <motion.div
-          initial={{ opacity: 0, y: 6 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.2 }}
-        >
-          {children}
-        </motion.div>
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={location.pathname}
+            initial={{ opacity: 0, y: 12, scale: 0.99 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -12, scale: 0.99 }}
+            transition={{ type: 'spring', stiffness: 350, damping: 28 }}
+          >
+            {children}
+          </motion.div>
+        </AnimatePresence>
       </main>
 
-      {/* Mobile Bottom Glass Navigation */}
+      {/* Mobile Bottom Navigation Bar */}
       <BottomNav />
     </div>
   )

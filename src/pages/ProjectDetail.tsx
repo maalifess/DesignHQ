@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useAuth } from '@/hooks/useAuth'
-import { useAtelierStore, type SavedPattern, type SavedSketch } from '@/store/useAtelierStore'
+import { useAtelierStore, type SavedPattern, type SavedSketch, type SavedNote } from '@/store/useAtelierStore'
 
 
 
@@ -30,13 +30,17 @@ export default function ProjectDetail() {
   const updatePattern = useAtelierStore((state) => state.updatePattern)
   const deletePattern = useAtelierStore((state) => state.deletePattern)
 
+  const addNote = useAtelierStore((state) => state.addNote)
+  const updateNote = useAtelierStore((state) => state.updateNote)
+  const deleteNote = useAtelierStore((state) => state.deleteNote)
+
   const activeProject = projects.find((p) => p.id === id) || projects[0]
 
   const projectSketches = sketchesStore.filter((s) => s.projectId === activeProject?.id)
   const projectPatterns = patternsStore.filter((p) => p.projectId === activeProject?.id)
   const projectMoodboards = moodboardsStore.filter((m) => m.projectId === activeProject?.id)
   const projectFittingLogs = fittingLogsStore.filter((f) => f.projectId === activeProject?.id)
-  const projectNotes = notesStore.filter((n) => n.projectId === activeProject?.id)
+  const projectNotes = notesStore.filter((n) => n.collectionId === activeProject?.id || n.projectId === activeProject?.id)
 
   const projectTitle = activeProject?.title || 'Ariba Haute Couture Collection'
   const projectCode = activeProject?.code || '#CR-2680'
@@ -92,11 +96,20 @@ export default function ProjectDetail() {
   // Import Modal State
   const [showImportModal, setShowImportModal] = useState<boolean>(false)
   const [showImportSketchModal, setShowImportSketchModal] = useState<boolean>(false)
+  const [showImportNoteModal, setShowImportNoteModal] = useState<boolean>(false)
 
   // Edit Sketch Form State
   const [editingSketch, setEditingSketch] = useState<SavedSketch | null>(null)
   const [editSketchTitle, setEditSketchTitle] = useState('')
   const [editSketchGarmentType, setEditSketchGarmentType] = useState('')
+
+  // Collection Note Form State
+  const [showAddNoteModal, setShowAddNoteModal] = useState<boolean>(false)
+  const [editingNote, setEditingNote] = useState<SavedNote | null>(null)
+  const [noteTitle, setNoteTitle] = useState('')
+  const [noteCategory, setNoteCategory] = useState('Fitting Notes')
+  const [noteContent, setNoteContent] = useState('')
+  const [noteLookRef, setNoteLookRef] = useState('')
 
   const showToast = (msg: string) => {
     setToastMessage(msg)
@@ -230,6 +243,63 @@ export default function ProjectDetail() {
     })
     showToast(`Updated "${editSketchTitle}"`)
     setEditingSketch(null)
+  }
+
+  const handleImportNote = (origNote: SavedNote) => {
+    addNote({
+      title: origNote.title,
+      category: origNote.category,
+      content: origNote.content,
+      date: new Date().toISOString().split('T')[0],
+      tag: origNote.tag || 'Imported Note',
+      lookRef: origNote.lookRef,
+      collectionId: activeProject?.id,
+      importedFromId: origNote.id,
+      createdAt: new Date().toISOString(),
+    })
+    showToast(`Imported note "${origNote.title}" into ${projectTitle}!`)
+  }
+
+  const handleCreateCollectionNote = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!noteContent.trim()) return
+    const title = noteTitle.trim() || 'Fitting Note'
+    addNote({
+      title,
+      category: noteCategory,
+      content: noteContent.trim(),
+      date: new Date().toISOString().split('T')[0],
+      tag: noteCategory.toLowerCase().includes('pattern') ? 'Pattern Spec' : 'Fitting Note',
+      lookRef: noteLookRef.trim(),
+      collectionId: activeProject?.id,
+      createdAt: new Date().toISOString(),
+    })
+    setShowAddNoteModal(false)
+    setNoteTitle('')
+    setNoteContent('')
+    setNoteLookRef('')
+    showToast(`Note "${title}" added to ${projectTitle}!`)
+  }
+
+  const handleStartEditNote = (note: SavedNote) => {
+    setEditingNote(note)
+    setNoteTitle(note.title)
+    setNoteCategory(note.category)
+    setNoteContent(note.content)
+    setNoteLookRef(note.lookRef || '')
+  }
+
+  const handleSaveEditNote = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!editingNote) return
+    updateNote(editingNote.id, {
+      title: noteTitle,
+      category: noteCategory,
+      content: noteContent,
+      lookRef: noteLookRef,
+    })
+    setEditingNote(null)
+    showToast(`Updated note "${noteTitle}"`)
   }
 
   const filteredPatterns = projectPatterns.filter((look) => {
@@ -741,42 +811,131 @@ export default function ProjectDetail() {
             </div>
           )}
 
-          {activeTab === 'fitting' && (
-            <div className="rounded-xl bg-surface-container-low/90 backdrop-blur-2xl shadow-xl border border-outline-variant/20 p-space-2xl flex flex-col items-center justify-center text-center gap-space-md">
-              <span className="material-symbols-outlined text-5xl text-outline">straighten</span>
-              <h3 className="font-headline-sm text-headline-sm text-on-surface font-bold">
-                No Fitting Logs Added Yet
-              </h3>
-              <p className="font-body-sm text-body-sm text-on-surface-variant max-w-md">
-                Schedule and manage fittings for {projectTitle}.
-              </p>
-              <button
-                onClick={() => {}}
-                className="px-space-md py-space-xs rounded-lg bg-primary-container text-on-primary font-title-sm text-title-sm font-semibold shadow-lg hover:brightness-110 cursor-pointer"
-                type="button"
-              >
-                + Add Fitting Log
-              </button>
-            </div>
-          )}
+          {(activeTab === 'fitting' || activeTab === 'notes') && (
+            <>
+              {projectNotes.length === 0 ? (
+                <div className="rounded-xl bg-surface-container-low/90 backdrop-blur-2xl shadow-xl border border-outline-variant/20 p-space-2xl flex flex-col items-center justify-center text-center gap-space-md">
+                  <span className="material-symbols-outlined text-5xl text-outline">edit_note</span>
+                  <h3 className="font-headline-sm text-headline-sm text-on-surface font-bold">
+                    No Fitting Notes in {projectTitle}
+                  </h3>
+                  <p className="font-body-sm text-body-sm text-on-surface-variant max-w-md">
+                    Import fitting notes from your central library or add collection-specific fitting specs.
+                  </p>
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => setShowImportNoteModal(true)}
+                      className="px-space-md py-space-xs rounded-lg bg-surface-container-high hover:bg-surface-container-highest text-on-surface font-title-sm text-title-sm font-medium border border-outline-variant/20 cursor-pointer flex items-center gap-1.5"
+                      type="button"
+                    >
+                      <span className="material-symbols-outlined text-base">download</span>
+                      <span>Import Note from Library</span>
+                    </button>
+                    <button
+                      onClick={() => {
+                        setNoteTitle('')
+                        setNoteContent('')
+                        setNoteLookRef('')
+                        setShowAddNoteModal(true)
+                      }}
+                      className="px-space-md py-space-xs rounded-lg bg-primary-container text-on-primary font-title-sm text-title-sm font-semibold shadow-lg hover:brightness-110 cursor-pointer flex items-center gap-1.5"
+                      type="button"
+                    >
+                      <span className="material-symbols-outlined text-base">add</span>
+                      <span>+ Add Note</span>
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <>
+                  <div className="flex flex-col gap-space-md">
+                    {projectNotes.map((note) => (
+                      <div
+                        key={note.id}
+                        className="rounded-xl bg-surface-container-low/90 backdrop-blur-2xl shadow-xl border border-outline-variant/20 p-space-lg flex flex-col gap-space-sm"
+                      >
+                        <div className="flex items-start justify-between gap-2">
+                          <div className="flex flex-wrap items-center gap-2">
+                            <span className="px-2 py-0.5 rounded bg-primary-container/40 text-primary font-label-sm text-[10px] font-bold uppercase tracking-wider">
+                              {note.category}
+                            </span>
+                            {note.lookRef && (
+                              <span className="px-2 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-label-sm text-[10px] font-semibold">
+                                Ref: {note.lookRef}
+                              </span>
+                            )}
+                            <span className="text-outline text-xs">{note.date}</span>
+                          </div>
 
-          {activeTab === 'notes' && (
-            <div className="rounded-xl bg-surface-container-low/90 backdrop-blur-2xl shadow-xl border border-outline-variant/20 p-space-2xl flex flex-col items-center justify-center text-center gap-space-md">
-              <span className="material-symbols-outlined text-5xl text-outline">note_alt</span>
-              <h3 className="font-headline-sm text-headline-sm text-on-surface font-bold">
-                No Atelier Notes Added Yet
-              </h3>
-              <p className="font-body-sm text-body-sm text-on-surface-variant max-w-md">
-                Keep track of ideas and tasks for {projectTitle}.
-              </p>
-              <button
-                onClick={() => navigate('/notes')}
-                className="px-space-md py-space-xs rounded-lg bg-primary-container text-on-primary font-title-sm text-title-sm font-semibold shadow-lg hover:brightness-110 cursor-pointer"
-                type="button"
-              >
-                + Add Note
-              </button>
-            </div>
+                          <div className="flex items-center gap-1">
+                            <button
+                              type="button"
+                              onClick={() => handleStartEditNote(note)}
+                              className="text-outline hover:text-primary transition-colors p-1 cursor-pointer"
+                              title="Edit Note"
+                            >
+                              <span className="material-symbols-outlined text-base">edit</span>
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                if (confirm('Remove this note from collection?')) {
+                                  deleteNote(note.id)
+                                  showToast('Note deleted.')
+                                }
+                              }}
+                              className="text-outline hover:text-error transition-colors p-1 cursor-pointer"
+                              title="Delete Note"
+                            >
+                              <span className="material-symbols-outlined text-base">delete</span>
+                            </button>
+                          </div>
+                        </div>
+
+                        <h3 className="font-headline-sm text-headline-sm text-on-surface font-bold">
+                          {note.title}
+                        </h3>
+
+                        <p className="font-body-md text-body-md text-on-surface-variant leading-relaxed whitespace-pre-line bg-surface-container-high/40 p-space-sm rounded-lg border border-outline-variant/10">
+                          {note.content}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Bottom Action Bar */}
+                  <div className="flex flex-wrap items-center justify-between gap-space-md pt-space-sm border-t border-outline-variant/20 mt-2">
+                    <div className="font-label-sm text-label-sm text-outline">
+                      Showing {projectNotes.length} Note{projectNotes.length === 1 ? '' : 's'}
+                    </div>
+
+                    <div className="flex items-center gap-space-xs">
+                      <button
+                        onClick={() => setShowImportNoteModal(true)}
+                        className="px-space-md py-space-xs rounded-lg bg-surface-container-high hover:bg-surface-container-highest text-on-surface font-title-sm text-title-sm font-medium border border-outline-variant/20 cursor-pointer flex items-center gap-1.5"
+                        type="button"
+                      >
+                        <span className="material-symbols-outlined text-base">download</span>
+                        <span>Import Note from Library</span>
+                      </button>
+                      <button
+                        onClick={() => {
+                          setNoteTitle('')
+                          setNoteContent('')
+                          setNoteLookRef('')
+                          setShowAddNoteModal(true)
+                        }}
+                        className="px-space-md py-space-xs rounded-lg bg-primary-container text-on-primary font-title-sm text-title-sm font-semibold shadow-lg hover:brightness-110 cursor-pointer flex items-center gap-1.5"
+                        type="button"
+                      >
+                        <span className="material-symbols-outlined text-base">add</span>
+                        <span>+ Add Note</span>
+                      </button>
+                    </div>
+                  </div>
+                </>
+              )}
+            </>
           )}
         </div>
 
@@ -1476,6 +1635,192 @@ export default function ProjectDetail() {
                 className="px-space-md py-space-xs rounded-lg bg-primary-container text-on-primary font-title-sm text-title-sm font-semibold hover:brightness-110 cursor-pointer"
               >
                 Save Changes
+              </button>
+            </div>
+          </form>
+        </div>
+      )}
+
+      {/* Import Fitting Note from Library Modal */}
+      {showImportNoteModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/80 backdrop-blur-md">
+          <div className="relative w-full max-w-xl rounded-xl bg-surface-container-low border border-outline-variant/30 p-space-lg shadow-2xl flex flex-col gap-space-md">
+            <div className="flex items-center justify-between border-b border-outline-variant/20 pb-space-xs">
+              <div className="flex items-center gap-space-xs">
+                <span className="material-symbols-outlined text-primary text-xl">download</span>
+                <h3 className="font-headline-sm text-headline-sm text-on-surface font-bold">
+                  Import Fitting Note from Library
+                </h3>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowImportNoteModal(false)}
+                className="text-outline hover:text-on-surface"
+              >
+                <span className="material-symbols-outlined text-lg">close</span>
+              </button>
+            </div>
+
+            <p className="font-body-sm text-body-sm text-on-surface-variant">
+              Select any fitting note from your central atelier library to import it into <strong>{projectTitle}</strong>:
+            </p>
+
+            {notesStore.length === 0 ? (
+              <div className="text-center py-8 text-outline text-body-sm">
+                No fitting notes found in central library. Create notes on the Notes page first!
+              </div>
+            ) : (
+              <div className="flex flex-col gap-space-xs max-h-96 overflow-y-auto pr-1">
+                {notesStore.map((note) => {
+                  const isAlreadyInProject =
+                    note.collectionId === activeProject?.id ||
+                    note.projectId === activeProject?.id ||
+                    projectNotes.some(
+                      (pn) => pn.id === note.id || pn.importedFromId === note.id
+                    )
+
+                  return (
+                    <div
+                      key={note.id}
+                      className="p-space-xs rounded-lg bg-surface-container-high/80 border border-outline-variant/20 flex items-center justify-between gap-space-md hover:bg-surface-container-highest transition-colors"
+                    >
+                      <div className="flex flex-col min-w-0 flex-1">
+                        <div className="flex items-center gap-2">
+                          <span className="font-title-sm text-title-sm font-bold text-on-surface truncate">
+                            {note.title}
+                          </span>
+                          <span className="px-1.5 py-0.5 rounded bg-primary-container/30 text-primary font-label-sm text-[10px]">
+                            {note.category}
+                          </span>
+                        </div>
+                        <p className="text-xs text-outline line-clamp-1 mt-0.5">
+                          {note.content}
+                        </p>
+                      </div>
+
+                      {isAlreadyInProject ? (
+                        <span className="text-xs font-semibold px-2.5 py-1 bg-surface-container-highest text-outline rounded flex items-center gap-1 whitespace-nowrap">
+                          <span className="material-symbols-outlined text-sm text-primary">check_circle</span>
+                          ✓ Added
+                        </span>
+                      ) : (
+                        <button
+                          type="button"
+                          onClick={() => handleImportNote(note)}
+                          className="px-3 py-1 rounded bg-primary-container text-on-primary font-title-sm text-xs font-semibold hover:brightness-110 cursor-pointer whitespace-nowrap"
+                        >
+                          Import
+                        </button>
+                      )}
+                    </div>
+                  )
+                })}
+              </div>
+            )}
+
+            <div className="flex justify-end pt-space-xs border-t border-outline-variant/20">
+              <button
+                type="button"
+                onClick={() => setShowImportNoteModal(false)}
+                className="px-space-md py-space-xs rounded-lg bg-surface-container-high hover:bg-surface-container-highest text-on-surface font-title-sm text-title-sm cursor-pointer"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Add or Edit Note Modal */}
+      {(showAddNoteModal || editingNote) && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/80 backdrop-blur-md">
+          <form
+            onSubmit={editingNote ? handleSaveEditNote : handleCreateCollectionNote}
+            className="relative w-full max-w-xl rounded-xl bg-surface-container-low border border-outline-variant/30 p-space-lg shadow-2xl flex flex-col gap-space-md"
+          >
+            <div className="flex items-center justify-between border-b border-outline-variant/20 pb-space-xs">
+              <h3 className="font-headline-sm text-headline-sm text-on-surface font-bold">
+                {editingNote ? 'Edit Collection Note' : 'Add Note to Collection'}
+              </h3>
+              <button
+                type="button"
+                onClick={() => {
+                  setShowAddNoteModal(false)
+                  setEditingNote(null)
+                }}
+                className="text-outline hover:text-on-surface"
+              >
+                <span className="material-symbols-outlined text-lg">close</span>
+              </button>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-space-md text-body-sm font-body-sm">
+              <div className="flex flex-col gap-1 sm:col-span-2">
+                <label className="text-outline font-semibold">Note Title</label>
+                <input
+                  type="text"
+                  required
+                  placeholder="e.g. Waistline dart relocation fitting spec"
+                  value={noteTitle}
+                  onChange={(e) => setNoteTitle(e.target.value)}
+                  className="w-full px-space-sm py-space-xs rounded-lg bg-surface-container-high text-on-surface border border-outline-variant/20 focus:outline-none"
+                />
+              </div>
+
+              <div className="flex flex-col gap-1">
+                <label className="text-outline font-semibold">Category</label>
+                <select
+                  value={noteCategory}
+                  onChange={(e) => setNoteCategory(e.target.value)}
+                  className="w-full px-space-sm py-space-xs rounded-lg bg-surface-container-high text-on-surface border border-outline-variant/20"
+                >
+                  <option value="Fitting Notes">Fitting Notes</option>
+                  <option value="Pattern Adjustments">Pattern Adjustments</option>
+                  <option value="Fabrics & Drapes">Fabrics &amp; Drapes</option>
+                  <option value="General Atelier Task">General Atelier Task</option>
+                </select>
+              </div>
+
+              <div className="flex flex-col gap-1">
+                <label className="text-outline font-semibold">Silhouette / Look Ref</label>
+                <input
+                  type="text"
+                  placeholder="e.g. Look 02"
+                  value={noteLookRef}
+                  onChange={(e) => setNoteLookRef(e.target.value)}
+                  className="w-full px-space-sm py-space-xs rounded-lg bg-surface-container-high text-on-surface border border-outline-variant/20 focus:outline-none"
+                />
+              </div>
+
+              <div className="flex flex-col gap-1 sm:col-span-2">
+                <label className="text-outline font-semibold">Note Content / Technical Log</label>
+                <textarea
+                  rows={6}
+                  required
+                  placeholder="Enter detailed fitting observations, seam allowances, and toile adjustments..."
+                  value={noteContent}
+                  onChange={(e) => setNoteContent(e.target.value)}
+                  className="w-full p-space-sm rounded-lg bg-surface-container-high text-on-surface border border-outline-variant/20 focus:outline-none resize-y"
+                />
+              </div>
+            </div>
+
+            <div className="flex items-center justify-end gap-space-xs pt-space-xs border-t border-outline-variant/20">
+              <button
+                type="button"
+                onClick={() => {
+                  setShowAddNoteModal(false)
+                  setEditingNote(null)
+                }}
+                className="px-space-md py-space-xs rounded-lg bg-surface-container-high hover:bg-surface-container-highest text-on-surface font-title-sm text-title-sm"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="px-space-md py-space-xs rounded-lg bg-primary-container text-on-primary font-title-sm text-title-sm font-semibold hover:brightness-110 shadow-lg"
+              >
+                {editingNote ? 'Save Changes' : 'Add Note'}
               </button>
             </div>
           </form>

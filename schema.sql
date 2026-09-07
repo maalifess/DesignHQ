@@ -1,33 +1,26 @@
 -- ============================================================
--- DesignHQ — Complete Supabase PostgreSQL Schema
--- Run this in your Supabase SQL Editor
+-- Ariba's Atelier — Complete Supabase PostgreSQL Schema
+-- Run this script in your Supabase SQL Editor (SQL Query Runner)
 -- ============================================================
 
--- ── Profiles (extends Supabase auth.users) ────────────────────
+-- ── 1. Profiles Table (extends auth.users) ─────────────────
 CREATE TABLE IF NOT EXISTS profiles (
   id UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
-  full_name TEXT,
-  display_name TEXT,
-  university TEXT,
-  bio TEXT,
+  full_name TEXT DEFAULT 'Ariba',
+  display_name TEXT DEFAULT 'Ariba',
   avatar_url TEXT,
-  portfolio_title TEXT,
-  portfolio_bio TEXT,
-  portfolio_email TEXT,
-  portfolio_layout TEXT DEFAULT 'editorial',
-  dark_mode BOOLEAN DEFAULT false,
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- Auto-create profile on signup
+-- Auto-create profile trigger on new user signup
 CREATE OR REPLACE FUNCTION public.handle_new_user()
 RETURNS TRIGGER AS $$
 BEGIN
   INSERT INTO public.profiles (id, full_name, display_name)
   VALUES (
     NEW.id,
-    NEW.raw_user_meta_data->>'full_name',
-    split_part(NEW.raw_user_meta_data->>'full_name', ' ', 1)
+    COALESCE(NEW.raw_user_meta_data->>'full_name', 'Ariba'),
+    COALESCE(NEW.raw_user_meta_data->>'display_name', 'Ariba')
   )
   ON CONFLICT (id) DO NOTHING;
   RETURN NEW;
@@ -39,243 +32,184 @@ CREATE TRIGGER on_auth_user_created
   AFTER INSERT ON auth.users
   FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();
 
--- ── Projects ──────────────────────────────────────────────────
+-- ── 2. Collections / Projects Table ─────────────────────────
 CREATE TABLE IF NOT EXISTS projects (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID REFERENCES profiles(id) ON DELETE CASCADE,
+  code TEXT NOT NULL DEFAULT '#CR-1001',
   title TEXT NOT NULL,
-  theme TEXT,
-  category TEXT CHECK (category IN ('assignment','personal','collection','collaboration','competition')),
-  status TEXT DEFAULT 'ideation',
-  deadline DATE,
-  cover_image_url TEXT,
-  description TEXT,
-  tags TEXT[] DEFAULT '{}',
-  color_label TEXT,
-  portfolio_ready BOOLEAN DEFAULT false,
-  portfolio_order INT,
-  portfolio_description TEXT,
+  category TEXT DEFAULT 'Assignment',
+  season TEXT DEFAULT 'Fashion Design 101',
+  target_date DATE DEFAULT '2026-11-18',
+  stage TEXT DEFAULT 'Sampling (Phase 6 of 9)',
+  stage_num INT DEFAULT 6,
+  percent INT DEFAULT 75,
+  palette JSONB DEFAULT '[{"name":"Haute Crimson","hex":"#800020"},{"name":"Merlot Velvet","hex":"#5C0016"},{"name":"Blush Satin","hex":"#C05070"}]'::jsonb,
+  garments_count INT DEFAULT 0,
+  description TEXT DEFAULT 'Bespoke atelier collection created by Ariba.',
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
+ALTER TABLE projects ADD COLUMN IF NOT EXISTS user_id UUID REFERENCES profiles(id) ON DELETE CASCADE;
 
--- ── Mood Boards ───────────────────────────────────────────────
-CREATE TABLE IF NOT EXISTS mood_boards (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  project_id UUID REFERENCES projects(id) ON DELETE CASCADE,
-  user_id UUID REFERENCES profiles(id) ON DELETE CASCADE,
-  name TEXT DEFAULT 'Untitled Board',
-  canvas_data JSONB,
-  extracted_colors JSONB,
-  ai_tags JSONB,
-  created_at TIMESTAMPTZ DEFAULT NOW(),
-  updated_at TIMESTAMPTZ DEFAULT NOW()
-);
-
--- ── Mood Board Images ─────────────────────────────────────────
-CREATE TABLE IF NOT EXISTS mood_board_images (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  mood_board_id UUID REFERENCES mood_boards(id) ON DELETE CASCADE,
-  image_url TEXT NOT NULL,
-  caption TEXT,
-  position JSONB,
-  ai_tags JSONB,
-  dominant_colors JSONB,
-  uploaded_at TIMESTAMPTZ DEFAULT NOW()
-);
-
--- ── Sketches ──────────────────────────────────────────────────
+-- ── 3. Sketches Table ───────────────────────────────────────
 CREATE TABLE IF NOT EXISTS sketches (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  project_id UUID REFERENCES projects(id) ON DELETE SET NULL,
   user_id UUID REFERENCES profiles(id) ON DELETE CASCADE,
-  title TEXT DEFAULT 'Untitled Sketch',
-  canvas_data JSONB,
-  thumbnail_url TEXT,
-  annotations JSONB,
-  version_history JSONB DEFAULT '[]',
+  project_id UUID REFERENCES projects(id) ON DELETE SET NULL,
+  imported_from_id UUID,
+  title TEXT NOT NULL DEFAULT 'Untitled Sketch',
+  collection_title TEXT,
+  garment_type TEXT DEFAULT 'Outerwear/Tailoring',
+  fabric_name TEXT DEFAULT 'Silk Velvet',
+  image_url TEXT NOT NULL,
+  ai_critique TEXT DEFAULT 'Excellent tension along shoulder seam line.',
+  score INT DEFAULT 95,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+ALTER TABLE sketches ADD COLUMN IF NOT EXISTS user_id UUID REFERENCES profiles(id) ON DELETE CASCADE;
+ALTER TABLE sketches ADD COLUMN IF NOT EXISTS project_id UUID REFERENCES projects(id) ON DELETE SET NULL;
+ALTER TABLE sketches ADD COLUMN IF NOT EXISTS imported_from_id UUID;
+
+-- ── 4. Patterns & Specs Table ────────────────────────────────
+CREATE TABLE IF NOT EXISTS patterns (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID REFERENCES profiles(id) ON DELETE CASCADE,
+  project_id UUID REFERENCES projects(id) ON DELETE CASCADE,
+  imported_from_id UUID,
+  number TEXT DEFAULT '01',
+  pattern_no TEXT DEFAULT 'PT-101',
+  title TEXT NOT NULL,
+  category TEXT DEFAULT 'Outerwear',
+  status TEXT DEFAULT 'Ready',
+  status_type TEXT DEFAULT 'approved',
+  fabric TEXT,
+  notions TEXT,
+  next_fitting TEXT,
+  modeliste TEXT DEFAULT 'Ariba',
+  pieces INT DEFAULT 1,
+  description TEXT,
+  measurements TEXT,
+  image TEXT,
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
+ALTER TABLE patterns ADD COLUMN IF NOT EXISTS user_id UUID REFERENCES profiles(id) ON DELETE CASCADE;
+ALTER TABLE patterns ADD COLUMN IF NOT EXISTS project_id UUID REFERENCES projects(id) ON DELETE CASCADE;
+ALTER TABLE patterns ADD COLUMN IF NOT EXISTS imported_from_id UUID;
 
--- ── Fabric Library ────────────────────────────────────────────
+-- ── 5. Textile Swatches & Fabrics Vault Table ───────────────
 CREATE TABLE IF NOT EXISTS fabrics (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID REFERENCES profiles(id) ON DELETE CASCADE,
   name TEXT NOT NULL,
+  type TEXT DEFAULT 'Silk Velvet',
+  weight TEXT DEFAULT '320 GSM',
+  origin TEXT DEFAULT 'Como, Italy',
+  meters_left NUMERIC DEFAULT 25,
+  availability TEXT DEFAULT 'In Stock',
   image_url TEXT,
-  type TEXT,
-  texture TEXT,
-  weight TEXT,
-  seasons TEXT[] DEFAULT '{}',
-  cost_per_meter NUMERIC,
-  currency TEXT DEFAULT 'PKR',
-  supplier_name TEXT,
-  supplier_url TEXT,
-  availability TEXT DEFAULT 'in_stock',
-  care_instructions TEXT,
-  notes TEXT,
-  tags TEXT[] DEFAULT '{}',
-  dominant_colors JSONB,
+  cost_per_meter NUMERIC DEFAULT 120,
+  supplier TEXT DEFAULT 'Biella Textiles Milan',
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
+ALTER TABLE fabrics ADD COLUMN IF NOT EXISTS user_id UUID REFERENCES profiles(id) ON DELETE CASCADE;
 
--- ── Design Notes ──────────────────────────────────────────────
+-- ── 6. Atelier Notes & Fitting Specifications Table ─────────
 CREATE TABLE IF NOT EXISTS notes (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  project_id UUID REFERENCES projects(id) ON DELETE SET NULL,
   user_id UUID REFERENCES profiles(id) ON DELETE CASCADE,
-  title TEXT DEFAULT 'Untitled Note',
-  content JSONB,
-  tags TEXT[] DEFAULT '{}',
-  color_label TEXT,
-  pinned BOOLEAN DEFAULT false,
+  project_id UUID REFERENCES projects(id) ON DELETE SET NULL,
+  collection_id UUID REFERENCES projects(id) ON DELETE SET NULL,
+  imported_from_id UUID,
+  title TEXT NOT NULL DEFAULT 'Fitting Note',
+  category TEXT DEFAULT 'Fitting Notes',
+  content TEXT NOT NULL,
+  date TEXT DEFAULT 'Today',
+  tag TEXT DEFAULT 'Fitting Spec',
+  look_ref TEXT,
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
+ALTER TABLE notes ADD COLUMN IF NOT EXISTS user_id UUID REFERENCES profiles(id) ON DELETE CASCADE;
+ALTER TABLE notes ADD COLUMN IF NOT EXISTS project_id UUID REFERENCES projects(id) ON DELETE SET NULL;
+ALTER TABLE notes ADD COLUMN IF NOT EXISTS collection_id UUID REFERENCES projects(id) ON DELETE SET NULL;
+ALTER TABLE notes ADD COLUMN IF NOT EXISTS imported_from_id UUID;
+ALTER TABLE notes ADD COLUMN IF NOT EXISTS category TEXT DEFAULT 'Fitting Notes';
+ALTER TABLE notes ADD COLUMN IF NOT EXISTS look_ref TEXT;
+ALTER TABLE notes ADD COLUMN IF NOT EXISTS tag TEXT DEFAULT 'Fitting Spec';
 
--- ── Color Palettes ────────────────────────────────────────────
-CREATE TABLE IF NOT EXISTS color_palettes (
+-- ── 7. Atelier Production Deadlines Table ────────────────────
+CREATE TABLE IF NOT EXISTS deadlines (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  project_id UUID REFERENCES projects(id) ON DELETE SET NULL,
-  mood_board_id UUID REFERENCES mood_boards(id) ON DELETE SET NULL,
   user_id UUID REFERENCES profiles(id) ON DELETE CASCADE,
-  name TEXT,
-  colors JSONB,
-  created_at TIMESTAMPTZ DEFAULT NOW()
-);
-
--- ── AI Style Guides ───────────────────────────────────────────
-CREATE TABLE IF NOT EXISTS style_guides (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  project_id UUID REFERENCES projects(id) ON DELETE SET NULL,
-  user_id UUID REFERENCES profiles(id) ON DELETE CASCADE,
-  input_data JSONB,
-  output_data JSONB,
-  created_at TIMESTAMPTZ DEFAULT NOW()
-);
-
--- ── Patterns (Garment Looks) ───────────────────────────────────
-CREATE TABLE IF NOT EXISTS patterns (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   project_id UUID REFERENCES projects(id) ON DELETE CASCADE,
-  user_id UUID REFERENCES profiles(id) ON DELETE CASCADE,
   title TEXT NOT NULL,
-  pattern_no TEXT,
-  category TEXT,
-  status TEXT,
-  status_type TEXT,
-  fabric TEXT,
-  notions TEXT,
-  next_fitting TEXT,
-  modeliste TEXT,
-  pieces INT DEFAULT 1,
-  description TEXT,
-  image_url TEXT,
-  created_at TIMESTAMPTZ DEFAULT NOW(),
-  updated_at TIMESTAMPTZ DEFAULT NOW()
-);
-
--- ── Fitting Logs ──────────────────────────────────────────────
-CREATE TABLE IF NOT EXISTS fitting_logs (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  project_id UUID REFERENCES projects(id) ON DELETE CASCADE,
-  user_id UUID REFERENCES profiles(id) ON DELETE CASCADE,
-  pattern_id UUID REFERENCES patterns(id) ON DELETE SET NULL,
-  title TEXT NOT NULL,
-  date TIMESTAMPTZ,
-  notes TEXT,
-  model_name TEXT,
-  status TEXT DEFAULT 'scheduled',
+  detail TEXT,
+  days_left INT DEFAULT 3,
+  urgency TEXT DEFAULT 'medium',
+  date TEXT DEFAULT 'Upcoming',
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
+ALTER TABLE deadlines ADD COLUMN IF NOT EXISTS user_id UUID REFERENCES profiles(id) ON DELETE CASCADE;
+ALTER TABLE deadlines ADD COLUMN IF NOT EXISTS project_id UUID REFERENCES projects(id) ON DELETE CASCADE;
 
 -- ============================================================
--- ROW LEVEL SECURITY
+-- ROW LEVEL SECURITY (RLS) POLICIES
 -- ============================================================
 
-ALTER TABLE profiles         ENABLE ROW LEVEL SECURITY;
-ALTER TABLE projects         ENABLE ROW LEVEL SECURITY;
-ALTER TABLE mood_boards      ENABLE ROW LEVEL SECURITY;
-ALTER TABLE mood_board_images ENABLE ROW LEVEL SECURITY;
-ALTER TABLE sketches         ENABLE ROW LEVEL SECURITY;
-ALTER TABLE fabrics          ENABLE ROW LEVEL SECURITY;
-ALTER TABLE notes            ENABLE ROW LEVEL SECURITY;
-ALTER TABLE color_palettes   ENABLE ROW LEVEL SECURITY;
-ALTER TABLE style_guides     ENABLE ROW LEVEL SECURITY;
-ALTER TABLE patterns         ENABLE ROW LEVEL SECURITY;
-ALTER TABLE fitting_logs     ENABLE ROW LEVEL SECURITY;
+ALTER TABLE profiles ENABLE ROW LEVEL SECURITY;
+ALTER TABLE projects ENABLE ROW LEVEL SECURITY;
+ALTER TABLE sketches ENABLE ROW LEVEL SECURITY;
+ALTER TABLE patterns ENABLE ROW LEVEL SECURITY;
+ALTER TABLE fabrics ENABLE ROW LEVEL SECURITY;
+ALTER TABLE notes ENABLE ROW LEVEL SECURITY;
+ALTER TABLE deadlines ENABLE ROW LEVEL SECURITY;
 
--- Profiles policy
+-- Profiles: user can access their own profile
+DROP POLICY IF EXISTS "Users can manage their own profile" ON profiles;
 CREATE POLICY "Users can manage their own profile"
   ON profiles FOR ALL USING (auth.uid() = id);
 
--- Projects policy
+-- Projects: user can manage their own collections
+DROP POLICY IF EXISTS "Users can manage their own projects" ON projects;
 CREATE POLICY "Users can manage their own projects"
   ON projects FOR ALL USING (auth.uid() = user_id);
 
--- Mood boards policy
-CREATE POLICY "Users can manage their own mood boards"
-  ON mood_boards FOR ALL USING (auth.uid() = user_id);
-
--- Mood board images policy
-CREATE POLICY "Users can manage their own mood board images"
-  ON mood_board_images FOR ALL
-  USING (mood_board_id IN (SELECT id FROM mood_boards WHERE user_id = auth.uid()));
-
--- Sketches policy
+-- Sketches: user can manage their own sketches
+DROP POLICY IF EXISTS "Users can manage their own sketches" ON sketches;
 CREATE POLICY "Users can manage their own sketches"
   ON sketches FOR ALL USING (auth.uid() = user_id);
 
--- Fabrics policy
-CREATE POLICY "Users can manage their own fabrics"
-  ON fabrics FOR ALL USING (auth.uid() = user_id);
-
--- Notes policy
-CREATE POLICY "Users can manage their own notes"
-  ON notes FOR ALL USING (auth.uid() = user_id);
-
--- Color palettes policy
-CREATE POLICY "Users can manage their own color palettes"
-  ON color_palettes FOR ALL USING (auth.uid() = user_id);
-
--- Style guides policy
-CREATE POLICY "Users can manage their own style guides"
-  ON style_guides FOR ALL USING (auth.uid() = user_id);
-
--- Patterns policy
+-- Patterns: user can manage their own patterns
+DROP POLICY IF EXISTS "Users can manage their own patterns" ON patterns;
 CREATE POLICY "Users can manage their own patterns"
   ON patterns FOR ALL USING (auth.uid() = user_id);
 
--- Fitting logs policy
-CREATE POLICY "Users can manage their own fitting logs"
-  ON fitting_logs FOR ALL USING (auth.uid() = user_id);
+-- Fabrics: user can manage their own fabrics
+DROP POLICY IF EXISTS "Users can manage their own fabrics" ON fabrics;
+CREATE POLICY "Users can manage their own fabrics"
+  ON fabrics FOR ALL USING (auth.uid() = user_id);
 
--- Public portfolio read policy
-CREATE POLICY "Anyone can view portfolio-ready projects"
-  ON projects FOR SELECT USING (portfolio_ready = true);
+-- Notes: user can manage their own notes
+DROP POLICY IF EXISTS "Users can manage their own notes" ON notes;
+CREATE POLICY "Users can manage their own notes"
+  ON notes FOR ALL USING (auth.uid() = user_id);
 
--- ============================================================
--- STORAGE BUCKETS (create in Supabase dashboard or via SQL)
--- ============================================================
-
--- Run these to create buckets (if using storage admin)
--- INSERT INTO storage.buckets (id, name, public) VALUES ('avatars', 'avatars', true);
--- INSERT INTO storage.buckets (id, name, public) VALUES ('moodboard-images', 'moodboard-images', true);
--- INSERT INTO storage.buckets (id, name, public) VALUES ('fabric-swatches', 'fabric-swatches', true);
--- INSERT INTO storage.buckets (id, name, public) VALUES ('sketch-thumbnails', 'sketch-thumbnails', true);
+-- Deadlines: user can manage their own deadlines
+DROP POLICY IF EXISTS "Users can manage their own deadlines" ON deadlines;
+CREATE POLICY "Users can manage their own deadlines"
+  ON deadlines FOR ALL USING (auth.uid() = user_id);
 
 -- ============================================================
--- INDEXES
+-- PERFORMANCE INDEXES
 -- ============================================================
 
 CREATE INDEX IF NOT EXISTS idx_projects_user_id ON projects(user_id);
-CREATE INDEX IF NOT EXISTS idx_projects_status ON projects(status);
 CREATE INDEX IF NOT EXISTS idx_sketches_user_id ON sketches(user_id);
 CREATE INDEX IF NOT EXISTS idx_sketches_project_id ON sketches(project_id);
-CREATE INDEX IF NOT EXISTS idx_mood_boards_user_id ON mood_boards(user_id);
+CREATE INDEX IF NOT EXISTS idx_patterns_project_id ON patterns(project_id);
 CREATE INDEX IF NOT EXISTS idx_fabrics_user_id ON fabrics(user_id);
 CREATE INDEX IF NOT EXISTS idx_notes_user_id ON notes(user_id);
-CREATE INDEX IF NOT EXISTS idx_notes_pinned ON notes(pinned);
-CREATE INDEX IF NOT EXISTS idx_patterns_project_id ON patterns(project_id);
-CREATE INDEX IF NOT EXISTS idx_fitting_logs_project_id ON fitting_logs(project_id);
+CREATE INDEX IF NOT EXISTS idx_notes_collection_id ON notes(collection_id);
+CREATE INDEX IF NOT EXISTS idx_deadlines_user_id ON deadlines(user_id);

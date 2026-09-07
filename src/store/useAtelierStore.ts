@@ -91,8 +91,15 @@ export interface SavedFittingLog {
 export interface SavedNote {
   id: string
   projectId?: string
+  collectionId?: string
+  importedFromId?: string
   title: string
+  category?: string
   content: string
+  date?: string
+  tag?: string
+  lookRef?: string
+  createdAt?: string
 }
 
 interface AtelierState {
@@ -131,6 +138,7 @@ interface AtelierState {
   deleteFittingLog: (id: string) => void
 
   addNote: (note: Omit<SavedNote, 'id'>) => SavedNote
+  updateNote: (id: string, updates: Partial<SavedNote>) => void
   deleteNote: (id: string) => void
 }
 
@@ -253,9 +261,18 @@ export const useAtelierStore = create<AtelierState>()(
 
       addNote: (noteData) => {
         const id = 'note-' + Date.now()
-        const newNote: SavedNote = { ...noteData, id }
+        const newNote: SavedNote = {
+          ...noteData,
+          id,
+          createdAt: noteData.createdAt || new Date().toISOString(),
+        }
         set((state) => ({ notes: [newNote, ...state.notes] }))
         return newNote
+      },
+      updateNote: (id, updates) => {
+        set((state) => ({
+          notes: state.notes.map((n) => (n.id === id ? { ...n, ...updates } : n)),
+        }))
       },
       deleteNote: (id) => {
         set((state) => ({ notes: state.notes.filter((n) => n.id !== id) }))

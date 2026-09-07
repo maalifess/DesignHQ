@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '@/hooks/useAuth'
 import { useAtelierStore } from '@/store/useAtelierStore'
@@ -7,6 +8,9 @@ export default function Dashboard() {
   const navigate = useNavigate()
   const { profile } = useAuth()
   const designerName = profile?.display_name || profile?.full_name || 'Ariba'
+
+  const notes = useAtelierStore((state) => state.notes)
+  const addNote = useAtelierStore((state) => state.addNote)
 
   const projects = useAtelierStore((state) => state.projects)
   const addProject = useAtelierStore((state) => state.addProject)
@@ -20,6 +24,31 @@ export default function Dashboard() {
 
   const closestProject = projects.length > 0 ? projects[0] : null
   const closestDeadline = deadlines.length > 0 ? [...deadlines].sort((a, b) => a.daysLeft - b.daysLeft)[0] : null
+
+  // Quick Note State
+  const [quickNoteTitle, setQuickNoteTitle] = useState('')
+  const [quickNoteContent, setQuickNoteContent] = useState('')
+  const [quickNoteCategory, setQuickNoteCategory] = useState('Fitting Notes')
+  const [quickNoteSavedToast, setQuickNoteSavedToast] = useState(false)
+
+  const handleSaveQuickNote = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!quickNoteContent.trim()) return
+    const title = quickNoteTitle.trim() || 'Quick Fitting Note'
+    const today = new Date().toISOString().split('T')[0]
+    addNote({
+      title,
+      category: quickNoteCategory,
+      content: quickNoteContent.trim(),
+      date: today,
+      tag: quickNoteCategory.toLowerCase().includes('pattern') ? 'Pattern Specs' : 'Fitting Note',
+      createdAt: new Date().toISOString(),
+    })
+    setQuickNoteTitle('')
+    setQuickNoteContent('')
+    setQuickNoteSavedToast(true)
+    setTimeout(() => setQuickNoteSavedToast(false), 3000)
+  }
 
   // Modals
   const [showAuditModal, setShowAuditModal] = useState<boolean>(false)
@@ -173,9 +202,12 @@ export default function Dashboard() {
 
       {/* 4 KPI Stat Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-space-md">
-        <div
+        <motion.div
+          whileHover={{ y: -4, scale: 1.02 }}
+          whileTap={{ scale: 0.97 }}
+          transition={{ type: 'spring', stiffness: 400, damping: 25 }}
           onClick={() => navigate('/projects')}
-          className="relative overflow-hidden rounded-xl bg-surface-container-low/80 backdrop-blur-xl p-space-lg shadow-xl hover:-translate-y-0.5 transition-all cursor-pointer flex flex-col justify-between"
+          className="relative overflow-hidden rounded-xl bg-surface-container-low/80 backdrop-blur-xl p-space-lg shadow-xl cursor-pointer flex flex-col justify-between"
         >
           <div className="w-10 h-10 rounded-lg bg-primary-container/30 flex items-center justify-center text-primary mb-space-xs">
             <span className="material-symbols-outlined text-xl">styler</span>
@@ -184,11 +216,14 @@ export default function Dashboard() {
           <span className="font-headline-lg text-headline-lg text-on-surface my-space-2xs block font-bold">
             {projects.length} Saved
           </span>
-        </div>
+        </motion.div>
 
-        <div
+        <motion.div
+          whileHover={{ y: -4, scale: 1.02 }}
+          whileTap={{ scale: 0.97 }}
+          transition={{ type: 'spring', stiffness: 400, damping: 25 }}
           onClick={() => navigate('/sketchbook')}
-          className="relative overflow-hidden rounded-xl bg-surface-container-low/80 backdrop-blur-xl p-space-lg shadow-xl hover:-translate-y-0.5 transition-all cursor-pointer flex flex-col justify-between"
+          className="relative overflow-hidden rounded-xl bg-surface-container-low/80 backdrop-blur-xl p-space-lg shadow-xl cursor-pointer flex flex-col justify-between"
         >
           <div className="w-10 h-10 rounded-lg bg-secondary-container/40 flex items-center justify-center text-secondary mb-space-xs">
             <span className="material-symbols-outlined text-xl">palette</span>
@@ -197,11 +232,14 @@ export default function Dashboard() {
           <span className="font-headline-lg text-headline-lg text-on-surface my-space-2xs block font-bold">
             {sketches.length} Sketches
           </span>
-        </div>
+        </motion.div>
 
-        <div
+        <motion.div
+          whileHover={{ y: -4, scale: 1.02 }}
+          whileTap={{ scale: 0.97 }}
+          transition={{ type: 'spring', stiffness: 400, damping: 25 }}
           onClick={() => navigate('/fabrics')}
-          className="relative overflow-hidden rounded-xl bg-surface-container-low/80 backdrop-blur-xl p-space-lg shadow-xl hover:-translate-y-0.5 transition-all cursor-pointer flex flex-col justify-between"
+          className="relative overflow-hidden rounded-xl bg-surface-container-low/80 backdrop-blur-xl p-space-lg shadow-xl cursor-pointer flex flex-col justify-between"
         >
           <div className="w-10 h-10 rounded-lg bg-tertiary-container/40 flex items-center justify-center text-tertiary mb-space-xs">
             <span className="material-symbols-outlined text-xl">texture</span>
@@ -210,11 +248,14 @@ export default function Dashboard() {
           <span className="font-headline-lg text-headline-lg text-on-surface my-space-2xs block font-bold">
             {fabrics.length} Patterns
           </span>
-        </div>
+        </motion.div>
 
-        <div
+        <motion.div
+          whileHover={{ y: -4, scale: 1.02 }}
+          whileTap={{ scale: 0.97 }}
+          transition={{ type: 'spring', stiffness: 400, damping: 25 }}
           onClick={() => navigate('/notes')}
-          className="relative overflow-hidden rounded-xl bg-surface-container-low/80 backdrop-blur-xl p-space-lg shadow-xl hover:-translate-y-0.5 transition-all cursor-pointer flex flex-col justify-between"
+          className="relative overflow-hidden rounded-xl bg-surface-container-low/80 backdrop-blur-xl p-space-lg shadow-xl cursor-pointer flex flex-col justify-between"
         >
           <div className="w-10 h-10 rounded-lg bg-primary-container/40 flex items-center justify-center text-primary mb-space-xs">
             <span className="material-symbols-outlined text-xl">event_upcoming</span>
@@ -223,7 +264,7 @@ export default function Dashboard() {
           <span className="font-headline-lg text-headline-lg text-on-surface my-space-2xs block font-bold">
             {deadlines.length} Items
           </span>
-        </div>
+        </motion.div>
       </div>
 
       {/* Main Grid Section */}
@@ -417,13 +458,14 @@ export default function Dashboard() {
 
         {/* Right 4 columns: Quick Notes Corner */}
         <div className="lg:col-span-4 flex flex-col gap-space-xl">
-          <div className="rounded-xl bg-surface-container-low/90 backdrop-blur-2xl shadow-xl border border-outline-variant/20 p-space-lg flex flex-col gap-space-md">
+          <form onSubmit={handleSaveQuickNote} className="rounded-xl bg-surface-container-low/90 backdrop-blur-2xl shadow-xl border border-outline-variant/20 p-space-lg flex flex-col gap-space-md">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-space-xs">
                 <span className="material-symbols-outlined text-primary text-xl">edit_note</span>
                 <h3 className="font-headline-sm text-headline-sm text-on-surface font-bold">Atelier Quick Notes</h3>
               </div>
               <button
+                type="button"
                 onClick={() => navigate('/notes')}
                 className="font-label-sm text-label-sm text-primary hover:underline font-semibold cursor-pointer"
               >
@@ -431,27 +473,91 @@ export default function Dashboard() {
               </button>
             </div>
 
-            <textarea
-              rows={6}
-              placeholder="Jot down quick fitting notes, pattern adjustments, or task reminders..."
-              className="w-full p-space-sm rounded-lg bg-surface-container-high/60 text-on-surface font-body-sm text-body-sm focus:outline-none focus:bg-surface-container-highest transition-all border border-outline-variant/20 resize-none"
-            />
+            {quickNoteSavedToast && (
+              <div className="p-space-xs rounded bg-primary-container/40 text-primary font-label-sm text-xs flex items-center gap-1 font-semibold animate-fade-in">
+                <span className="material-symbols-outlined text-sm">check_circle</span>
+                <span>Note saved to Fitting Notes library!</span>
+              </div>
+            )}
 
-            <button
-              onClick={() => navigate('/notes')}
-              className="w-full py-space-xs rounded-lg bg-surface-container-high hover:bg-surface-container-highest text-on-surface font-title-sm text-title-sm text-center transition-colors cursor-pointer"
-              type="button"
-            >
-              Open Fitting Notes &amp; Specifications
-            </button>
-          </div>
+            <div className="flex flex-col gap-space-xs">
+              <input
+                type="text"
+                placeholder="Note Title (Optional)"
+                value={quickNoteTitle}
+                onChange={(e) => setQuickNoteTitle(e.target.value)}
+                className="w-full px-space-sm py-space-xs rounded-lg bg-surface-container-high/60 text-on-surface font-title-sm text-title-sm focus:outline-none focus:bg-surface-container-highest transition-all border border-outline-variant/20"
+              />
+
+              <select
+                value={quickNoteCategory}
+                onChange={(e) => setQuickNoteCategory(e.target.value)}
+                className="w-full px-space-sm py-space-xs rounded-lg bg-surface-container-high/60 text-on-surface font-body-sm text-body-sm focus:outline-none border border-outline-variant/20"
+              >
+                <option value="Fitting Notes">Fitting Notes</option>
+                <option value="Pattern Adjustments">Pattern Adjustments</option>
+                <option value="Fabrics & Drapes">Fabrics &amp; Drapes</option>
+                <option value="General Atelier Task">General Atelier Task</option>
+              </select>
+
+              <textarea
+                rows={5}
+                required
+                value={quickNoteContent}
+                onChange={(e) => setQuickNoteContent(e.target.value)}
+                placeholder="Jot down quick fitting notes, pattern adjustments, or task reminders..."
+                className="w-full p-space-sm rounded-lg bg-surface-container-high/60 text-on-surface font-body-sm text-body-sm focus:outline-none focus:bg-surface-container-highest transition-all border border-outline-variant/20 resize-none"
+              />
+            </div>
+
+            <div className="flex items-center gap-space-xs">
+              <button
+                type="submit"
+                className="flex-1 py-space-xs rounded-lg bg-primary-container hover:brightness-110 text-on-primary font-title-sm text-title-sm font-semibold transition-all shadow cursor-pointer flex items-center justify-center gap-1"
+              >
+                <span className="material-symbols-outlined text-sm">save</span>
+                <span>Save Note</span>
+              </button>
+              <button
+                onClick={() => navigate('/notes')}
+                className="px-space-sm py-space-xs rounded-lg bg-surface-container-high hover:bg-surface-container-highest text-on-surface font-title-sm text-title-sm transition-colors cursor-pointer"
+                type="button"
+              >
+                View All ({notes.length})
+              </button>
+            </div>
+
+            {/* Recent Saved Notes List */}
+            {notes.length > 0 && (
+              <div className="flex flex-col gap-space-xs pt-space-xs border-t border-outline-variant/20">
+                <span className="font-label-sm text-[11px] text-outline uppercase tracking-wider font-semibold">
+                  Recent Atelier Notes ({notes.slice(0, 3).length})
+                </span>
+                <div className="flex flex-col gap-space-xs max-h-48 overflow-y-auto pr-1">
+                  {notes.slice(0, 3).map((n) => (
+                    <div
+                      key={n.id}
+                      onClick={() => navigate('/notes')}
+                      className="p-space-xs rounded bg-surface-container-high/40 hover:bg-surface-container-high border border-outline-variant/10 cursor-pointer transition-colors"
+                    >
+                      <div className="flex items-center justify-between">
+                        <span className="font-title-sm text-xs font-semibold text-on-surface truncate">{n.title}</span>
+                        <span className="font-label-sm text-[10px] text-primary bg-primary-container/30 px-1 rounded">{n.category}</span>
+                      </div>
+                      <p className="font-body-sm text-[11px] text-on-surface-variant line-clamp-1 mt-0.5">{n.content}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </form>
         </div>
       </div>
 
       {/* Audit Modal */}
       {showAuditModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/80 backdrop-blur-md">
-          <div className="relative w-full max-w-2xl rounded-xl bg-surface-container-low border border-outline-variant/30 p-space-lg shadow-2xl flex flex-col gap-space-md">
+          <div className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-xl bg-surface-container-low border border-outline-variant/30 p-space-lg shadow-2xl flex flex-col gap-space-md">
             <div className="flex items-center justify-between border-b border-outline-variant/20 pb-space-xs">
               <div className="flex items-center gap-space-xs">
                 <span className="material-symbols-outlined text-primary text-xl">auto_awesome</span>
@@ -527,7 +633,7 @@ export default function Dashboard() {
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/80 backdrop-blur-md">
           <form
             onSubmit={handleCreateProject}
-            className="relative w-full max-w-xl rounded-xl bg-surface-container-low border border-outline-variant/30 p-space-lg shadow-2xl flex flex-col gap-space-md"
+            className="relative w-full max-w-xl max-h-[90vh] overflow-y-auto rounded-xl bg-surface-container-low border border-outline-variant/30 p-space-lg shadow-2xl flex flex-col gap-space-md"
           >
             <div className="flex items-center justify-between border-b border-outline-variant/20 pb-space-xs">
               <h3 className="font-headline-sm text-headline-sm text-on-surface font-bold">
