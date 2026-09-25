@@ -379,7 +379,7 @@ export default function Dashboard() {
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-space-xs">
                 <span className="material-symbols-outlined text-secondary text-xl">draw</span>
-                <h2 className="font-headline-md text-headline-md text-on-surface font-bold">Recent Sketchbook &amp; AI Critique</h2>
+                <h2 className="font-headline-md text-headline-md text-on-surface font-bold">Recent Sketchbook Artworks</h2>
               </div>
               <button
                 onClick={() => navigate('/sketchbook')}
@@ -396,7 +396,7 @@ export default function Dashboard() {
                   No Saved Sketchbook Artworks
                 </h3>
                 <p className="font-body-sm text-body-sm text-on-surface-variant max-w-md">
-                  Draw croquis annotations and silhouettes in the Sketchbook canvas, then click "Save to Atelier" to view them here with Gemini AI critiques.
+                  Draw croquis annotations and silhouettes in the Sketchbook canvas, then click "Save to Atelier" to view them here.
                 </p>
                 <button
                   onClick={() => navigate('/sketchbook')}
@@ -440,15 +440,7 @@ export default function Dashboard() {
                         {sk.garmentType}
                       </p>
                     </div>
-                    <div className="p-space-xs rounded-lg bg-surface-container-high/60 backdrop-blur-md flex flex-col gap-1 border border-outline-variant/10">
-                      <div className="flex items-center gap-1 text-secondary font-label-sm text-[11px] font-semibold">
-                        <span className="material-symbols-outlined text-xs">auto_awesome</span>
-                        <span>AI Mentor Critique</span>
-                      </div>
-                      <p className="font-body-sm text-[11px] text-on-surface-variant italic">
-                        {sk.aiCritique}
-                      </p>
-                    </div>
+
                   </div>
                 ))}
               </div>
@@ -556,13 +548,13 @@ export default function Dashboard() {
 
       {/* Audit Modal */}
       {showAuditModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-background/80 backdrop-blur-md">
-          <div className="relative w-full max-w-[95vw] sm:max-w-2xl max-h-[85dvh] overflow-y-auto rounded-2xl bg-surface-container-low border border-outline-variant/30 p-4 sm:p-6 shadow-2xl block">
+        <div className="fixed inset-0 z-50 flex items-start sm:items-center justify-center p-3 sm:p-4 pb-24 sm:pb-4 bg-background/80 backdrop-blur-md">
+          <div className="relative w-full max-w-[95vw] sm:max-w-2xl max-h-[85vh] sm:max-h-[85vh] my-auto overflow-y-auto rounded-2xl bg-surface-container-low border border-outline-variant/30 p-4 sm:p-6 shadow-2xl block">
             <div className="flex items-center justify-between border-b border-outline-variant/20 pb-space-xs mb-3 sm:mb-4">
               <div className="flex items-center gap-space-xs">
                 <span className="material-symbols-outlined text-primary text-xl">auto_awesome</span>
                 <h3 className="font-headline-sm text-headline-sm text-on-surface font-bold">
-                  Gemini 2.0 Full Atelier Audit
+                  Full Atelier Audit
                 </h3>
               </div>
               <button
@@ -630,10 +622,10 @@ export default function Dashboard() {
 
       {/* Add Project Modal */}
       {showAddProjectModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-background/80 backdrop-blur-md">
+        <div className="fixed inset-0 z-50 flex items-start sm:items-center justify-center p-3 sm:p-4 pb-24 sm:pb-4 bg-background/80 backdrop-blur-md">
           <form
             onSubmit={handleCreateProject}
-            className="relative w-full max-w-[95vw] sm:max-w-xl max-h-[85dvh] overflow-y-auto rounded-2xl bg-surface-container-low border border-outline-variant/30 p-4 sm:p-6 shadow-2xl block"
+            className="relative w-full max-w-[95vw] sm:max-w-xl max-h-[85vh] sm:max-h-[85vh] my-auto overflow-y-auto rounded-2xl bg-surface-container-low border border-outline-variant/30 p-4 sm:p-6 shadow-2xl block"
           >
             <div className="flex items-center justify-between border-b border-outline-variant/20 pb-space-xs mb-3 sm:mb-4">
               <h3 className="font-headline-sm text-headline-sm text-on-surface font-bold">
@@ -725,10 +717,10 @@ export default function Dashboard() {
 
       {/* Add Fabric Modal */}
       {showAddFabricModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-background/80 backdrop-blur-md">
+        <div className="fixed inset-0 z-50 flex items-start sm:items-center justify-center p-3 sm:p-4 pb-24 sm:pb-4 bg-background/80 backdrop-blur-md">
           <form
             onSubmit={handleCreateFabric}
-            className="relative w-full max-w-[95vw] sm:max-w-xl max-h-[85dvh] overflow-y-auto rounded-2xl bg-surface-container-low border border-outline-variant/30 p-4 sm:p-6 shadow-2xl block"
+            className="relative w-full max-w-[95vw] sm:max-w-xl max-h-[85vh] sm:max-h-[85vh] my-auto overflow-y-auto rounded-2xl bg-surface-container-low border border-outline-variant/30 p-4 sm:p-6 shadow-2xl block"
           >
             <div className="flex items-center justify-between border-b border-outline-variant/20 pb-space-xs mb-3 sm:mb-4">
               <h3 className="font-headline-sm text-headline-sm text-on-surface font-bold">
@@ -804,10 +796,10 @@ export default function Dashboard() {
 
       {/* Add Deadline Modal */}
       {showAddDeadlineModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-background/80 backdrop-blur-md">
+        <div className="fixed inset-0 z-50 flex items-start sm:items-center justify-center p-3 sm:p-4 pb-24 sm:pb-4 bg-background/80 backdrop-blur-md">
           <form
             onSubmit={handleCreateDeadline}
-            className="relative w-full max-w-[95vw] sm:max-w-xl max-h-[85dvh] overflow-y-auto rounded-2xl bg-surface-container-low border border-outline-variant/30 p-4 sm:p-6 shadow-2xl block"
+            className="relative w-full max-w-[95vw] sm:max-w-xl max-h-[85vh] sm:max-h-[85vh] my-auto overflow-y-auto rounded-2xl bg-surface-container-low border border-outline-variant/30 p-4 sm:p-6 shadow-2xl block"
           >
             <div className="flex items-center justify-between border-b border-outline-variant/20 pb-space-xs mb-3 sm:mb-4">
               <h3 className="font-headline-sm text-headline-sm text-on-surface font-bold">
@@ -875,3 +867,4 @@ export default function Dashboard() {
     </div>
   )
 }
+

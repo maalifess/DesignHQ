@@ -10,7 +10,7 @@ export function TopBar() {
 
   return (
     <header
-      className={`fixed top-0 right-0 left-0 h-[var(--topbar-height)] z-40 bg-surface-container-lowest/90 backdrop-blur-2xl px-4 md:px-gutter-desktop flex items-center justify-between shadow-[0_8px_32px_0_rgba(0,0,0,0.45)] transition-all duration-300 ${
+      className={`fixed top-0 right-0 left-0 h-[var(--topbar-height)] z-30 bg-surface-container-lowest/90 backdrop-blur-2xl px-4 md:px-gutter-desktop flex items-center justify-between shadow-[0_8px_32px_0_rgba(0,0,0,0.45)] transition-all duration-300 ${
         sidebarCollapsed ? 'md:left-[var(--sidebar-collapsed)]' : 'md:left-[var(--sidebar-width)]'
       }`}
     >

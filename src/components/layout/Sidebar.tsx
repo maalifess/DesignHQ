@@ -6,7 +6,7 @@ const navItems = [
   { icon: 'dashboard', label: 'Dashboard', to: '/' },
   { icon: 'styler', label: 'Collections', to: '/projects' },
   { icon: 'content_cut', label: 'Patterns', to: '/patterns' },
-  { icon: 'auto_awesome_motion', label: 'Mood Boards & AI', to: '/moodboards' },
+  { icon: 'auto_awesome_motion', label: 'Mood Boards', to: '/moodboards' },
   { icon: 'draw', label: 'Sketchbook', to: '/sketchbook' },
   { icon: 'straighten', label: 'Fitting Notes', to: '/notes' },
   { icon: 'auto_stories', label: 'Portfolio', to: '/portfolio' },
@@ -24,7 +24,7 @@ export function Sidebar() {
       <div className="flex flex-col overflow-hidden">
         {/* Logo Header */}
         <div className={`h-[var(--topbar-height)] flex items-center border-b border-outline-variant/20 bg-surface-container-low/40 transition-all duration-300 ${sidebarCollapsed ? 'justify-center px-0' : 'justify-between px-space-md'}`}>
-          <div className={`flex items-center gap-space-xs transition-all duration-300 overflow-hidden ${sidebarCollapsed ? 'w-0 opacity-0' : 'opacity-100'}`}>
+          <div className={`flex items-center gap-space-xs transition-all duration-300 overflow-hidden ${sidebarCollapsed ? 'w-0 opacity-0 hidden' : 'opacity-100'}`}>
             <img
               src="/logo.png"
               alt="Ariba's Atelier Logo"
@@ -36,7 +36,7 @@ export function Sidebar() {
           </div>
           <button
             onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
-            className="text-on-surface-variant hover:text-on-surface p-1 rounded-md transition-colors flex-shrink-0"
+            className={`text-on-surface-variant hover:text-on-surface p-1 rounded-md transition-colors flex-shrink-0 ${sidebarCollapsed ? 'mx-auto' : ''}`}
             title={sidebarCollapsed ? "Expand Sidebar" : "Collapse Sidebar"}
           >
             <span className="material-symbols-outlined text-[20px]">

@@ -173,7 +173,7 @@ export default function MoodBoardDetail() {
       setAiTags(results)
       setShowAIPanel(true)
     } catch {
-      addToast('AI analysis failed. Check your Gemini API key.', 'error')
+      addToast('Analysis failed. Please try again.', 'error')
     }
     setAnalyzingAI(false)
   }
@@ -355,8 +355,8 @@ export default function MoodBoardDetail() {
 
       <input ref={fileInputRef} type="file" accept="image/*" multiple style={{ display: 'none' }} onChange={handleFileInput} />
 
-      {/* AI Tags Panel */}
-      <GlassModal isOpen={showAIPanel} onClose={() => setShowAIPanel(false)} title=" AI Analysis Results" size="lg">
+      {/* Style Tags Panel */}
+      <GlassModal isOpen={showAIPanel} onClose={() => setShowAIPanel(false)} title=" Style Analysis Results" size="lg">
         <div style={{ padding: '1.5rem' }}>
           {aiTags.length === 0 ? (
             <p style={{ color: 'var(--text-muted)' }}>No results. Try adding more images.</p>

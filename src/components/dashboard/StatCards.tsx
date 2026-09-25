@@ -42,14 +42,6 @@ export function StatCards({ projects, sketches, fabrics }: StatCardsProps) {
       trend: 'Active Atelier Sketches',
       color: 'var(--accent-secondary)',
     },
-    {
-      icon: Layers2,
-      label: 'Fabric Swatches',
-      value: fabrics.length,
-      total: null,
-      trend: `${fabrics.filter((f) => f.availability === 'in_stock').length} in stock`,
-      color: '#A0002A',
-    },
   ]
 
   return (

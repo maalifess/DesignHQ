@@ -12,7 +12,7 @@ export function BottomNav() {
   ]
 
   return (
-    <nav className="fixed bottom-3 left-3 right-3 h-14 z-50 bg-surface-container-lowest/95 backdrop-blur-2xl rounded-full border border-outline-variant/30 px-2 flex items-center justify-around shadow-[0_8px_32px_0_rgba(0,0,0,0.5)] md:hidden">
+    <nav className="fixed bottom-3 left-3 right-3 h-14 z-40 bg-surface-container-lowest/95 backdrop-blur-2xl rounded-full border border-outline-variant/30 px-2 flex items-center justify-around shadow-[0_8px_32px_0_rgba(0,0,0,0.5)] md:hidden">
       {navItems.map(({ icon, label, to }) => (
         <NavLink
           key={to}

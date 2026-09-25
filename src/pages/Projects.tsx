@@ -196,10 +196,10 @@ export default function Projects() {
 
       {/* New Collection Modal */}
       {showModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-background/80 backdrop-blur-md">
+        <div className="fixed inset-0 z-50 flex items-start sm:items-center justify-center p-3 sm:p-4 pb-24 sm:pb-4 bg-background/80 backdrop-blur-md">
           <form
             onSubmit={handleCreateProject}
-            className="relative w-full max-w-[95vw] sm:max-w-xl max-h-[85dvh] overflow-y-auto rounded-2xl bg-surface-container-low border border-outline-variant/30 p-4 sm:p-6 shadow-2xl block"
+            className="relative w-full max-w-[95vw] sm:max-w-xl max-h-[85vh] sm:max-h-[85vh] my-auto overflow-y-auto rounded-2xl bg-surface-container-low border border-outline-variant/30 p-4 sm:p-6 shadow-2xl block"
           >
             <div className="flex items-center justify-between border-b border-outline-variant/20 pb-space-xs mb-3 sm:mb-4">
               <h3 className="font-headline-sm text-headline-sm text-on-surface font-bold">
