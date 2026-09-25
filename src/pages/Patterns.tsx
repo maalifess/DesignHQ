@@ -15,6 +15,7 @@ export default function Patterns() {
   const [editDesc, setEditDesc] = useState('')
   const [editMeasurements, setEditMeasurements] = useState('')
   const [editImage, setEditImage] = useState('')
+  const [viewingPattern, setViewingPattern] = useState<SavedPattern | null>(null)
 
   // New Pattern Form State
   const [title, setTitle] = useState('')
@@ -177,7 +178,8 @@ export default function Patterns() {
             return (
               <div
                 key={p.id}
-                className="rounded-xl bg-surface-container-low/90 backdrop-blur-2xl shadow-xl border border-outline-variant/20 p-space-lg flex flex-col justify-between gap-space-md hover:bg-surface-container-low transition-all"
+                onClick={() => setViewingPattern(p)}
+                className="rounded-xl bg-surface-container-low/90 backdrop-blur-2xl shadow-xl border border-outline-variant/20 p-space-lg flex flex-col justify-between gap-space-md hover:bg-surface-container-low transition-all cursor-pointer"
               >
                 <div className="flex gap-space-md">
                   <img
@@ -190,24 +192,6 @@ export default function Patterns() {
                       <h3 className="font-headline-sm text-headline-sm text-on-surface font-bold leading-tight truncate">
                         {p.title}
                       </h3>
-                      <div className="flex items-center gap-1">
-                        <button
-                          onClick={() => handleStartEdit(p)}
-                          className="text-outline hover:text-primary transition-colors p-1 cursor-pointer"
-                          title="Edit Pattern & Measurements"
-                          type="button"
-                        >
-                          <span className="material-symbols-outlined text-base">edit</span>
-                        </button>
-                        <button
-                          onClick={() => deletePattern(p.id)}
-                          className="text-outline hover:text-error transition-colors p-1 cursor-pointer"
-                          title="Delete Pattern"
-                          type="button"
-                        >
-                          <span className="material-symbols-outlined text-base">delete</span>
-                        </button>
-                      </div>
                     </div>
 
                     {p.category && (
@@ -251,7 +235,7 @@ export default function Patterns() {
         <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-background/80 backdrop-blur-md">
           <form
             onSubmit={handleCreatePattern}
-            className="relative w-full max-w-[95vw] sm:max-w-xl max-h-[88vh] overflow-y-auto rounded-2xl bg-surface-container-low border border-outline-variant/30 p-4 sm:p-6 shadow-2xl flex flex-col gap-3 sm:gap-4"
+            className="relative w-full max-w-[95vw] sm:max-w-xl max-h-[85dvh] overflow-y-auto rounded-2xl bg-surface-container-low border border-outline-variant/30 p-4 sm:p-6 shadow-2xl flex flex-col gap-3 sm:gap-4"
           >
             <div className="flex items-center justify-between border-b border-outline-variant/20 pb-space-xs">
               <h3 className="font-headline-sm text-headline-sm text-on-surface font-bold">
@@ -396,7 +380,7 @@ export default function Patterns() {
         <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-background/80 backdrop-blur-md">
           <form
             onSubmit={handleSaveEdit}
-            className="relative w-full max-w-[95vw] sm:max-w-xl max-h-[88vh] overflow-y-auto rounded-2xl bg-surface-container-low border border-outline-variant/30 p-4 sm:p-6 shadow-2xl flex flex-col gap-3 sm:gap-4"
+            className="relative w-full max-w-[95vw] sm:max-w-xl max-h-[85dvh] overflow-y-auto rounded-2xl bg-surface-container-low border border-outline-variant/30 p-4 sm:p-6 shadow-2xl flex flex-col gap-3 sm:gap-4"
           >
             <div className="flex items-center justify-between border-b border-outline-variant/20 pb-space-xs">
               <h3 className="font-headline-sm text-headline-sm text-on-surface font-bold">
@@ -517,6 +501,66 @@ export default function Patterns() {
               </button>
             </div>
           </form>
+        </div>
+      )}
+
+      {/* View Pattern Modal */}
+      {viewingPattern && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center p-3 sm:p-4 bg-background/80 backdrop-blur-md">
+          <div className="relative w-full max-w-[95vw] sm:max-w-xl max-h-[85dvh] overflow-y-auto rounded-2xl bg-surface-container-low border border-outline-variant/30 p-4 sm:p-6 shadow-2xl flex flex-col gap-3 sm:gap-4">
+            <div className="flex items-center justify-between border-b border-outline-variant/20 pb-space-xs">
+              <h3 className="font-headline-sm text-headline-sm text-on-surface font-bold">
+                Pattern Details
+              </h3>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    handleStartEdit(viewingPattern)
+                    setViewingPattern(null)
+                  }}
+                  className="text-outline hover:text-primary transition-colors p-1 cursor-pointer bg-surface-container-highest rounded"
+                  title="Edit Pattern"
+                >
+                  <span className="material-symbols-outlined text-base">edit</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (confirm('Delete this pattern?')) {
+                      deletePattern(viewingPattern.id)
+                      setViewingPattern(null)
+                    }
+                  }}
+                  className="text-outline hover:text-error transition-colors p-1 cursor-pointer bg-surface-container-highest rounded"
+                  title="Delete Pattern"
+                >
+                  <span className="material-symbols-outlined text-base">delete</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setViewingPattern(null)}
+                  className="text-outline hover:text-on-surface ml-2"
+                >
+                  <span className="material-symbols-outlined text-lg">close</span>
+                </button>
+              </div>
+            </div>
+            <div className="flex flex-col gap-4">
+              <img src={viewingPattern.image} alt={viewingPattern.title} className="w-full max-h-80 object-contain rounded-lg shadow border border-outline-variant/30 bg-surface-container-high" />
+              <div>
+                <h4 className="font-title-lg text-on-surface font-bold">{viewingPattern.title}</h4>
+                <p className="text-sm text-on-surface-variant font-medium mt-1">{viewingPattern.category}</p>
+                <p className="text-sm text-on-surface-variant mt-2 whitespace-pre-line">{viewingPattern.description}</p>
+              </div>
+              {viewingPattern.measurements && (
+                <div className="p-3 bg-surface-container-high rounded-lg border border-outline-variant/20">
+                  <h5 className="text-xs font-bold uppercase tracking-wider text-outline mb-1">Measurements & Specs</h5>
+                  <p className="text-sm text-on-surface whitespace-pre-line">{viewingPattern.measurements}</p>
+                </div>
+              )}
+            </div>
+          </div>
         </div>
       )}
     </div>

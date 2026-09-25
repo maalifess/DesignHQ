@@ -13,7 +13,6 @@ const Patterns = lazy(() => import('@/pages/Patterns'))
 const MoodBoards = lazy(() => import('@/pages/MoodBoards'))
 const MoodBoardDetail = lazy(() => import('@/pages/MoodBoardDetail'))
 const Sketchbook = lazy(() => import('@/pages/Sketchbook'))
-const Fabrics = lazy(() => import('@/pages/Fabrics'))
 const Notes = lazy(() => import('@/pages/Notes'))
 const Portfolio = lazy(() => import('@/pages/Portfolio'))
 const PortfolioPublic = lazy(() => import('@/pages/PortfolioPublic'))
@@ -127,11 +126,6 @@ function AppRoutes() {
         <Route path="/sketchbook" element={
           <ProtectedRoute>
             <Layout><Sketchbook /></Layout>
-          </ProtectedRoute>
-        } />
-        <Route path="/fabrics" element={
-          <ProtectedRoute>
-            <Layout><Fabrics /></Layout>
           </ProtectedRoute>
         } />
         <Route path="/notes" element={

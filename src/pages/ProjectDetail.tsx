@@ -92,6 +92,7 @@ export default function ProjectDetail() {
   const [editDesc, setEditDesc] = useState('')
   const [editMeasurements, setEditMeasurements] = useState('')
   const [editImage, setEditImage] = useState('')
+  const [viewingPattern, setViewingPattern] = useState<SavedPattern | null>(null)
 
   // Import Modal State
   const [showImportModal, setShowImportModal] = useState<boolean>(false)
@@ -102,6 +103,7 @@ export default function ProjectDetail() {
   const [editingSketch, setEditingSketch] = useState<SavedSketch | null>(null)
   const [editSketchTitle, setEditSketchTitle] = useState('')
   const [editSketchGarmentType, setEditSketchGarmentType] = useState('')
+  const [viewingSketch, setViewingSketch] = useState<SavedSketch | null>(null)
 
   // Collection Note Form State
   const [showAddNoteModal, setShowAddNoteModal] = useState<boolean>(false)
@@ -511,9 +513,8 @@ export default function ProjectDetail() {
           <div className="flex items-center gap-space-2xs overflow-x-auto mobile-scroll-x">
             {[
               { id: 'garments', label: `Patterns (${projectPatterns.length})` },
-              { id: 'fabrics', label: `Sketches (${projectSketches.length})` },
+              { id: 'sketches', label: `Sketches (${projectSketches.length})` },
               { id: 'moodboard', label: `Mood Boards (${projectMoodboards.length})` },
-              { id: 'fitting', label: `Fitting Logs (${projectFittingLogs.length})` },
               { id: 'notes', label: `Notes (${projectNotes.length})` },
             ].map((tab) => (
               <button
@@ -597,7 +598,8 @@ export default function ProjectDetail() {
                     {filteredPatterns.map((look) => (
                       <div
                         key={look.id}
-                        className="rounded-xl bg-surface-container-low/90 backdrop-blur-2xl shadow-xl border border-outline-variant/20 p-space-lg flex flex-col gap-space-md hover:bg-surface-container-low transition-all"
+                        onClick={() => setViewingPattern(look)}
+                        className="rounded-xl bg-surface-container-low/90 backdrop-blur-2xl shadow-xl border border-outline-variant/20 p-space-lg flex flex-col gap-space-md hover:bg-surface-container-low transition-all cursor-pointer"
                       >
                         <div className="flex flex-col sm:flex-row items-start gap-space-md">
                           <img
@@ -618,28 +620,9 @@ export default function ProjectDetail() {
                                   </span>
                                 )}
                               </div>
-
-                              <div className="flex items-center gap-1">
-                                <button
-                                  type="button"
-                                  onClick={() => handleStartEdit(look)}
-                                  className="text-outline hover:text-primary transition-colors p-1 cursor-pointer"
-                                  title="Edit Pattern & Measurements"
-                                >
-                                  <span className="material-symbols-outlined text-base">edit</span>
-                                </button>
-                                <button
-                                  type="button"
-                                  onClick={() => deletePattern(look.id)}
-                                  className="text-outline hover:text-error transition-colors p-1 cursor-pointer"
-                                  title="Delete Pattern"
-                                >
-                                  <span className="material-symbols-outlined text-base">delete</span>
-                                </button>
-                              </div>
                             </div>
 
-                            <p className="font-body-sm text-body-sm text-on-surface-variant mt-1">
+                            <p className="font-body-sm text-body-sm text-on-surface-variant mt-1 line-clamp-2">
                               {look.description}
                             </p>
 
@@ -687,7 +670,7 @@ export default function ProjectDetail() {
             </>
           )}
 
-          {activeTab === 'fabrics' && (
+          {activeTab === 'sketches' && (
             <>
               {projectSketches.length === 0 ? (
                 <div className="rounded-xl bg-surface-container-low/90 backdrop-blur-2xl shadow-xl border border-outline-variant/20 p-space-2xl flex flex-col items-center justify-center text-center gap-space-md">
@@ -723,7 +706,8 @@ export default function ProjectDetail() {
                     {projectSketches.map((sketch) => (
                       <div
                         key={sketch.id}
-                        className="rounded-xl bg-surface-container-low border border-outline-variant/30 overflow-hidden shadow-md group flex flex-col justify-between"
+                        onClick={() => setViewingSketch(sketch)}
+                        className="rounded-xl bg-surface-container-low border border-outline-variant/30 overflow-hidden shadow-md group flex flex-col justify-between cursor-pointer"
                       >
                         <div className="relative aspect-[3/4] bg-surface-container-high overflow-hidden">
                           <img
@@ -735,24 +719,6 @@ export default function ProjectDetail() {
                         <div className="p-space-sm flex flex-col gap-1">
                           <div className="flex items-start justify-between gap-2">
                             <h4 className="font-title-sm text-on-surface font-bold truncate">{sketch.title}</h4>
-                            <div className="flex items-center gap-1">
-                              <button
-                                type="button"
-                                onClick={() => handleStartEditSketch(sketch)}
-                                className="text-outline hover:text-primary transition-colors p-1 cursor-pointer"
-                                title="Edit Sketch Details"
-                              >
-                                <span className="material-symbols-outlined text-base">edit</span>
-                              </button>
-                              <button
-                                type="button"
-                                onClick={() => deleteSketch(sketch.id)}
-                                className="text-outline hover:text-error transition-colors p-1 cursor-pointer"
-                                title="Delete Sketch"
-                              >
-                                <span className="material-symbols-outlined text-base">delete</span>
-                              </button>
-                            </div>
                           </div>
                           {sketch.garmentType && (
                             <span className="font-label-sm text-outline truncate">{sketch.garmentType}</span>
@@ -811,7 +777,7 @@ export default function ProjectDetail() {
             </div>
           )}
 
-          {(activeTab === 'fitting' || activeTab === 'notes') && (
+          {activeTab === 'notes' && (
             <>
               {projectNotes.length === 0 ? (
                 <div className="rounded-xl bg-surface-container-low/90 backdrop-blur-2xl shadow-xl border border-outline-variant/20 p-space-2xl flex flex-col items-center justify-center text-center gap-space-md">
@@ -1014,7 +980,7 @@ export default function ProjectDetail() {
       {/* Edit Collection Palette Modal */}
       {showPaletteModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-background/80 backdrop-blur-md">
-          <div className="relative w-full max-w-[95vw] sm:max-w-lg max-h-[88vh] overflow-y-auto rounded-2xl bg-surface-container-low border border-outline-variant/30 p-4 sm:p-6 shadow-2xl flex flex-col gap-3 sm:gap-4">
+          <div className="relative w-full max-w-[95vw] sm:max-w-lg max-h-[85dvh] overflow-y-auto rounded-2xl bg-surface-container-low border border-outline-variant/30 p-4 sm:p-6 shadow-2xl flex flex-col gap-3 sm:gap-4">
             <div className="flex items-center justify-between border-b border-outline-variant/20 pb-space-xs">
               <div className="flex items-center gap-space-xs">
                 <span className="material-symbols-outlined text-primary text-xl">palette</span>
@@ -1144,7 +1110,7 @@ export default function ProjectDetail() {
         <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-background/80 backdrop-blur-md">
           <form
             onSubmit={handleAddLook}
-            className="relative w-full max-w-[95vw] sm:max-w-xl max-h-[88vh] overflow-y-auto rounded-2xl bg-surface-container-low border border-outline-variant/30 p-4 sm:p-6 shadow-2xl flex flex-col gap-3 sm:gap-4"
+            className="relative w-full max-w-[95vw] sm:max-w-xl max-h-[85dvh] overflow-y-auto rounded-2xl bg-surface-container-low border border-outline-variant/30 p-4 sm:p-6 shadow-2xl flex flex-col gap-3 sm:gap-4"
           >
             <div className="flex items-center justify-between border-b border-outline-variant/20 pb-space-xs">
               <h3 className="font-headline-sm text-headline-sm text-on-surface font-bold">
@@ -1268,7 +1234,7 @@ export default function ProjectDetail() {
       {/* Import Pattern from Library Modal */}
       {showImportModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-background/80 backdrop-blur-md">
-          <div className="relative w-full max-w-[95vw] sm:max-w-xl max-h-[88vh] overflow-y-auto rounded-2xl bg-surface-container-low border border-outline-variant/30 p-4 sm:p-6 shadow-2xl flex flex-col gap-3 sm:gap-4">
+          <div className="relative w-full max-w-[95vw] sm:max-w-xl max-h-[85dvh] overflow-y-auto rounded-2xl bg-surface-container-low border border-outline-variant/30 p-4 sm:p-6 shadow-2xl flex flex-col gap-3 sm:gap-4">
             <div className="flex items-center justify-between border-b border-outline-variant/20 pb-space-xs">
               <div className="flex items-center gap-2">
                 <span className="material-symbols-outlined text-primary text-xl">download</span>
@@ -1362,7 +1328,7 @@ export default function ProjectDetail() {
         <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-background/80 backdrop-blur-md">
           <form
             onSubmit={handleSaveEdit}
-            className="relative w-full max-w-[95vw] sm:max-w-xl max-h-[88vh] overflow-y-auto rounded-2xl bg-surface-container-low border border-outline-variant/30 p-4 sm:p-6 shadow-2xl flex flex-col gap-3 sm:gap-4"
+            className="relative w-full max-w-[95vw] sm:max-w-xl max-h-[85dvh] overflow-y-auto rounded-2xl bg-surface-container-low border border-outline-variant/30 p-4 sm:p-6 shadow-2xl flex flex-col gap-3 sm:gap-4"
           >
             <div className="flex items-center justify-between border-b border-outline-variant/20 pb-space-xs">
               <h3 className="font-headline-sm text-headline-sm text-on-surface font-bold">
@@ -1488,7 +1454,7 @@ export default function ProjectDetail() {
       {/* Import Sketch from Library Modal */}
       {showImportSketchModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-background/80 backdrop-blur-md">
-          <div className="relative w-full max-w-[95vw] sm:max-w-xl max-h-[88vh] overflow-y-auto rounded-2xl bg-surface-container-low border border-outline-variant/30 p-4 sm:p-6 shadow-2xl flex flex-col gap-3 sm:gap-4">
+          <div className="relative w-full max-w-[95vw] sm:max-w-xl max-h-[85dvh] overflow-y-auto rounded-2xl bg-surface-container-low border border-outline-variant/30 p-4 sm:p-6 shadow-2xl flex flex-col gap-3 sm:gap-4">
             <div className="flex items-center justify-between border-b border-outline-variant/20 pb-space-xs">
               <div className="flex items-center gap-2">
                 <span className="material-symbols-outlined text-primary text-xl">draw</span>
@@ -1583,7 +1549,7 @@ export default function ProjectDetail() {
         <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-background/80 backdrop-blur-md">
           <form
             onSubmit={handleSaveEditSketch}
-            className="relative w-full max-w-[95vw] sm:max-w-md max-h-[88vh] overflow-y-auto rounded-2xl bg-surface-container-low border border-outline-variant/30 p-4 sm:p-6 shadow-2xl flex flex-col gap-3 sm:gap-4"
+            className="relative w-full max-w-[95vw] sm:max-w-md max-h-[85dvh] overflow-y-auto rounded-2xl bg-surface-container-low border border-outline-variant/30 p-4 sm:p-6 shadow-2xl flex flex-col gap-3 sm:gap-4"
           >
             <div className="flex items-center justify-between border-b border-outline-variant/20 pb-space-xs">
               <h3 className="font-headline-sm text-headline-sm text-on-surface font-bold">
@@ -1644,7 +1610,7 @@ export default function ProjectDetail() {
       {/* Import Fitting Note from Library Modal */}
       {showImportNoteModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-background/80 backdrop-blur-md">
-          <div className="relative w-full max-w-[95vw] sm:max-w-xl max-h-[88vh] overflow-y-auto rounded-2xl bg-surface-container-low border border-outline-variant/30 p-4 sm:p-6 shadow-2xl flex flex-col gap-3 sm:gap-4">
+          <div className="relative w-full max-w-[95vw] sm:max-w-xl max-h-[85dvh] overflow-y-auto rounded-2xl bg-surface-container-low border border-outline-variant/30 p-4 sm:p-6 shadow-2xl flex flex-col gap-3 sm:gap-4">
             <div className="flex items-center justify-between border-b border-outline-variant/20 pb-space-xs">
               <div className="flex items-center gap-space-xs">
                 <span className="material-symbols-outlined text-primary text-xl">download</span>
@@ -1736,7 +1702,7 @@ export default function ProjectDetail() {
         <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-background/80 backdrop-blur-md">
           <form
             onSubmit={editingNote ? handleSaveEditNote : handleCreateCollectionNote}
-            className="relative w-full max-w-[95vw] sm:max-w-xl max-h-[88vh] overflow-y-auto rounded-2xl bg-surface-container-low border border-outline-variant/30 p-4 sm:p-6 shadow-2xl flex flex-col gap-3 sm:gap-4"
+            className="relative w-full max-w-[95vw] sm:max-w-xl max-h-[85dvh] overflow-y-auto rounded-2xl bg-surface-container-low border border-outline-variant/30 p-4 sm:p-6 shadow-2xl flex flex-col gap-3 sm:gap-4"
           >
             <div className="flex items-center justify-between border-b border-outline-variant/20 pb-space-xs">
               <h3 className="font-headline-sm text-headline-sm text-on-surface font-bold">
@@ -1824,6 +1790,123 @@ export default function ProjectDetail() {
               </button>
             </div>
           </form>
+        </div>
+      )}
+
+      {/* View Pattern Modal */}
+      {viewingPattern && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center p-3 sm:p-4 bg-background/80 backdrop-blur-md">
+          <div className="relative w-full max-w-[95vw] sm:max-w-xl max-h-[85dvh] overflow-y-auto rounded-2xl bg-surface-container-low border border-outline-variant/30 p-4 sm:p-6 shadow-2xl flex flex-col gap-3 sm:gap-4">
+            <div className="flex items-center justify-between border-b border-outline-variant/20 pb-space-xs">
+              <h3 className="font-headline-sm text-headline-sm text-on-surface font-bold">
+                Pattern Details
+              </h3>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    handleStartEdit(viewingPattern)
+                    setViewingPattern(null)
+                  }}
+                  className="text-outline hover:text-primary transition-colors p-1 cursor-pointer bg-surface-container-highest rounded"
+                  title="Edit Pattern"
+                >
+                  <span className="material-symbols-outlined text-base">edit</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (confirm('Delete this pattern?')) {
+                      deletePattern(viewingPattern.id)
+                      setViewingPattern(null)
+                      showToast('Pattern deleted.')
+                    }
+                  }}
+                  className="text-outline hover:text-error transition-colors p-1 cursor-pointer bg-surface-container-highest rounded"
+                  title="Delete Pattern"
+                >
+                  <span className="material-symbols-outlined text-base">delete</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setViewingPattern(null)}
+                  className="text-outline hover:text-on-surface ml-2"
+                >
+                  <span className="material-symbols-outlined text-lg">close</span>
+                </button>
+              </div>
+            </div>
+            <div className="flex flex-col gap-4">
+              <img src={viewingPattern.image} alt={viewingPattern.title} className="w-full max-h-80 object-contain rounded-lg shadow border border-outline-variant/30 bg-surface-container-high" />
+              <div>
+                <h4 className="font-title-lg text-on-surface font-bold">{viewingPattern.title}</h4>
+                <p className="text-sm text-on-surface-variant font-medium mt-1">{viewingPattern.category}</p>
+                <p className="text-sm text-on-surface-variant mt-2 whitespace-pre-line">{viewingPattern.description}</p>
+              </div>
+              {viewingPattern.measurements && (
+                <div className="p-3 bg-surface-container-high rounded-lg border border-outline-variant/20">
+                  <h5 className="text-xs font-bold uppercase tracking-wider text-outline mb-1">Measurements & Specs</h5>
+                  <p className="text-sm text-on-surface whitespace-pre-line">{viewingPattern.measurements}</p>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* View Sketch Modal */}
+      {viewingSketch && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center p-3 sm:p-4 bg-background/80 backdrop-blur-md">
+          <div className="relative w-full max-w-[95vw] sm:max-w-md max-h-[85dvh] overflow-y-auto rounded-2xl bg-surface-container-low border border-outline-variant/30 p-4 sm:p-6 shadow-2xl flex flex-col gap-3 sm:gap-4">
+            <div className="flex items-center justify-between border-b border-outline-variant/20 pb-space-xs">
+              <h3 className="font-headline-sm text-headline-sm text-on-surface font-bold">
+                Sketch Details
+              </h3>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    handleStartEditSketch(viewingSketch)
+                    setViewingSketch(null)
+                  }}
+                  className="text-outline hover:text-primary transition-colors p-1 cursor-pointer bg-surface-container-highest rounded"
+                  title="Edit Sketch"
+                >
+                  <span className="material-symbols-outlined text-base">edit</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (confirm('Delete this sketch?')) {
+                      deleteSketch(viewingSketch.id)
+                      setViewingSketch(null)
+                      showToast('Sketch deleted.')
+                    }
+                  }}
+                  className="text-outline hover:text-error transition-colors p-1 cursor-pointer bg-surface-container-highest rounded"
+                  title="Delete Sketch"
+                >
+                  <span className="material-symbols-outlined text-base">delete</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setViewingSketch(null)}
+                  className="text-outline hover:text-on-surface ml-2"
+                >
+                  <span className="material-symbols-outlined text-lg">close</span>
+                </button>
+              </div>
+            </div>
+            <div className="flex flex-col gap-4">
+              <img src={viewingSketch.imageUrl} alt={viewingSketch.title} className="w-full max-h-96 object-contain rounded-lg shadow border border-outline-variant/30 bg-surface-container-high" />
+              <div>
+                <h4 className="font-title-lg text-on-surface font-bold">{viewingSketch.title}</h4>
+                {viewingSketch.garmentType && (
+                  <p className="text-sm text-on-surface-variant font-medium mt-1">{viewingSketch.garmentType}</p>
+                )}
+              </div>
+            </div>
+          </div>
         </div>
       )}
     </div>

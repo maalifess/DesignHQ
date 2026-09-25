@@ -34,6 +34,7 @@ export default function Sketchbook() {
   // Navigation State: Library vs Canvas Mode
   const [isCanvasMode, setIsCanvasMode] = useState(false)
   const [editingSketchId, setEditingSketchId] = useState<string | null>(null)
+  const [viewingSketch, setViewingSketch] = useState<SavedSketch | null>(null)
 
   // Library View State
   const [searchTerm, setSearchTerm] = useState('')
@@ -591,7 +592,8 @@ export default function Sketchbook() {
                 return (
                   <div
                     key={sketch.id}
-                    className="rounded-xl bg-surface-container-low/90 backdrop-blur-2xl shadow-xl border border-outline-variant/20 p-space-sm flex flex-col justify-between gap-space-sm hover:bg-surface-container-low transition-all group"
+                    onClick={() => setViewingSketch(sketch)}
+                    className="rounded-xl bg-surface-container-low/90 backdrop-blur-2xl shadow-xl border border-outline-variant/20 p-space-sm flex flex-col justify-between gap-space-sm hover:bg-surface-container-low transition-all group cursor-pointer"
                   >
                     <div className="relative aspect-[3/4] w-full rounded-lg overflow-hidden bg-surface-container-lowest border border-outline-variant/20">
                       <img
@@ -599,15 +601,6 @@ export default function Sketchbook() {
                         alt={sketch.title}
                         className="w-full h-full object-contain p-2"
                       />
-                      <div className="absolute inset-0 bg-background/60 backdrop-blur-xs opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
-                        <button
-                          onClick={() => handleEditSketchInCanvas(sketch)}
-                          className="px-3 py-1.5 rounded-lg bg-primary-container text-on-primary font-title-sm text-xs font-semibold shadow-lg hover:brightness-110 cursor-pointer flex items-center gap-1"
-                        >
-                          <span className="material-symbols-outlined text-sm">edit</span>
-                          <span>Open Canvas</span>
-                        </button>
-                      </div>
                     </div>
 
                     <div className="flex flex-col gap-1">
@@ -615,13 +608,6 @@ export default function Sketchbook() {
                         <h3 className="font-title-sm text-title-sm font-bold text-on-surface truncate">
                           {sketch.title}
                         </h3>
-                        <button
-                          onClick={() => deleteSketch(sketch.id)}
-                          className="text-outline hover:text-error transition-colors p-0.5 cursor-pointer"
-                          title="Delete Sketch"
-                        >
-                          <span className="material-symbols-outlined text-base">delete</span>
-                        </button>
                       </div>
 
                       {sketch.garmentType && (
@@ -867,7 +853,7 @@ export default function Sketchbook() {
       {/* Pattern Image Picker Modal */}
       {showPatternPickerModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-background/80 backdrop-blur-md">
-          <div className="relative w-full max-w-[95vw] sm:max-w-xl max-h-[88vh] overflow-y-auto rounded-2xl bg-surface-container-low border border-outline-variant/30 p-4 sm:p-6 shadow-2xl flex flex-col gap-3 sm:gap-4">
+          <div className="relative w-full max-w-[95vw] sm:max-w-xl max-h-[85dvh] overflow-y-auto rounded-2xl bg-surface-container-low border border-outline-variant/30 p-4 sm:p-6 shadow-2xl flex flex-col gap-3 sm:gap-4">
             <div className="flex items-center justify-between border-b border-outline-variant/20 pb-2 sm:pb-3">
               <div className="flex items-center gap-2">
                 <span className="material-symbols-outlined text-primary text-xl">content_cut</span>
@@ -962,7 +948,7 @@ export default function Sketchbook() {
       {/* Manual Measurement Label Modal */}
       {pendingMeasurement && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-background/80 backdrop-blur-md">
-          <div className="relative w-full max-w-[95vw] sm:max-w-md max-h-[88vh] overflow-y-auto rounded-2xl bg-surface-container-low border border-outline-variant/30 p-4 sm:p-6 shadow-2xl flex flex-col gap-3 sm:gap-4">
+          <div className="relative w-full max-w-[95vw] sm:max-w-md max-h-[85dvh] overflow-y-auto rounded-2xl bg-surface-container-low border border-outline-variant/30 p-4 sm:p-6 shadow-2xl flex flex-col gap-3 sm:gap-4">
             <div className="flex items-center justify-between border-b border-outline-variant/20 pb-space-xs">
               <div className="flex items-center gap-2">
                 <span className="material-symbols-outlined text-primary text-xl">straighten</span>
@@ -1023,6 +1009,61 @@ export default function Sketchbook() {
               >
                 Save Measurement
               </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* View Sketch Modal */}
+      {viewingSketch && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center p-3 sm:p-4 bg-background/80 backdrop-blur-md">
+          <div className="relative w-full max-w-[95vw] sm:max-w-md max-h-[85dvh] overflow-y-auto rounded-2xl bg-surface-container-low border border-outline-variant/30 p-4 sm:p-6 shadow-2xl flex flex-col gap-3 sm:gap-4">
+            <div className="flex items-center justify-between border-b border-outline-variant/20 pb-space-xs">
+              <h3 className="font-headline-sm text-headline-sm text-on-surface font-bold">
+                Sketch Details
+              </h3>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    handleEditSketchInCanvas(viewingSketch)
+                    setViewingSketch(null)
+                  }}
+                  className="text-outline hover:text-primary transition-colors p-1 cursor-pointer bg-surface-container-highest rounded"
+                  title="Open in Canvas"
+                >
+                  <span className="material-symbols-outlined text-base">edit</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (confirm('Delete this sketch?')) {
+                      deleteSketch(viewingSketch.id)
+                      setViewingSketch(null)
+                    }
+                  }}
+                  className="text-outline hover:text-error transition-colors p-1 cursor-pointer bg-surface-container-highest rounded"
+                  title="Delete Sketch"
+                >
+                  <span className="material-symbols-outlined text-base">delete</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setViewingSketch(null)}
+                  className="text-outline hover:text-on-surface ml-2"
+                >
+                  <span className="material-symbols-outlined text-lg">close</span>
+                </button>
+              </div>
+            </div>
+            <div className="flex flex-col gap-4">
+              <img src={viewingSketch.imageUrl} alt={viewingSketch.title} className="w-full max-h-96 object-contain rounded-lg shadow border border-outline-variant/30 bg-surface-container-high" />
+              <div>
+                <h4 className="font-title-lg text-on-surface font-bold">{viewingSketch.title}</h4>
+                {viewingSketch.garmentType && (
+                  <p className="text-sm text-on-surface-variant font-medium mt-1">{viewingSketch.garmentType}</p>
+                )}
+              </div>
             </div>
           </div>
         </div>

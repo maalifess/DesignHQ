@@ -8,13 +8,12 @@ const navItems = [
   { icon: 'content_cut', label: 'Patterns', to: '/patterns' },
   { icon: 'auto_awesome_motion', label: 'Mood Boards & AI', to: '/moodboards' },
   { icon: 'draw', label: 'Sketchbook', to: '/sketchbook' },
-  { icon: 'texture', label: 'Fabric Swatches', to: '/fabrics' },
   { icon: 'straighten', label: 'Fitting Notes', to: '/notes' },
   { icon: 'auto_stories', label: 'Portfolio', to: '/portfolio' },
 ]
 
 export function Sidebar() {
-  const { sidebarCollapsed } = useAppStore()
+  const { sidebarCollapsed, setSidebarCollapsed } = useAppStore()
 
   return (
     <aside
@@ -24,17 +23,28 @@ export function Sidebar() {
     >
       <div className="flex flex-col">
         {/* Logo Header */}
-        <div className="h-topbar-height px-space-md flex items-center gap-space-xs bg-surface-container-low/40 border-b border-outline-variant/20">
-          <img
-            src="/logo.png"
-            alt="Ariba's Atelier Logo"
-            className="w-8 h-8 rounded-lg object-cover shadow-[0_0_12px_rgba(128,0,32,0.6)] flex-shrink-0"
-          />
-          {!sidebarCollapsed && (
-            <span className="font-headline-sm text-headline-sm text-on-surface font-bold truncate tracking-tight">
-              Ariba's Atelier
+        <div className="h-topbar-height px-space-md flex items-center justify-between bg-surface-container-low/40 border-b border-outline-variant/20">
+          <div className="flex items-center gap-space-xs">
+            <img
+              src="/logo.png"
+              alt="Ariba's Atelier Logo"
+              className="w-8 h-8 rounded-lg object-cover shadow-[0_0_12px_rgba(128,0,32,0.6)] flex-shrink-0"
+            />
+            {!sidebarCollapsed && (
+              <span className="font-headline-sm text-headline-sm text-on-surface font-bold truncate tracking-tight">
+                Ariba's Atelier
+              </span>
+            )}
+          </div>
+          <button
+            onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
+            className="text-on-surface-variant hover:text-on-surface p-1 rounded-md transition-colors"
+            title={sidebarCollapsed ? "Expand Sidebar" : "Collapse Sidebar"}
+          >
+            <span className="material-symbols-outlined text-[18px]">
+              {sidebarCollapsed ? 'chevron_right' : 'chevron_left'}
             </span>
-          )}
+          </button>
         </div>
 
         {/* Primary Nav */}
