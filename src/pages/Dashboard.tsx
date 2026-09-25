@@ -557,8 +557,8 @@ export default function Dashboard() {
       {/* Audit Modal */}
       {showAuditModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-background/80 backdrop-blur-md">
-          <div className="relative w-full max-w-[95vw] sm:max-w-2xl max-h-[85dvh] overflow-y-auto rounded-2xl bg-surface-container-low border border-outline-variant/30 p-4 sm:p-6 shadow-2xl flex flex-col gap-3 sm:gap-4">
-            <div className="flex items-center justify-between border-b border-outline-variant/20 pb-space-xs">
+          <div className="relative w-full max-w-[95vw] sm:max-w-2xl max-h-[85dvh] overflow-y-auto rounded-2xl bg-surface-container-low border border-outline-variant/30 p-4 sm:p-6 shadow-2xl block">
+            <div className="flex items-center justify-between border-b border-outline-variant/20 pb-space-xs mb-3 sm:mb-4">
               <div className="flex items-center gap-space-xs">
                 <span className="material-symbols-outlined text-primary text-xl">auto_awesome</span>
                 <h3 className="font-headline-sm text-headline-sm text-on-surface font-bold">
@@ -633,9 +633,9 @@ export default function Dashboard() {
         <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-background/80 backdrop-blur-md">
           <form
             onSubmit={handleCreateProject}
-            className="relative w-full max-w-[95vw] sm:max-w-xl max-h-[85dvh] overflow-y-auto rounded-2xl bg-surface-container-low border border-outline-variant/30 p-4 sm:p-6 shadow-2xl flex flex-col gap-3 sm:gap-4"
+            className="relative w-full max-w-[95vw] sm:max-w-xl max-h-[85dvh] overflow-y-auto rounded-2xl bg-surface-container-low border border-outline-variant/30 p-4 sm:p-6 shadow-2xl block"
           >
-            <div className="flex items-center justify-between border-b border-outline-variant/20 pb-space-xs">
+            <div className="flex items-center justify-between border-b border-outline-variant/20 pb-space-xs mb-3 sm:mb-4">
               <h3 className="font-headline-sm text-headline-sm text-on-surface font-bold">
                 New Collection
               </h3>
@@ -728,9 +728,9 @@ export default function Dashboard() {
         <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-background/80 backdrop-blur-md">
           <form
             onSubmit={handleCreateFabric}
-            className="relative w-full max-w-[95vw] sm:max-w-xl max-h-[85dvh] overflow-y-auto rounded-2xl bg-surface-container-low border border-outline-variant/30 p-4 sm:p-6 shadow-2xl flex flex-col gap-3 sm:gap-4"
+            className="relative w-full max-w-[95vw] sm:max-w-xl max-h-[85dvh] overflow-y-auto rounded-2xl bg-surface-container-low border border-outline-variant/30 p-4 sm:p-6 shadow-2xl block"
           >
-            <div className="flex items-center justify-between border-b border-outline-variant/20 pb-space-xs">
+            <div className="flex items-center justify-between border-b border-outline-variant/20 pb-space-xs mb-3 sm:mb-4">
               <h3 className="font-headline-sm text-headline-sm text-on-surface font-bold">
                 Scan / Add Textile Swatch
               </h3>
@@ -807,9 +807,9 @@ export default function Dashboard() {
         <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-background/80 backdrop-blur-md">
           <form
             onSubmit={handleCreateDeadline}
-            className="relative w-full max-w-[95vw] sm:max-w-xl max-h-[85dvh] overflow-y-auto rounded-2xl bg-surface-container-low border border-outline-variant/30 p-4 sm:p-6 shadow-2xl flex flex-col gap-3 sm:gap-4"
+            className="relative w-full max-w-[95vw] sm:max-w-xl max-h-[85dvh] overflow-y-auto rounded-2xl bg-surface-container-low border border-outline-variant/30 p-4 sm:p-6 shadow-2xl block"
           >
-            <div className="flex items-center justify-between border-b border-outline-variant/20 pb-space-xs">
+            <div className="flex items-center justify-between border-b border-outline-variant/20 pb-space-xs mb-3 sm:mb-4">
               <h3 className="font-headline-sm text-headline-sm text-on-surface font-bold">
                 Add Fitting / Production Deadline
               </h3>

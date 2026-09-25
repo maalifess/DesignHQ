@@ -23,38 +23,11 @@ export function Layout({ children }: LayoutProps) {
       {/* Top Header */}
       <TopBar />
 
-      {/* Main Page Canvas Container */}
       <main
-        style={{
-          flex: 1,
-          marginTop: 'var(--topbar-height)',
-          minHeight: `calc(100vh - var(--topbar-height))`,
-          padding: '1.5rem',
-          paddingBottom: 'calc(var(--bottomnav-height) + 2rem)',
-          maxWidth: '1400px',
-          width: '100%',
-          boxSizing: 'border-box',
-        }}
-        className="main-layout-container"
+        className={`flex-1 mt-[var(--topbar-height)] min-h-[calc(100vh-var(--topbar-height))] p-4 pb-[calc(var(--bottomnav-height)+1.5rem)] md:p-8 md:pb-8 w-full max-w-[1400px] box-border transition-[margin-left] duration-300 ${
+          sidebarCollapsed ? 'md:ml-[var(--sidebar-collapsed)]' : 'md:ml-[var(--sidebar-width)]'
+        }`}
       >
-        <style>{`
-          @media (min-width: 768px) {
-            .main-layout-container {
-              margin-left: ${sidebarW} !important;
-              padding: 2rem !important;
-              padding-bottom: 2rem !important;
-              transition: margin-left 0.25s ease-in-out;
-            }
-          }
-          @media (max-width: 767px) {
-            .main-layout-container {
-              margin-left: 0 !important;
-              padding: 1rem !important;
-              padding-bottom: calc(var(--bottomnav-height) + 1.5rem) !important;
-            }
-          }
-        `}</style>
-
         <AnimatePresence mode="wait">
           <motion.div
             key={location.pathname}
